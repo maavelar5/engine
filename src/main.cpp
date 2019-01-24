@@ -7,7 +7,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-
 int main( int argc, char* argv[] )
 {
     game::init();
@@ -30,6 +29,7 @@ int main( int argc, char* argv[] )
             camera::move ( player , player.velocity );
             timer::acumulator -= timer::timeStep;
         }
+
         SDL_RenderClear( game::renderer );
         render( player , player.texture );
         SDL_RenderPresent( game::renderer );
