@@ -31,11 +31,6 @@ else
 	ifeq ($(UNAME_S),Linux)
 		LINKER_FLAGS = $(SDL2_FLAGS)
     endif
-    ifeq ($(UNAME_S),Darwin)
-        LINKER_FLAGS = -I/Library/Frameworks/SDL2.framework/Headers -framework SDL2 -I/Library/Frameworks/SDL2_image.framework/Headers -framework SDL2_image
-	CC = g++-8
-	CPPFLAGS += $(LINKER_FLAGS)
-	endif
 endif
 
 all : $(OBJS)
