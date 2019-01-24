@@ -11,8 +11,6 @@ struct Platform
     SDL_Texture* texture;
     std::vector < Entity > platforms;
 
-    void render ();
-
     Platform ();
     ~Platform ();
 };

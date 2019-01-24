@@ -17,9 +17,7 @@ void Player::event( SDL_Event event )
             case SDLK_a: velocity.x -= speed; break;
             case SDLK_d: velocity.x += speed; break;
             case SDLK_SPACE:
-                velocity.y = -1000;
-                bot = SDL_FALSE;
-                printf("wtf \n");
+                velocity.y = (bot) ? -300 : velocity.y;
                 break;
             case SDLK_l: game::quit = SDL_TRUE; break;
         }

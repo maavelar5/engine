@@ -10,8 +10,9 @@ Platform::Platform ()
         )
     {
         Entity entity;
-        entity.screen = { x , 250 , 32 , 32 };
-        entity.position = { x , 250 };
+
+        entity.screen = { x , 224 , 32 , 32 };
+        entity.position = { x , 224 };
         platforms.push_back ( entity );
 
     }
@@ -22,6 +23,7 @@ Platform::Platform ()
         )
     {
         Entity entity;
+
         entity.screen = { x , 150 , 32 , 32 };
         entity.position = { x , 150 };
         platforms.push_back ( entity );
@@ -31,16 +33,3 @@ Platform::Platform ()
 }
 
 Platform::~Platform () { }
-
-void Platform::render ()
-{
-
-    for ( int x = 0;
-          x < platforms.size();
-          x++
-        )
-    {
-        utils::adjust ( platforms[ x ] );
-        utils::render ( platforms[ x ] ,  texture );
-    }
-}

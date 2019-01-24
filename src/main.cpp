@@ -12,6 +12,7 @@
 int main( int argc, char* argv[] )
 {
     game::init();
+    entities::init();
 
     Player player;
     Platform platform;
@@ -30,24 +31,14 @@ int main( int argc, char* argv[] )
         while ( timer::acumulator >= timer::timeStep )
         {
             camera::move ( player );
+            player.bot = SDL_FALSE;
+            collision::collide();
             timer::acumulator -= timer::timeStep;
         }
 
-        player.bot = SDL_FALSE;
-
-        for ( int x = 0;
-              x < platform.platforms.size();
-              x++
-            )
-        {
-
-            collision::detect ( player , platform.platforms[ x ]);
-        }
-
-
         SDL_RenderClear( game::renderer );
         utils::render( player , player.texture );
-        platform.render ();
+        utils::render( platform.platforms , platform.texture );
         SDL_RenderPresent( game::renderer );
     }
 

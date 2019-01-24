@@ -19,8 +19,23 @@ namespace utils
 
     void adjust ( Entity &entity )
     {
-        entity.screen.x = entity.position.x - camera::position.x - entity.screen.w;
-        entity.screen.y = entity.position.y - camera::position.y - entity.screen.h;
+        int xId = entity.position.x / 1000, //GAME_LOGICAL_WIDTH,
+            yId = entity.position.y / 1000; //GAME_LOGICAL_HEIGHT;
+
+        entity.screen.x = floor(entity.position.x - camera::position.x - entity.screen.w);
+        entity.screen.y = floor(entity.position.y - camera::position.y - entity.screen.h);
+
+        entities::entities[ entity.xId ][ entity.yId ]
+            .erase(std::remove(
+                       entities::entities[ entity.xId ][ entity.yId ].begin(),
+                       entities::entities[ entity.xId ][ entity.yId ].end(),
+                       &entity),
+                   entities::entities[ entity.xId ][ entity.yId ].end());
+                    
+        entities::entities[ xId ][ yId ].push_back (&entity);
+
+        entity.xId = xId;
+        entity.yId = yId;
     }
 
     void render ( Entity &entity , SDL_Texture* texture )
@@ -31,6 +46,22 @@ namespace utils
                         texture,
                         NULL,
                         &entity.screen );
+    }
+
+    void render ( std::vector < Entity > &entities , SDL_Texture* texture )
+    {
+        for ( int x = 0;
+              x < entities.size();
+              x++
+            )
+        {
+            adjust ( entities[ x ] );
+
+            SDL_RenderCopy( game::renderer,
+                            texture,
+                            NULL,
+                            &entities[ x ].screen );
+        }
     }
 
     void move ( Entity &entity )

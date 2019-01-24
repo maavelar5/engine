@@ -10,6 +10,7 @@ namespace collision
 {
     extern const int TOP , RIGHT , BOT , LEFT;
 
+    void collide ();
     int detect ( Entity & , Entity & );
     int getCollisionType ( SDL_Rect , SDL_Rect );
 }
