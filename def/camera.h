@@ -9,9 +9,8 @@
 namespace camera
 {
     extern Vector position;
-    extern SDL_Rect screen;
 
-    void move( Entity &, Vector );
+    void move( Entity & );
 }
 
 #endif // CAMERA_H_INCLUDED

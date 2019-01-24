@@ -7,8 +7,9 @@
 
 struct Entity
 {
-    Vector position;
+    Vector position , velocity;
     SDL_Rect screen;
+    SDL_bool top , bot , right , left;
 
     Entity ();
     ~Entity ();

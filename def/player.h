@@ -9,7 +9,6 @@ struct Player : public Entity
 {
     SDL_Texture *texture;
     float speed;
-    Vector velocity;
 
     Player ();
 

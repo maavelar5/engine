@@ -42,6 +42,9 @@ camera.o : camera.cpp
 constants.o : constants.cpp
 	$(CC) -c -w $(CPPFLAGS) src/constants.cpp -o obj/constants.o
 
+collision.o : collision.cpp
+	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
+
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
 
@@ -50,6 +53,9 @@ game.o : game.cpp
 
 main.o : main.cpp
 	$(CC) -c -w $(CPPFLAGS) src/main.cpp -o obj/main.o
+
+platform.o : platform.cpp
+	$(CC) -c -w $(CPPFLAGS) src/platform.cpp -o obj/platform.o
 
 player.o : player.cpp
 	$(CC) -c -w $(CPPFLAGS) src/player.cpp -o obj/player.o

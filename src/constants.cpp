@@ -42,7 +42,7 @@ const std::string CWD =
 #endif
 
 /* Physics */
-const Vector GRAVITY( 0 , 6  );
+const Vector GRAVITY( 0 , 6 );
 
 /* Scenario size */
 const int SCENARIO_WIDTH = 7168;
