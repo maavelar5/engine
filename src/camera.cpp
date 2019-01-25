@@ -16,8 +16,6 @@ namespace camera
             {
                 position.x += distance;
             }
-            if( entity.position.x >= SCENARIO_WIDTH - 25 ) { }
-            else { entity.position.x += distance; }
         }
         else
         {
@@ -26,14 +24,8 @@ namespace camera
             {
                 position.x += distance;
             }
-            if( entity.position.x <= entity.screen.w ) { }
-            else { entity.position.x += distance; }
         }
 
-        if ( !entity.bot )
-            entity.velocity.y += GRAVITY.y;
-
-        entity.position.y += entity.velocity.y * timer::acumulator;
-        entity.bot = SDL_FALSE;
+        utils::move ( entity );
     }
 }

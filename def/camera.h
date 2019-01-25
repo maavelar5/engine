@@ -4,6 +4,7 @@
 #include "constants.h"
 #include "entity.h"
 #include "timer.h"
+#include "utils.h"
 #include "vector.h"
 
 namespace camera
