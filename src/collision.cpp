@@ -6,6 +6,8 @@ namespace collision
 
     void collide ()
     {
+        Entity *a = nullptr , *b = nullptr;
+
         for ( int x = 0;
               x < entities::entities.size();
               x++
@@ -21,14 +23,16 @@ namespace collision
                       z++
                     )
                 {
+                    a = entities::entities[ x ][ y ][ z ];
 
                     for ( int w = z + 1;
                           w < entities::entities[ x ][ y ].size();
                           w++
                         )
                     {
-                        detect ( *entities::entities [ x ][ y ][ z ],
-                                 *entities::entities [ x ][ y ][ w ]);
+                        b = entities::entities[ x ][ y ][ w ];
+
+                        detect ( *a, *b );
                     }
                 }
             }
@@ -50,19 +54,19 @@ namespace collision
                 a.bot = SDL_TRUE;
             }
 
-            if ( collisionType == TOP && a.velocity.y <= 0 )
+            else if ( collisionType == TOP && a.velocity.y <= 0 )
             {
                 a.position.y += result.h;
                 a.velocity.y = 0;
                 a.top = SDL_TRUE;                
             }
 
-            if ( collisionType == LEFT )
+            else if ( collisionType == LEFT )
             {
                 a.position.x += result.w;
             }
 
-            if ( collisionType == RIGHT )
+            else if ( collisionType == RIGHT )
             {
                 a.position.x -= result.w;
             }

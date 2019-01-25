@@ -71,5 +71,7 @@ namespace utils
             entity.velocity.y += GRAVITY.y;
 
         entity.position.y += entity.velocity.y * timer::acumulator;
+
+        entity.bot = SDL_FALSE;
     }
 }

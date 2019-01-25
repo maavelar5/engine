@@ -9,7 +9,7 @@
 
 struct Entity
 {
-    Vector position , velocity;
+    Vector position , velocity , previousPosition;
     SDL_Rect screen;
     SDL_bool top , bot , right , left , isActive;
     int xId , yId;

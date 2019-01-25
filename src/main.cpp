@@ -31,7 +31,6 @@ int main( int argc, char* argv[] )
         while ( timer::acumulator >= timer::timeStep )
         {
             camera::move ( player );
-            player.bot = SDL_FALSE;
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }

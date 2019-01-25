@@ -15,6 +15,7 @@ namespace entities
             )
         {
             entities.push_back(std::vector< std::vector < Entity * > >());
+
             for ( int y = 0;
                   y < height;
                   y++
