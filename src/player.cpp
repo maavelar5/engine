@@ -17,9 +17,7 @@ void Player::event( SDL_Event event )
         {
             case SDLK_a: velocity.x -= speed; break;
             case SDLK_d: velocity.x += speed; break;
-            case SDLK_SPACE:
-                velocity.y = (bot) ? -300 : velocity.y;
-                break;
+            case SDLK_SPACE: velocity.y = (bot) ? -300 : velocity.y; break;
             case SDLK_l: game::quit = SDL_TRUE; break;
         }
     }
@@ -29,7 +27,10 @@ void Player::event( SDL_Event event )
         {
             case SDLK_a: velocity.x += speed; break;
             case SDLK_d: velocity.x -= speed; break;
-            case SDLK_SPACE: break;
+            case SDLK_SPACE: velocity.y = (velocity.y < 0)
+                ? 0
+                : velocity.y;
+                break;
         }
     }
 }

@@ -14,7 +14,6 @@ Platform::Platform ()
         entity.screen = { x , 224 , 32 , 32 };
         entity.position = { x , 224 };
         platforms.push_back ( entity );
-
     }
 
     for ( int x = 200;
@@ -27,7 +26,6 @@ Platform::Platform ()
         entity.screen = { x , 150 , 32 , 32 };
         entity.position = { x , 150 };
         platforms.push_back ( entity );
-
     }
 }
 
