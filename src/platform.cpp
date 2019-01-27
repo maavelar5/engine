@@ -29,7 +29,6 @@ Platform::Platform ()
         platforms.push_back ( entity );
 
     }
-
 }
 
 Platform::~Platform () { }

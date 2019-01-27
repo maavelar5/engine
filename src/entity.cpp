@@ -6,35 +6,32 @@ namespace entities
 
     void init ()
     {
-        int width = SCENARIO_WIDTH / 1000 + 1,   //GAME_LOGICAL_WIDTH + 1,
-            height = SCENARIO_HEIGHT / 1000 + 1; //GAME_LOGICAL_HEIGHT + 1;
+        int width = SCENARIO_WIDTH / 100 + 1,   //GAME_LOGICAL_WIDTH + 1,
+            height = SCENARIO_HEIGHT / 100 + 1; //GAME_LOGICAL_HEIGHT + 1;
         
-        for ( int x = 0;
-              x < width;
-              x++
+        for ( int y = 0;
+              y < height;
+              y++
             )
         {
             entities.push_back(std::vector< std::vector < Entity * > >());
 
-            for ( int y = 0;
-                  y < height;
-                  y++
+            for ( int x = 0;
+                  x < width;
+                  x++
                 )
             {
-                entities[ x ].push_back(std::vector <  Entity * > ());
+                entities[ y ].push_back(std::vector <  Entity * > ());
             }   
         }
     }
 }
 
-
-
 Entity::Entity ()
 {
-    screen = { 0 , 0 , 0 , 0 };
-    isActive = top = bot = left = right = SDL_FALSE;
-
-    xId = yId = 0;
+    screen = locator = { 0 , 0 , 0 , 0 };
+    type = top = bot = left = right = SDL_FALSE;
+    isActive = SDL_TRUE;
 
     entities::entities[ 0 ][ 0 ].push_back ( this );
 }

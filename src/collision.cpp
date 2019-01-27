@@ -47,30 +47,29 @@ namespace collision
         {
             int collisionType = getCollisionType ( a.screen , result );
 
-            if ( collisionType == BOT && a.velocity.y >= 0 )
+            if ( collisionType == BOT )
             {
-                a.position.y -= result.h - 1;
-                a.velocity.y = 0;
-                a.bot = SDL_TRUE;
+                if ( a.type && a.velocity.y >= 0 ) { bot ( a , result.h ); }
+                if ( b.type && b.velocity.y <= 0 ) { top ( b , result.h ); }
             }
 
-            else if ( collisionType == TOP && a.velocity.y <= 0 )
+            else if ( collisionType == TOP )
             {
-                a.position.y += result.h;
-                a.velocity.y = 0;
-                a.top = SDL_TRUE;                
-            }
-
-            else if ( collisionType == LEFT )
-            {
-                a.position.x += result.w;
+                if ( a.type && a.velocity.y <= 0 ) { top ( a , result.h ); }
+                if ( b.type && b.velocity.y >= 0 ) { bot ( b , result.h ); }
             }
 
             else if ( collisionType == RIGHT )
             {
-                a.position.x -= result.w;
+                if ( a.type ) { right( a , result.w ); }
+                if ( b.type ) { left( b , result.w ); }
             }
 
+            else if ( collisionType == LEFT )
+            {
+                if ( a.type ) { left( a , result.w ); }
+                if ( b.type ) { right( b , result.w ); }
+            }
         }
     }
 
@@ -90,5 +89,29 @@ namespace collision
         }
 
         return collisionType;        
+    }
+
+    void bot ( Entity &entity , int h )
+    {
+        entity.velocity.y = 0;
+        entity.position.y -= h - 1;
+        entity.bot = SDL_TRUE;
+    }
+
+    void top ( Entity &entity , int h )
+    {
+        entity.velocity.y = 0;
+        entity.position.y += h;
+        entity.top = SDL_TRUE;
+    }
+
+    void left ( Entity &entity , int w )
+    {
+        entity.position.x += w;
+    }
+
+    void right ( Entity &entity , int w )
+    {
+        entity.position.x -= w;
     }
 }

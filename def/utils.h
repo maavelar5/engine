@@ -21,6 +21,9 @@ namespace utils
     void render ( Entity & , SDL_Texture * );
     void render ( std::vector < Entity > & , SDL_Texture * );
     void move ( Entity & );
+    void locator ( Entity & );
+    void setLocator ( Entity & );
+    void deleteLocator ( Entity & );
 }
 
 #endif

@@ -19,23 +19,10 @@ namespace utils
 
     void adjust ( Entity &entity )
     {
-        int xId = entity.position.x / 1000, //GAME_LOGICAL_WIDTH,
-            yId = entity.position.y / 1000; //GAME_LOGICAL_HEIGHT;
-
-        entity.screen.x = floor(entity.position.x - camera::position.x - entity.screen.w);
-        entity.screen.y = floor(entity.position.y - camera::position.y - entity.screen.h);
-
-        entities::entities[ entity.xId ][ entity.yId ]
-            .erase(std::remove(
-                       entities::entities[ entity.xId ][ entity.yId ].begin(),
-                       entities::entities[ entity.xId ][ entity.yId ].end(),
-                       &entity),
-                   entities::entities[ entity.xId ][ entity.yId ].end());
-                    
-        entities::entities[ xId ][ yId ].push_back (&entity);
-
-        entity.xId = xId;
-        entity.yId = yId;
+        deleteLocator ( entity );
+        entity.screen.x = floor(entity.position.x - camera::position.x );
+        entity.screen.y = floor(entity.position.y - camera::position.y );
+        setLocator ( entity );
     }
 
     void render ( Entity &entity , SDL_Texture* texture )
@@ -67,11 +54,70 @@ namespace utils
     void move ( Entity &entity )
     {
         entity.position.x += entity.velocity.x * timer::acumulator;
+
+        if ( entity.position.x <= 0 )
+            entity.position.x = 0;
+        else if ( entity.position.x >= SCENARIO_WIDTH )
+            entity.position.x = SCENARIO_WIDTH;
+
         if ( !entity.bot )
             entity.velocity.y += GRAVITY.y;
 
         entity.position.y += entity.velocity.y * timer::acumulator;
-
         entity.bot = SDL_FALSE;
+        adjust ( entity );
+    }
+
+    void locator ( Entity &entity )
+    {
+        deleteLocator ( entity );
+        setLocator ( entity );
+    }
+
+    void setLocator ( Entity &entity )
+    {
+        int xId = entity.position.x / 100,
+            yId = entity.position.y / 100,
+            wId = ( entity.position.x + entity.screen.w ) / 100,
+            hId = ( entity.position.y + entity.screen.h ) / 100;
+
+        for ( int y = yId;
+              y <= hId;
+              y++
+            )
+        {
+            for ( int x = xId;
+                  x <= wId;
+                  x++
+                )
+            {
+                entities::entities[ y ][ x ].push_back( &entity );
+            }
+        }
+
+        entity.locator = { xId , yId , wId , hId };
+    }
+
+    void deleteLocator ( Entity &entity )
+    {
+        for ( int y = entity.locator.y;
+              y <= entity.locator.h;
+              y++
+            )
+        {
+            for ( int x = entity.locator.x;
+                  x <= entity.locator.w;
+                  x++
+                )
+            {
+
+                entities::entities[ y ][ x ]
+                    .erase(std::remove(
+                               entities::entities[ y ][ x ].begin(),
+                               entities::entities[ y ][ x ].end(),
+                               &entity),
+                           entities::entities[ y ][ x ].end());
+            }
+        }
     }
 }

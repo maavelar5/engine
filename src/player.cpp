@@ -1,3 +1,4 @@
+
 #include "player.h"
 
 Player::Player () 
@@ -6,6 +7,7 @@ Player::Player ()
     position = { 32 , 32 };
     texture = utils::createTexture ( PLAYER_SPRITE_SHEET );
     speed = 100;
+    type = SDL_TRUE;
 }
 
 void Player::event( SDL_Event event )
