@@ -182,8 +182,12 @@ const std::string GENERIC_PLATFORM_FILE_PATH = CWD+"sprites"+DS+
     "platform.png";
 
 /* Generic enemy */
-extern const std::string GENERIC_ENEMY_FILE_PATH = CWD+"sprites"+DS+
+const std::string GENERIC_ENEMY_FILE_PATH = CWD+"sprites"+DS+
     "enemy.png";
+
+/* Generic projectile */
+const std::string GENERIC_PROJECTILE_FILE_PATH = CWD+"sprites"+DS+
+    "projectile.png";
 
 /* Generic enemy spritesheet frames */
 std::map<Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES =
