@@ -11,7 +11,7 @@ struct Entity
 {
     Vector position , velocity;
     SDL_Rect screen , locator;
-    SDL_bool top , bot , right , left , isActive , type;
+    Uint8 config , sensor;
 
     Entity ();
     ~Entity ();

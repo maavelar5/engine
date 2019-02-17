@@ -2,8 +2,6 @@
 
 namespace collision
 {
-    const int TOP = 1, RIGHT = 2, BOT = 3, LEFT = 4;
-
     void collide ()
     {
         Entity *a = nullptr , *b = nullptr;
@@ -47,28 +45,28 @@ namespace collision
         {
             int collisionType = getCollisionType ( a.screen , result );
 
-            if ( collisionType == BOT )
+            if ( collisionType == BOT_SENSOR )
             {
-                if ( a.type && a.velocity.y >= 0 ) { bot ( a , result.h ); }
-                if ( b.type && b.velocity.y <= 0 ) { top ( b , result.h ); }
+                if ( a.config & KINEMATIC && a.velocity.y >= 0 ) { bot ( a , result.h ); }
+                if ( b.config & KINEMATIC && b.velocity.y <= 0 ) { top ( b , result.h ); }
             }
 
-            else if ( collisionType == TOP )
+            else if ( collisionType == TOP_SENSOR )
             {
-                if ( a.type && a.velocity.y <= 0 ) { top ( a , result.h ); }
-                if ( b.type && b.velocity.y >= 0 ) { bot ( b , result.h ); }
+                if ( a.config & KINEMATIC && a.velocity.y <= 0 ) { top ( a , result.h ); }
+                if ( b.config & KINEMATIC && b.velocity.y >= 0 ) { bot ( b , result.h ); }
             }
 
-            else if ( collisionType == RIGHT )
+            else if ( collisionType == RIGHT_SENSOR )
             {
-                if ( a.type ) { right( a , result.w ); }
-                if ( b.type ) { left( b , result.w ); }
+                if ( a.config & KINEMATIC ) { right( a , result.w ); }
+                if ( b.config & KINEMATIC ) { left( b , result.w ); }
             }
 
-            else if ( collisionType == LEFT )
+            else if ( collisionType == LEFT_SENSOR )
             {
-                if ( a.type ) { left( a , result.w ); }
-                if ( b.type ) { right( b , result.w ); }
+                if ( a.config & KINEMATIC ) { left( a , result.w ); }
+                if ( b.config & KINEMATIC ) { right( b , result.w ); }
             }
         }
     }
@@ -79,13 +77,13 @@ namespace collision
 
         if ( b.w >= b.h )
         {
-            if ( a.y == b.y ) { collisionType = TOP; }
-            else { collisionType = BOT; }
+            if ( a.y == b.y ) { collisionType = TOP_SENSOR; }
+            else { collisionType = BOT_SENSOR; }
         }
         else
         {
-            if ( a.x == b.x ) { collisionType = LEFT; }
-            else { collisionType = RIGHT; }
+            if ( a.x == b.x ) { collisionType = LEFT_SENSOR; }
+            else { collisionType = RIGHT_SENSOR; }
         }
 
         return collisionType;        
@@ -95,14 +93,14 @@ namespace collision
     {
         entity.velocity.y = 0;
         entity.position.y -= h - 1;
-        entity.bot = SDL_TRUE;
+        entity.sensor |= BOT_SENSOR;
     }
 
     void top ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
         entity.position.y += h;
-        entity.top = SDL_TRUE;
+        entity.sensor |= TOP_SENSOR;
     }
 
     void left ( Entity &entity , int w )

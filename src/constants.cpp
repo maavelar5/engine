@@ -73,16 +73,10 @@ const Uint16 RIGHT = 256;
 const Uint16 LEFT = 512;
 
 /* Entity configuration */
-
-const Uint16 ACTIVE = 1024;
-
-const Uint16 STATIC = 2048;
-
-const Uint16 RIGID = 4096;
-
-const Uint16 KINEMATIC = 8192;
-
-const Uint16 MOVES_CAMERA = 16384;
+const Uint8 ACTIVE = 1;
+const Uint8 STATIC = 2;
+const Uint8 KINEMATIC = 4;
+const Uint8 BULLET = 8;
 
 /* Player */
 const std::string MEGAMAN_SPRITE_SHEET = CWD+"sprites"+DS+
@@ -199,3 +193,6 @@ std::map<Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES =
         }
     }
 };
+
+/* Sensor values */
+const Uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8;

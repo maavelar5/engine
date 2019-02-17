@@ -30,8 +30,8 @@ namespace entities
 Entity::Entity ()
 {
     screen = locator = { 0 , 0 , 0 , 0 };
-    type = top = bot = left = right = SDL_FALSE;
-    isActive = SDL_TRUE;
+    sensor = 0;
+    config = ACTIVE | STATIC;
 
     entities::entities[ 0 ][ 0 ].push_back ( this );
 }

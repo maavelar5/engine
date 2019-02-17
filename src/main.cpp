@@ -37,10 +37,6 @@ int main( int argc, char* argv[] )
 
         SDL_RenderClear( game::renderer );
         utils::render( player , player.texture );
-
-        player.sword.render ( player.screen.x + player.screen.w ,
-                              player.screen.y - player.sword.screen.h / 2 );
-
         utils::render( platform.platforms , platform.texture );
         SDL_RenderPresent( game::renderer );
     }

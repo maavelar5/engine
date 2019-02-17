@@ -71,12 +71,10 @@ extern const Uint16 LEFT;
 extern const Uint16 ON_GROUND;
 
 /* Entity configuration */
-
-extern const Uint16 ACTIVE;
-extern const Uint16 STATIC;
-extern const Uint16 RIGID;
-extern const Uint16 KINEMATIC;
-extern const Uint16 MOVES_CAMERA;
+extern const Uint8 ACTIVE;
+extern const Uint8 STATIC;
+extern const Uint8 KINEMATIC;
+extern const Uint8 BULLET;
 
 /* Megaman */
 extern const std::string MEGAMAN_SPRITE_SHEET;
@@ -101,5 +99,8 @@ extern const std::string GENERIC_PROJECTILE_FILE_PATH;
 
 /* Generic enemy sprites */
 extern std::map <Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES;
+
+/* Sensor valuess */
+extern const Uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR;
 
 #endif

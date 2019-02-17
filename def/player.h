@@ -5,25 +5,19 @@
 #include "game.h"
 #include "utils.h"
 
-struct Sword
+struct Projectiles
 {
     SDL_Texture *texture;
+    std::vector < Entity > entities;
     float speed;
-    SDL_bool flag;
-    SDL_Rect screen;
-    double angle;
-    Uint32 transition;
-    Sword ();
-
-    void render ( int , int );
+    
+    Projectiles ( const std::string filePath = GENERIC_PROJECTILE_FILE_PATH );
 };
-
 
 struct Player : public Entity
 {
     SDL_Texture *texture;
     float speed;
-    Sword sword;
 
     Player ();
 
