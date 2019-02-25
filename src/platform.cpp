@@ -12,7 +12,7 @@ Platform::Platform ()
         Entity entity;
 
         entity.screen = { x , 224 , 32 , 32 };
-        entity.position = { x , 224 };
+        entity.position = { static_cast < float > ( x ) , 224 };
         platforms.push_back ( entity );
     }
 
@@ -24,7 +24,7 @@ Platform::Platform ()
         Entity entity;
 
         entity.screen = { x , 150 , 32 , 32 };
-        entity.position = { x , 150 };
+        entity.position = { static_cast < float > ( x ) , 150 };
         platforms.push_back ( entity );
     }
 }
