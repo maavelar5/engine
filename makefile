@@ -11,11 +11,11 @@ OBJS = $(notdir $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)))
 OBJS_DIR = $(addprefix obj/,$(OBJS))
 
 #CC specifies which compiler we're using
-CC = g++
+CC = g++ -std=c++11
 
 #CFLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
-CFLAGS = -g
+CFLAGS = -g -w
 
 #CPPFLAGS specifies the preprocesor flags
 CPPFLAGS = -I def
@@ -27,10 +27,7 @@ SDL2_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 ifeq ($(OS),Windows_NT)
 	LINKER_FLAGS = -w -Wl,-subsystem,windows -lmingw32 -lSDL2main $(SDL2_FLAGS)
 else
-	UNAME_S := $(shell uname -s)
-	ifeq ($(UNAME_S),Linux)
-		LINKER_FLAGS = $(SDL2_FLAGS)
-    endif
+	LINKER_FLAGS = $(SDL2_FLAGS)
 endif
 
 all : $(OBJS)
