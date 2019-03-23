@@ -13,15 +13,19 @@ struct Entity
     SDL_Rect screen , locator;
     Uint8 config , sensor;
 
-    Entity ();
+    SDL_Texture *texture;
+
+    Entity ( std::string filePath = "none.png" , SDL_Texture *texture = nullptr );
     ~Entity ();
+
+    void adjust () , deleteLocator () , setLocator ();
 };
 
 namespace entities
 {
-    extern std::vector < std::vector < std::vector < Entity * > > > entities;
+    extern std::vector < std::vector < std::vector < Entity* > > > entities;
 
-    void init ();
+    void init () , render () , move ();
 }
 
 #endif

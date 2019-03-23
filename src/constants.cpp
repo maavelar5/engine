@@ -77,6 +77,7 @@ const Uint8 ACTIVE = 1;
 const Uint8 STATIC = 2;
 const Uint8 KINEMATIC = 4;
 const Uint8 BULLET = 8;
+const Uint8 CAMERA = 16;
 
 /* Player */
 const std::string MEGAMAN_SPRITE_SHEET = CWD+"sprites"+DS+

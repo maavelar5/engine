@@ -75,6 +75,7 @@ extern const Uint8 ACTIVE;
 extern const Uint8 STATIC;
 extern const Uint8 KINEMATIC;
 extern const Uint8 BULLET;
+extern const Uint8 CAMERA;
 
 /* Megaman */
 extern const std::string MEGAMAN_SPRITE_SHEET;
