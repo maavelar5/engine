@@ -4,13 +4,13 @@ namespace camera
 {
     Vector position = { 0 , 0 };
 
-    void move( Entity &entity )
+    void move( Vector velocity , SDL_Rect screen )
     {
-        float distance = entity.velocity.x * timer::acumulator;
+        float distance = velocity.x * timer::acumulator;
 
-        if( entity.velocity.x > 0 )
+        if( velocity.x > 0 )
         {
-            if( entity.screen.x >= CAMERA_OFFSET.w  &&
+            if( screen.x >= CAMERA_OFFSET.w  &&
                 camera::position.x <= ( SCENARIO_WIDTH - WINDOW_WIDTH )
                 )
             {
@@ -19,13 +19,11 @@ namespace camera
         }
         else
         {
-            if( entity.screen.x <= CAMERA_OFFSET.x &&
+            if( screen.x <= CAMERA_OFFSET.x &&
                 camera::position.x > 0 )
             {
                 position.x += distance;
             }
         }
-
-        utils::move ( entity );
     }
 }

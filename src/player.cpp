@@ -1,17 +1,11 @@
 #include "player.h"
 
-Projectiles::Projectiles ( const std::string filePath )
-{
-
-}
-
-Player::Player () 
+Player::Player () : Entity ( PLAYER_SPRITE_SHEET )
 {
     screen = { 0 , 0 , 8 , 8 };
     position = { 32 , 32 };
-    texture = utils::createTexture ( PLAYER_SPRITE_SHEET );
     speed = 100;
-    config ^= STATIC | KINEMATIC;
+    config ^= STATIC | KINEMATIC | CAMERA;
 }
 
 void Player::event( SDL_Event event )

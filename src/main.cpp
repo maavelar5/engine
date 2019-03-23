@@ -30,14 +30,14 @@ int main( int argc, char* argv[] )
 
         while ( timer::acumulator >= timer::timeStep )
         {
-            camera::move ( player );
+            entities::move();
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }
 
         SDL_RenderClear( game::renderer );
-        utils::render( player , player.texture );
-        utils::render( platform.platforms , platform.texture );
+        entities::render();
+        player.render();
         SDL_RenderPresent( game::renderer );
     }
 

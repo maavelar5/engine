@@ -34,7 +34,7 @@ namespace entities
             {
                 for ( auto entity : col )
                 {
-                    entity.move();
+                    entity->move();
                 }
             }
         }
@@ -48,10 +48,10 @@ namespace entities
             {
                 for ( auto entity : col )
                 {
-                    entity.render();
+                    entity->render();
                 }
             }
-        }        
+        }
     }
 }
 
@@ -63,19 +63,8 @@ Entity::Entity ( std::string filePath , SDL_Texture *texture )
  
     entities::entities[ 0 ][ 0 ].push_back ( this );
 
-    if ( texture ) { this->texture = texture; }
-    else
-    {
-        SDL_Surface *surface = IMG_Load( filePath.c_str() );
-
-        if ( surface )
-        {
-            texture = SDL_CreateTextureFromSurface( game::renderer , surface );
-            SDL_FreeSurface( surface );
-        }
-        else { printf("%s",SDL_GetError()); }        
-    }
-
+    if ( texture ) this->texture = texture;
+    else this->texture = loadTexture ( filePath );
 }
 
 Entity::~Entity () { }
@@ -90,12 +79,12 @@ void Entity::adjust ()
     setLocator ();
 }
 
-void setLocator ( Entity &entity )
+void Entity::setLocator ()
 {
-    int xId = entity.position.x / 100,
-        yId = entity.position.y / 100,
-        wId = ( entity.position.x + entity.screen.w ) / 100,
-        hId = ( entity.position.y + entity.screen.h ) / 100;
+    int xId = position.x / 100,
+        yId = position.y / 100,
+        wId = ( position.x + screen.w ) / 100,
+        hId = ( position.y + screen.h ) / 100;
 
     for ( int y = yId;
           y <= hId;
@@ -107,22 +96,22 @@ void setLocator ( Entity &entity )
               x++
             )
         {
-            entities::entities[ y ][ x ].push_back( &entity );
+            entities::entities[ y ][ x ].push_back( this );
         }
     }
 
-    entity.locator = { xId , yId , wId , hId };
+    locator = { xId , yId , wId , hId };
 }
 
-void deleteLocator ( Entity &entity )
+void Entity::deleteLocator ()
 {
-    for ( int y = entity.locator.y;
-          y <= entity.locator.h;
+    for ( int y = locator.y;
+          y <= locator.h;
           y++
         )
     {
-        for ( int x = entity.locator.x;
-              x <= entity.locator.w;
+        for ( int x = locator.x;
+              x <= locator.w;
               x++
             )
         {
@@ -131,14 +120,19 @@ void deleteLocator ( Entity &entity )
                 .erase(std::remove(
                            entities::entities[ y ][ x ].begin(),
                            entities::entities[ y ][ x ].end(),
-                           &entity),
+                           this),
                        entities::entities[ y ][ x ].end());
         }
     }
 }
 void Entity::move ()
 {
+    if ( config & STATIC ) return;
+
     position.x += velocity.x * timer::acumulator;
+
+    if ( config & CAMERA )
+        camera::move ( velocity , screen );
 
     if ( position.x <= 0 ) position.x = 0;
     else if ( position.x >= SCENARIO_WIDTH )
@@ -154,10 +148,25 @@ void Entity::move ()
 
 void Entity::render ()
 {
-    entity.adjust ();
+    adjust ();
 
     SDL_RenderCopy( game::renderer,
-                    entity.texture,
+                    texture,
                     NULL,
-                    &entity.screen [ id ] );    
+                    &screen );    
+}
+
+SDL_Texture * Entity::loadTexture ( std::string filePath )
+{
+    SDL_Surface *surface = IMG_Load( filePath.c_str() );
+    SDL_Texture *texture = nullptr;
+
+    if ( surface )
+    {
+        texture = SDL_CreateTextureFromSurface( game::renderer , surface );
+        SDL_FreeSurface( surface );
+    }
+    else { printf("%s",SDL_GetError()); }
+
+    return texture;
 }

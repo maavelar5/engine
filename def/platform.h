@@ -2,7 +2,6 @@
 #define PLATFORM_H_INCLUDED
 
 #include "entity.h"
-#include "utils.h"
 
 #include <vector>
 
