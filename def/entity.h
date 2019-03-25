@@ -6,6 +6,7 @@
 #include "game.h"
 #include "vector.h"
 
+#include <algorithm>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vector>
@@ -27,11 +28,24 @@ struct Entity
     static SDL_Texture * loadTexture ( std::string );
 };
 
+struct Entities
+{
+    Uint8 config;
+    SDL_Rect screen;
+    SDL_Texture *texture;
+
+    Entities ( std::string );
+    ~Entities ();
+
+    virtual Entity * add ( float , float );
+};
+
 namespace entities
 {
     extern std::vector < std::vector < std::vector < Entity* > > > entities;
+    extern std::vector < Entity * > linear;
 
-    void init () , render () , move ();
+    void init () , render () , move () , remove ();
 }
 
 #endif

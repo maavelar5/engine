@@ -3,6 +3,7 @@
 namespace entities
 {
     std::vector < std::vector < std::vector < Entity * > > > entities;
+    std::vector < Entity * > linear;
 
     void init ()
     {
@@ -28,29 +29,29 @@ namespace entities
 
     void move ()
     {
-        for ( auto row : entities)
+        for ( auto entity : linear )
         {
-            for ( auto col : row )
-            {
-                for ( auto entity : col )
-                {
-                    entity->move();
-                }
-            }
+            entity->move();
         }
     }
 
     void render ()
     {
-        for ( auto row : entities )
+        for ( auto entity : linear )
         {
-            for ( auto col : row )
-            {
-                for ( auto entity : col )
-                {
-                    entity->render();
-                }
-            }
+            entity->render();
+        }
+    }
+
+    void remove ()
+    {
+        for ( auto entity : linear )
+        {
+            if ( !( entity->config & ACTIVE ) )
+                linear.erase(std::remove( linear.begin(),
+                                          linear.end(),
+                                          entity ),
+                             linear.end());
         }
     }
 }
@@ -62,6 +63,7 @@ Entity::Entity ( std::string filePath , SDL_Texture *texture )
     config = ACTIVE | STATIC;
  
     entities::entities[ 0 ][ 0 ].push_back ( this );
+    entities::linear.push_back ( this );
 
     if ( texture ) this->texture = texture;
     else this->texture = loadTexture ( filePath );
@@ -131,12 +133,12 @@ void Entity::move ()
 
     position.x += velocity.x * timer::acumulator;
 
-    if ( config & CAMERA )
-        camera::move ( velocity , screen );
+    if ( config & BULLET ) return;
+
+    if ( config & CAMERA ) camera::move ( velocity , screen );
 
     if ( position.x <= 0 ) position.x = 0;
-    else if ( position.x >= SCENARIO_WIDTH )
-        position.x = SCENARIO_WIDTH;
+    else if ( position.x >= SCENARIO_WIDTH ) position.x = SCENARIO_WIDTH;
 
     if ( !( sensor & BOT_SENSOR ) ) velocity.y += GRAVITY.y;
 
@@ -169,4 +171,27 @@ SDL_Texture * Entity::loadTexture ( std::string filePath )
     else { printf("%s",SDL_GetError()); }
 
     return texture;
+}
+
+Entities::Entities ( std::string filePath )
+{
+    texture = Entity::loadTexture ( filePath );
+    screen = { 0 , 0 , 0 , 0 };
+    config = ACTIVE | STATIC;
+}
+
+Entities::~Entities () { }
+
+Entity * Entities::add ( float x , float y )
+{
+    Entity *entity = new Entity ( "none" , texture );
+
+    entity->config = config;
+    entity->position = { x , y };
+    entity->screen.w = screen.w;
+    entity->screen.h = screen.h;
+
+    entity->adjust();
+
+    return entity;
 }

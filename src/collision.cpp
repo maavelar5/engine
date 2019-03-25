@@ -45,6 +45,9 @@ namespace collision
         {
             int collisionType = getCollisionType ( a.screen , result );
 
+            if ( a.config & BULLET ) a.config &= ~ACTIVE;
+            if ( b.config & BULLET ) b.config &= ~ACTIVE;
+
             if ( collisionType == BOT_SENSOR )
             {
                 if ( a.config & KINEMATIC && a.velocity.y >= 0 ) { bot ( a , result.h ); }
@@ -103,13 +106,6 @@ namespace collision
         entity.sensor |= TOP_SENSOR;
     }
 
-    void left ( Entity &entity , int w )
-    {
-        entity.position.x += w;
-    }
-
-    void right ( Entity &entity , int w )
-    {
-        entity.position.x -= w;
-    }
+    void left ( Entity &entity , int w ) { entity.position.x += w; }
+    void right ( Entity &entity , int w ) { entity.position.x -= w; }
 }

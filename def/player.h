@@ -3,10 +3,12 @@
 
 #include "entity.h"
 #include "game.h"
+#include "projectile.h"
 
 struct Player : public Entity
 {
     float speed;
+    Projectile projectile;
 
     Player ();
 

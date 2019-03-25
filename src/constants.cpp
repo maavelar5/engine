@@ -5,7 +5,7 @@ const int WINDOW_WIDTH = 512;
 const int WINDOW_HEIGHT = 480;
 
 /* Window logical size */
-const int GAME_LOGICAL_WIDTH = 256;
+const int GAME_LOGICAL_WIDTH = 512;
 const int GAME_LOGICAL_HEIGHT = 240;
 
 /* Game camera rect */
@@ -78,6 +78,7 @@ const Uint8 STATIC = 2;
 const Uint8 KINEMATIC = 4;
 const Uint8 BULLET = 8;
 const Uint8 CAMERA = 16;
+const Uint8 TEMPLATE = 32;
 
 /* Player */
 const std::string MEGAMAN_SPRITE_SHEET = CWD+"sprites"+DS+

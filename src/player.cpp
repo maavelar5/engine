@@ -19,7 +19,9 @@ void Player::event( SDL_Event event )
             case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
                 ? -300
                 : velocity.y; break;
-            case SDLK_q: break;
+            case SDLK_q:
+                projectile.add ( position.x + 10 , position.y );
+                break;
             case SDLK_l: game::quit = SDL_TRUE; break;
         }
     }
