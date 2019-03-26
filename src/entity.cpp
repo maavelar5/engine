@@ -2,8 +2,9 @@
 
 namespace entities
 {
-    std::vector < std::vector < std::vector <  Entity * > > > entities;
-    std::vector < Entity > linear;
+    std::vector < std::vector < std::vector < std::shared_ptr < Entity > > > > entities;
+    std::map < Uint32 , std::shared_ptr < Entity > > linear;
+    Uint32 currentIndex = 0;
 
     void init ()
     {
@@ -15,14 +16,14 @@ namespace entities
               y++
             )
         {
-            entities.push_back(std::vector< std::vector < Entity * > >());
+            entities.push_back(std::vector < std::vector <  std::shared_ptr < Entity > > > ());
 
             for ( int x = 0;
                   x < width;
                   x++
                 )
             {
-                entities[ y ].push_back(std::vector < Entity * > ());
+                entities[ y ].push_back(std::vector < std::shared_ptr < Entity > > ());
             }   
         }
     }
@@ -31,7 +32,7 @@ namespace entities
     {
         for ( auto &entity : linear )
         {
-            entity.move();
+            entity.second->move();
         }
     }
 
@@ -39,20 +40,28 @@ namespace entities
     {
         for ( auto &entity : linear )
         {
-            entity.render();
+            entity.second->render();
         }
     }
 
-    void remove () { }
-
-    Entity * add ( std::string filePath , SDL_Texture *texture )
+    void remove ()
     {
-        linear.push_back( Entity ( filePath , texture ) );
-        Entity * entity = &linear[ linear.size() - 1 ];
+        for ( auto &entity : linear )
+        {
+            if ( !( entity.second->config & ACTIVE ) )
+                linear.erase (entity.first);
+        }
+    }
 
-        entities::entities[ 0 ][ 0 ].push_back ( entity );
+    Uint32 add ( std::string filePath , SDL_Texture *texture )
+    {
+        std::shared_ptr < Entity > entity( new Entity ( filePath , texture ) );
+        entity->index = ++currentIndex;
 
-        return entity;
+        entities[ 0 ][ 0 ].push_back( entity );
+        linear[ entity->index ] = entity;
+
+        return entity->index;
     }
 }
 
@@ -95,7 +104,7 @@ void Entity::setLocator ()
               x++
             )
         {
-            entities::entities[ y ][ x ].push_back( this );
+            entities::entities[ y ][ x ].push_back( entities::linear [ index ] );
         }
     }
 
@@ -119,7 +128,7 @@ void Entity::deleteLocator ()
                 .erase(std::remove(
                            entities::entities[ y ][ x ].begin(),
                            entities::entities[ y ][ x ].end(),
-                           this),
+                           entities::linear [ index ]),
                        entities::entities[ y ][ x ].end());
         }
     }
@@ -165,7 +174,7 @@ SDL_Texture * Entity::loadTexture ( std::string filePath )
         texture = SDL_CreateTextureFromSurface( game::renderer , surface );
         SDL_FreeSurface( surface );
     }
-    else { printf("%s",SDL_GetError()); }
+    else { printf("%s\n",SDL_GetError()); }
 
     return texture;
 }
@@ -179,20 +188,20 @@ Entities::Entities ( std::string filePath )
 
 Entities::~Entities () { }
 
-Entity * Entities::add ( float x , float y )
+Uint32 Entities::add ( float x , float y )
 {
-    entities::linear.push_back( Entity ( "" , texture ) );
+    std::shared_ptr < Entity > entity( new Entity ( "" , texture ) );
 
-    Entity * entity = &entities::linear[ entities::linear.size() - 1 ];
-
-    entities::entities[ 0 ][ 0 ].push_back ( entity );
-
+    entity->index = ++entities::currentIndex;
     entity->config = config;
     entity->position = { x , y };
     entity->screen.w = screen.w;
     entity->screen.h = screen.h;
 
+    entities::entities[ 0 ][ 0 ].push_back( entity );
+    entities::linear[ entity->index ] = entity;
+
     entity->adjust();
 
-    return entity;
+    return entity->index;
 }

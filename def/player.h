@@ -9,8 +9,8 @@ struct Player
 {
     float speed;
     Projectile projectile;
-    Entity *entity;
-
+    std::shared_ptr < Entity > entity;
+    
     Player ();
     ~Player ();
 

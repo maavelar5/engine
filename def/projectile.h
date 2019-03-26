@@ -11,7 +11,7 @@ struct Projectile : public Entities
     Projectile ();
     ~Projectile ();
 
-    Entity * add ( float , float );
+    Uint32 add ( float , float );
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "vector.h"
 
+#include <algorithm>
 #include <SDL2/SDL.h>
 
 namespace collision

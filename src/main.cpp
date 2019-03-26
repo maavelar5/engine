@@ -38,7 +38,6 @@ int main( int argc, char* argv[] )
         SDL_RenderClear( game::renderer );
         entities::render();
         SDL_RenderPresent( game::renderer );
-
         entities::remove();
     }
 

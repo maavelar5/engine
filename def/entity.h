@@ -7,19 +7,21 @@
 #include "vector.h"
 
 #include <algorithm>
+#include <memory>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <vector>
 
 struct Entity
 {
+    Uint32 index;
     Vector position , velocity;
     SDL_Rect screen , locator;
     Uint8 config , sensor;
 
     SDL_Texture *texture;
 
-    Entity ( std::string filePath = "none.png" , SDL_Texture *texture = nullptr );
+    Entity ( std::string filePath = "none", SDL_Texture *texture = nullptr );
     ~Entity ();
 
     void adjust () , deleteLocator () , setLocator (),
@@ -34,19 +36,22 @@ struct Entities
     SDL_Rect screen;
     SDL_Texture *texture;
 
+    std::vector < Uint32 > indices;
+
     Entities ( std::string );
     ~Entities ();
 
-    virtual Entity * add ( float , float );
+    virtual Uint32 add ( float , float );
 };
 
 namespace entities
 {
-    extern std::vector < std::vector < std::vector < Entity * > > > entities;
-    extern std::vector < Entity > linear;
+    extern Uint32 currentIndex;
+    extern std::vector < std::vector < std::vector < std::shared_ptr < Entity > > > > entities;
+    extern std::map < Uint32 , std::shared_ptr < Entity > > linear;
 
     void init () , render () , move () , remove ();
-    Entity * add ( std::string filePath , SDL_Texture *texture = nullptr );
+    Uint32 add ( std::string filePath , SDL_Texture *texture = nullptr );
 }
 
 #endif

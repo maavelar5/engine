@@ -4,7 +4,7 @@ namespace collision
 {
     void collide ()
     {
-        Entity *a = nullptr , *b = nullptr;
+        std::shared_ptr < Entity > a , b;
 
         for ( int x = 0;
               x < entities::entities.size();
@@ -30,7 +30,7 @@ namespace collision
                     {
                         b = entities::entities[ x ][ y ][ w ];
 
-                        detect ( *a, *b );
+                        detect ( *a , *b );
                     }
                 }
             }

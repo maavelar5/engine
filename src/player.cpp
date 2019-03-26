@@ -2,12 +2,13 @@
 
 Player::Player ()
 {
-    entity = entities::add ( PLAYER_SPRITE_SHEET );
+    entity = entities::linear [ entities::add ( PLAYER_SPRITE_SHEET ) ];
 
     entity->screen = { 0 , 0 , 8 , 8 };
     entity->position = { 32 , 32 };
-    speed = 100;
     entity->config ^= STATIC | KINEMATIC | CAMERA;
+
+    speed = 100;
 }
 
 Player::~Player () { }
@@ -24,7 +25,7 @@ void Player::event( SDL_Event event )
                 ? -300
                 : entity->velocity.y; break;
             case SDLK_q:
-                //projectile.add ( position.x + 10 , position.y );
+                projectile.add ( entity->position.x + 10 , entity->position.y );
                 break;
             case SDLK_l: game::quit = SDL_TRUE; break;
         }

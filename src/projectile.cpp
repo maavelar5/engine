@@ -10,8 +10,12 @@ Projectile::Projectile () : Entities ( GENERIC_PROJECTILE_FILE_PATH )
 
 Projectile::~Projectile () { }
 
-Entity * Projectile::add ( float x , float y )
+Uint32 Projectile::add ( float x , float y )
 {
-    Entity *entity = Entities::add ( x , y );
-    entity->velocity.x = speed;
+    Uint32 index = Entities::add ( x , y );
+
+    entities::linear[ index ]->velocity.x = speed;
+    indices.push_back( index );
+
+    return index;
 }
