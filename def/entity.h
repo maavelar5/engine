@@ -42,10 +42,11 @@ struct Entities
 
 namespace entities
 {
-    extern std::vector < std::vector < std::vector < Entity* > > > entities;
-    extern std::vector < Entity * > linear;
+    extern std::vector < std::vector < std::vector < Entity * > > > entities;
+    extern std::vector < Entity > linear;
 
     void init () , render () , move () , remove ();
+    Entity * add ( std::string filePath , SDL_Texture *texture = nullptr );
 }
 
 #endif

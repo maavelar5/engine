@@ -1,12 +1,16 @@
 #include "player.h"
 
-Player::Player () : Entity ( PLAYER_SPRITE_SHEET )
+Player::Player ()
 {
-    screen = { 0 , 0 , 8 , 8 };
-    position = { 32 , 32 };
+    entity = entities::add ( PLAYER_SPRITE_SHEET );
+
+    entity->screen = { 0 , 0 , 8 , 8 };
+    entity->position = { 32 , 32 };
     speed = 100;
-    config ^= STATIC | KINEMATIC | CAMERA;
+    entity->config ^= STATIC | KINEMATIC | CAMERA;
 }
+
+Player::~Player () { }
 
 void Player::event( SDL_Event event )
 {
@@ -14,13 +18,13 @@ void Player::event( SDL_Event event )
     {
         switch( event.key.keysym.sym )
         {
-            case SDLK_a: velocity.x -= speed; break;
-            case SDLK_d: velocity.x += speed; break;
-            case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
+            case SDLK_a: entity->velocity.x -= speed; break;
+            case SDLK_d: entity->velocity.x += speed; break;
+            case SDLK_SPACE: entity->velocity.y = ( entity->sensor & BOT_SENSOR )
                 ? -300
-                : velocity.y; break;
+                : entity->velocity.y; break;
             case SDLK_q:
-                projectile.add ( position.x + 10 , position.y );
+                //projectile.add ( position.x + 10 , position.y );
                 break;
             case SDLK_l: game::quit = SDL_TRUE; break;
         }
@@ -29,11 +33,11 @@ void Player::event( SDL_Event event )
     {
         switch( event.key.keysym.sym )
         {
-            case SDLK_a: velocity.x += speed; break;
-            case SDLK_d: velocity.x -= speed; break;
-            case SDLK_SPACE: velocity.y = (velocity.y < 0)
+            case SDLK_a: entity->velocity.x += speed; break;
+            case SDLK_d: entity->velocity.x -= speed; break;
+            case SDLK_SPACE: entity->velocity.y = (entity->velocity.y < 0)
                 ? 0
-                : velocity.y;
+                : entity->velocity.y;
                 break;
             case SDLK_q: break;
         }

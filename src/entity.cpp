@@ -2,8 +2,8 @@
 
 namespace entities
 {
-    std::vector < std::vector < std::vector < Entity * > > > entities;
-    std::vector < Entity * > linear;
+    std::vector < std::vector < std::vector <  Entity * > > > entities;
+    std::vector < Entity > linear;
 
     void init ()
     {
@@ -22,37 +22,37 @@ namespace entities
                   x++
                 )
             {
-                entities[ y ].push_back(std::vector <  Entity * > ());
+                entities[ y ].push_back(std::vector < Entity * > ());
             }   
         }
     }
 
     void move ()
     {
-        for ( auto entity : linear )
+        for ( auto &entity : linear )
         {
-            entity->move();
+            entity.move();
         }
     }
 
     void render ()
     {
-        for ( auto entity : linear )
+        for ( auto &entity : linear )
         {
-            entity->render();
+            entity.render();
         }
     }
 
-    void remove ()
+    void remove () { }
+
+    Entity * add ( std::string filePath , SDL_Texture *texture )
     {
-        for ( auto entity : linear )
-        {
-            if ( !( entity->config & ACTIVE ) )
-                linear.erase(std::remove( linear.begin(),
-                                          linear.end(),
-                                          entity ),
-                             linear.end());
-        }
+        linear.push_back( Entity ( filePath , texture ) );
+        Entity * entity = &linear[ linear.size() - 1 ];
+
+        entities::entities[ 0 ][ 0 ].push_back ( entity );
+
+        return entity;
     }
 }
 
@@ -61,9 +61,6 @@ Entity::Entity ( std::string filePath , SDL_Texture *texture )
     screen = locator = { 0 , 0 , 0 , 0 };
     sensor = 0;
     config = ACTIVE | STATIC;
- 
-    entities::entities[ 0 ][ 0 ].push_back ( this );
-    entities::linear.push_back ( this );
 
     if ( texture ) this->texture = texture;
     else this->texture = loadTexture ( filePath );
@@ -184,7 +181,11 @@ Entities::~Entities () { }
 
 Entity * Entities::add ( float x , float y )
 {
-    Entity *entity = new Entity ( "none" , texture );
+    entities::linear.push_back( Entity ( "" , texture ) );
+
+    Entity * entity = &entities::linear[ entities::linear.size() - 1 ];
+
+    entities::entities[ 0 ][ 0 ].push_back ( entity );
 
     entity->config = config;
     entity->position = { x , y };

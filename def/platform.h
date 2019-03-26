@@ -5,11 +5,8 @@
 
 #include <vector>
 
-struct Platform
+struct Platform : public Entities
 {
-    SDL_Texture* texture;
-    std::vector < Entity > platforms;
-
     Platform ();
     ~Platform ();
 };

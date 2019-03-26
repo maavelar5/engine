@@ -5,12 +5,14 @@
 #include "game.h"
 #include "projectile.h"
 
-struct Player : public Entity
+struct Player
 {
     float speed;
     Projectile projectile;
+    Entity *entity;
 
     Player ();
+    ~Player ();
 
     void event( SDL_Event );
 };

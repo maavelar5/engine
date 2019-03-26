@@ -1,18 +1,15 @@
 #include "platform.h"
 
-Platform::Platform ()
+Platform::Platform () : Entities ( GENERIC_PLATFORM_FILE_PATH )
 {
-    texture = Entity::loadTexture ( GENERIC_PLATFORM_FILE_PATH );
+    screen = { 0 , 0 , 32 , 32 };
 
     for ( int x = 0;
           x < 1000;
           x += 32
         )
     {
-        Entity * entity  = new Entity("none" , texture);
-
-        entity->screen = { x , 224 , 32 , 32 };
-        entity->position = { static_cast < float > ( x ) , 224 };
+        add ( x , 224 );
     }
 
     for ( int x = 200;
@@ -20,10 +17,7 @@ Platform::Platform ()
           x += 32
         )
     {
-        Entity * entity  = new Entity("none" , texture);
-
-        entity->screen = { x , 150 , 32 , 32 };
-        entity->position = { static_cast < float > ( x ) , 150 };
+        add ( x , 150 );
     }
 }
 
