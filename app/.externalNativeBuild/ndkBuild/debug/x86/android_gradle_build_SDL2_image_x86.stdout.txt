@@ -1,0 +1,1 @@
+make: `/home/marco/gamedev/engine/app/build/intermediates/ndkBuild/debug/obj/local/x86/libSDL2_image.so' is up to date.
