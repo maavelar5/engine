@@ -5,12 +5,11 @@
 #include "game.h"
 #include "projectile.h"
 
-struct Player
+struct Player : public Entities
 {
     float speed;
     Projectile projectile;
-    std::shared_ptr < Entity > entity;
-    
+
     Player ();
     ~Player ();
 

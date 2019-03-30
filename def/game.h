@@ -5,16 +5,13 @@
 #include "timer.h"
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
-namespace game
-{
-    extern SDL_bool quit;
+extern bool quit;
+extern SDL_Window *window;
+extern SDL_Renderer *renderer;
 
-    extern SDL_Window* window;
-    extern SDL_Renderer* renderer;
-
-    SDL_bool init ();
-    void event ( SDL_Event event );
-};
+bool gameInit ();
+void gameEvent ( SDL_Event event );
 
 #endif // GAME_H_INCLUDED

@@ -1,29 +1,25 @@
 #include "camera.h"
 
-namespace camera
+Vector cameraPosition;
+
+void cameraMove ( Vector &velocity , SDL_Rect &screen )
 {
-    Vector position = { 0 , 0 };
+    float distance = velocity.x * timer::acumulator;
 
-    void move( Vector velocity , SDL_Rect screen )
+    if( velocity.x > 0 )
     {
-        float distance = velocity.x * timer::acumulator;
-
-        if( velocity.x > 0 )
+        if( screen.x >= CAMERA_OFFSET.w  &&
+            cameraPosition.x <= ( SCENARIO_WIDTH - WINDOW_WIDTH ) )
         {
-            if( screen.x >= CAMERA_OFFSET.w  &&
-                camera::position.x <= ( SCENARIO_WIDTH - WINDOW_WIDTH )
-                )
-            {
-                position.x += distance;
-            }
+            cameraPosition.x += distance;
         }
-        else
+    }
+    else
+    {
+        if( screen.x <= CAMERA_OFFSET.x &&
+            cameraPosition.x > 0 )
         {
-            if( screen.x <= CAMERA_OFFSET.x &&
-                camera::position.x > 0 )
-            {
-                position.x += distance;
-            }
+            cameraPosition.x += distance;
         }
     }
 }

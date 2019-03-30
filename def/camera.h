@@ -5,11 +5,10 @@
 #include "timer.h"
 #include "vector.h"
 
-namespace camera
-{
-    extern Vector position;
+#include <SDL2/SDL.h>
 
-    void move ( Vector , SDL_Rect );
-}
+extern Vector cameraPosition;
+
+void cameraMove ( Vector & , SDL_Rect & );
 
 #endif // CAMERA_H_INCLUDED

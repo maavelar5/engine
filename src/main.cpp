@@ -11,34 +11,33 @@
 
 int main( int argc, char* argv[] )
 {
-    game::init();
-    entities::init();
+    gameInit();
 
     Player player;
     Platform platform;
     SDL_Event event;
 
-    while( !game::quit )
+    while( !quit )
     {
         timer::update();
         
         while( SDL_PollEvent( &event ) )
         {
-            game::event( event );
+            gameEvent( event );
             player.event ( event );
         }
 
         while ( timer::acumulator >= timer::timeStep )
         {
-            entities::move();
-            collision::collide();
+            player.move();
             timer::acumulator -= timer::timeStep;
         }
 
-        SDL_RenderClear( game::renderer );
-        entities::render();
-        SDL_RenderPresent( game::renderer );
-        entities::remove();
+        SDL_RenderClear( renderer );
+        platform.render();
+        player.render();
+
+        SDL_RenderPresent( renderer );
     }
 
     return 0;
