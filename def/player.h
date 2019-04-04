@@ -4,16 +4,17 @@
 #include "entity.h"
 #include "game.h"
 #include "projectile.h"
+#include "texture.h"
 
-struct Player : public Entities
+struct Player : public Entity , Texture
 {
-    float speed;
+    int speed;
     Projectile projectile;
 
     Player ();
     ~Player ();
 
-    void event( SDL_Event );
+    void event( SDL_Event ) , render ();
 };
 
 #endif

@@ -6,38 +6,46 @@
 #include "player.h"
 #include "platform.h"
 
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#endif
 
 int main( int argc, char* argv[] )
 {
-    gameInit();
+    game::init();
+    entities::init();
 
     Player player;
     Platform platform;
     SDL_Event event;
 
-    while( !quit )
+    while( !game::quit )
     {
         timer::update();
-        
+
         while( SDL_PollEvent( &event ) )
         {
-            gameEvent( event );
+            game::event( event );
             player.event ( event );
         }
 
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
+            collision::collide();
             timer::acumulator -= timer::timeStep;
         }
 
-        SDL_RenderClear( renderer );
+        SDL_RenderClear( game::renderer );
+
         platform.render();
         player.render();
 
-        SDL_RenderPresent( renderer );
+        SDL_RenderPresent( game::renderer );
+
+        entities::toCollide.clear();
     }
 
     return 0;

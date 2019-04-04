@@ -5,10 +5,17 @@
 #include "timer.h"
 #include "vector.h"
 
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 
-extern Vector cameraPosition;
+namespace camera
+{
+    extern Vector position;
 
-void cameraMove ( Vector & , SDL_Rect & );
+    void move ( Vector & , SDL_Rect & );
+}
 
 #endif // CAMERA_H_INCLUDED

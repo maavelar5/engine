@@ -1,74 +1,154 @@
 #include "entity.h"
 
-Entities::Entities ( std::string filePath )
+namespace entities
 {
-    SDL_Surface* surface = IMG_Load( filePath.c_str() );
+    std::vector
+    < std::vector < std::vector
+                    < Entity * > > > entities;
 
-    if ( surface )
+    std::vector < Entity * > toCollide;
+
+    void init ()
     {
-        texture = SDL_CreateTextureFromSurface( renderer , surface );
-        SDL_FreeSurface( surface );
+        int width = SCENARIO_WIDTH / 100 + 1,   //GAME_LOGICAL_WIDTH + 1,
+            height = SCENARIO_HEIGHT / 100 + 1; //GAME_LOGICAL_HEIGHT + 1;
+        
+        for ( int y = 0;
+              y < height;
+              y++
+            )
+        {
+            entities.push_back(std::vector < std::vector < Entity * > > ());
+
+            for ( int x = 0;
+                  x < width;
+                  x++
+                )
+            {
+                entities[ y ].push_back(std::vector <  Entity * > ());
+            }
+        }
     }
-    else { printf( "%s\n" , SDL_GetError() ); }
+
+}
+
+Entity::Entity ()
+{
+    screen = locator = { 0 , 0 , 0 , 0 };
+    config = ACTIVE | STATIC;
+
+    entities::entities[ 0 ][ 0 ].push_back( this );
+}
+
+Entity::~Entity () { }
+
+void Entity::move ()
+{
+    if ( velocity.x || velocity.y || !( sensor & BOT_SENSOR ))
+    {
+        position.x += velocity.x * timer::acumulator;
+
+        if ( config & BULLET )
+            return;
+
+        if ( config & CAMERA )
+            camera::move ( velocity , screen );
+
+        if ( position.x <= 0 )
+            position.x = 0;
+        else if ( position.x >= SCENARIO_WIDTH )
+            position.x = SCENARIO_WIDTH;
+
+        if ( !( sensor & BOT_SENSOR ) )
+            velocity.y += GRAVITY.y;
+
+        position.y += velocity.y * timer::acumulator;
+        sensor &= ~BOT_SENSOR;
+
+        entities::toCollide.push_back ( this );        
+    }
+}
+
+void Entity::render ( SDL_Texture *texture )
+{
+    adjust ();
+
+    SDL_RenderCopy( game::renderer,
+                    texture,
+                    nullptr,
+                    &screen );
+ 
+}
+
+void Entity::adjust ()
+{
+    deleteLocator();
+
+    screen.x = floor( position.x - camera::position.x );
+    screen.y = floor( position.y - camera::position.y );
+
+    setLocator();
+}
+
+void Entity::setLocator ()
+{
+    int xId = position.x / 100,
+        yId = position.y / 100,
+        wId = ( position.x + screen.w ) / 100,
+        hId = ( position.y + screen.h ) / 100;
+
+    for ( int y = yId;
+          y <= hId;
+          y++
+        )
+    {
+        for ( int x = xId;
+              x <= wId;
+              x++
+            )
+        {
+            entities::entities[ y ][ x ].push_back( this );
+        }
+    }
+
+    locator = { xId , yId , wId , hId };
+}
+
+void Entity::deleteLocator ()
+{
+    for ( int y = locator.y;
+          y <= locator.h;
+          y++
+        )
+    {
+        for ( int x = locator.x;
+              x <= locator.w;
+              x++
+            )
+        {
+
+            entities::entities[ y ][ x ]
+                .erase(std::remove(
+                           entities::entities[ y ][ x ].begin(),
+                           entities::entities[ y ][ x ].end(),
+                           this),
+                       entities::entities[ y ][ x ].end());
+        }
+    }
+}
+
+Entities::Entities ( std::string filePath ) : Texture ( filePath )
+{
+    
 }
 
 Entities::~Entities () { }
 
-
-void Entities::move ()
-{
-    for ( int index = 0;
-          index < position.size();
-          index++ )
-    {
-        position[ index ].x += velocity[ index ].x * timer::acumulator;
-
-        if ( config[ index ] & BULLET )
-            return;
-
-        if ( config[ index ] & CAMERA )
-            cameraMove ( velocity[ index ] , screen[ index ]);
-
-        if ( position[ index ].x <= 0 )
-            position[ index ].x = 0;
-        else if ( position[ index ].x >= SCENARIO_WIDTH )
-            position[ index ].x = SCENARIO_WIDTH;
-
-        //if ( !( sensor & BOT_SENSOR ) )
-        //velocity.y += GRAVITY.y;
-
-        position[ index ].y += velocity[ index ].y * timer::acumulator;
-        sensor[ index ] &= ~BOT_SENSOR;
-    }
-}
-
 void Entities::render ()
 {
-    for ( int index = 0;
-          index < position.size();
-          index++ )
+    for ( auto entity : entities )
     {
-        adjust ( index );
-
-        SDL_RenderCopy( renderer,
-                        texture,
-                        NULL,
-                        &screen[ index ] );
+        entity->render ( texture );
     }
 }
 
-void Entities::adjust ( Uint32 index )
-{
-    screen[ index ].x = floor( position[ index ].x - cameraPosition.x );
-    screen[ index ].y = floor( position[ index ].y - cameraPosition.y );
-}
-
-void Entities::add ()
-{
-    position.push_back ( { 0 , 0 } );
-    velocity.push_back ( { 0 , 0 } );
-    screen.push_back ( { 0 , 0 , 0 , 0 } );
-    locator.push_back ( { 0 , 0 , 0 , 0 } );
-    config.push_back ( STATIC );
-    sensor.push_back ( 0 );
-}

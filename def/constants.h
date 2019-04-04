@@ -5,7 +5,13 @@
 
 #include <iostream>
 #include <map>
+
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
+
 #include <vector>
 
 #if _WIN32
@@ -38,6 +44,8 @@ extern const std::string DS;
 
 /* Current working directory */
 extern const std::string CWD;
+
+extern const std::string SPRITES_PATH;
 
 /* Physics */
 extern const Vector GRAVITY;

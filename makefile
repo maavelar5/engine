@@ -60,6 +60,9 @@ player.o : player.cpp
 projectile.o : projectile.cpp
 	$(CC) -c -w $(CPPFLAGS) src/projectile.cpp -o obj/projectile.o
 
+texture.o : texture.cpp
+	$(CC) -c -w $(CPPFLAGS) src/texture.cpp -o obj/texture.o
+
 timer.o : timer.cpp
 	$(CC) -c -w $(CPPFLAGS) src/timer.cpp -o obj/timer.o
 

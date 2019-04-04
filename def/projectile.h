@@ -3,6 +3,7 @@
 
 #include "constants.h"
 #include "entity.h"
+#include "texture.h"
 
 struct Projectile : public Entities
 {

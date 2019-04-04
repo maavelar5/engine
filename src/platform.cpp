@@ -23,10 +23,11 @@ Platform::~Platform () { }
 
 void Platform::add ( float x , float y )
 {
-    Entities::add();
+    std::shared_ptr < Entity >  entity (new Entity ());
 
-    Uint32 index = position.size() - 1;
+    entity->position = { x , y };
+    entity->screen = { 0 , 0 , 32, 32 };
+    entity->adjust();
 
-    position[ index ] = { x , y };
-    screen[ index ] = { x , y , 32 , 32 };
+    entities.push_back ( entity );
 }

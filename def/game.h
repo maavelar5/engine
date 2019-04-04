@@ -4,14 +4,20 @@
 #include "constants.h"
 #include "timer.h"
 
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#endif
 
-extern bool quit;
-extern SDL_Window *window;
-extern SDL_Renderer *renderer;
+namespace game
+{
+    extern bool quit;
+    extern SDL_Window *window;
+    extern SDL_Renderer *renderer;
 
-bool gameInit ();
-void gameEvent ( SDL_Event event );
+    bool init ();
+    void event ( SDL_Event event );
+}
 
 #endif // GAME_H_INCLUDED
