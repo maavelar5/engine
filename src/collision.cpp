@@ -18,7 +18,6 @@ namespace collision
                       x++
                     )
                 {
-
                     iterate ( entities::entities[ y ][ x ] );
                 }
             }

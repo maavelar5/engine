@@ -65,7 +65,10 @@ void Entity::move ()
         position.y += velocity.y * timer::acumulator;
         sensor &= ~BOT_SENSOR;
 
-        entities::toCollide.push_back ( this );        
+        if ( std::find ( entities::toCollide.begin() , entities::toCollide.end(), this ) == entities::toCollide.end() )
+            entities::toCollide.push_back ( this );
+
+        SDL_Log( "entities::toCollide.size() %d \n", entities::toCollide.size() );
     }
 }
 
@@ -77,7 +80,6 @@ void Entity::render ( SDL_Texture *texture )
                     texture,
                     nullptr,
                     &screen );
- 
 }
 
 void Entity::adjust ()
