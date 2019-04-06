@@ -44,32 +44,29 @@ Entity::~Entity () { }
 
 void Entity::move ()
 {
-    if ( velocity.x || velocity.y || !( sensor & BOT_SENSOR ))
-    {
-        position.x += velocity.x * timer::acumulator;
+    position.x += velocity.x * timer::acumulator;
 
-        if ( config & BULLET )
-            return;
+    if ( config & BULLET )
+        return;
 
-        if ( config & CAMERA )
-            camera::move ( velocity , screen );
+    if ( config & CAMERA )
+        camera::move ( velocity , screen );
 
-        if ( position.x <= 0 )
-            position.x = 0;
-        else if ( position.x >= SCENARIO_WIDTH )
-            position.x = SCENARIO_WIDTH;
+    if ( position.x <= 0 )
+        position.x = 0;
+    else if ( position.x >= SCENARIO_WIDTH )
+        position.x = SCENARIO_WIDTH;
 
-        if ( !( sensor & BOT_SENSOR ) )
-            velocity.y += GRAVITY.y;
+    if ( !( sensor & BOT_SENSOR ) )
+        velocity.y += GRAVITY.y;
 
-        position.y += velocity.y * timer::acumulator;
-        sensor &= ~BOT_SENSOR;
+    position.y += velocity.y * timer::acumulator;
+    sensor &= ~BOT_SENSOR;
 
-        if ( std::find ( entities::toCollide.begin() , entities::toCollide.end(), this ) == entities::toCollide.end() )
-            entities::toCollide.push_back ( this );
+    adjust();
 
-        SDL_Log( "entities::toCollide.size() %d \n", entities::toCollide.size() );
-    }
+    if ( std::find ( entities::toCollide.begin() , entities::toCollide.end(), this ) == entities::toCollide.end() )
+        entities::toCollide.push_back ( this );
 }
 
 void Entity::render ( SDL_Texture *texture )

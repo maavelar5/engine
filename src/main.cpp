@@ -34,10 +34,9 @@ int main( int argc, char* argv[] )
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
+            collision::collide();
             timer::acumulator -= timer::timeStep;
         }
-
-        collision::collide();
 
         SDL_RenderClear( game::renderer );
 
@@ -45,8 +44,6 @@ int main( int argc, char* argv[] )
         player.render();
 
         SDL_RenderPresent( game::renderer );
-
-        entities::toCollide.clear();
     }
 
     return 0;
