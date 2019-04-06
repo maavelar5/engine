@@ -1,2 +1,2 @@
-[armeabi-v7a] Compile++ thumb: main <= player.cpp
+[armeabi-v7a] Compile++ thumb: main <= timer.cpp
 [armeabi-v7a] SharedLibrary  : libmain.so

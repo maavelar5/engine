@@ -33,12 +33,19 @@ const std::string DS =
 const std::string CWD = 
 #if _WIN32
     _getcwd( NULL, 0 ) + DS;
-#elif __unix__ || __APPLE__
+#else
     #if 1
         getcwd( NULL, 0 ) + DS;
     #elif 0
         std::experimental::filesystem::current_path().string() + DS;
     #endif
+#endif
+
+const std::string SPRITES_PATH =
+#if __ANDROID__
+    "";
+#else
+    CWD + "sprites" + DS;
 #endif
 
 /* Physics */
@@ -50,7 +57,7 @@ const int SCENARIO_HEIGHT = 240;
 const SDL_Color BLUE_SKY = { 92 , 148 , 252 , 0 };
 
 /* Brown block filepath */
-const std::string BROWN_BLOCK_FILE_PATH = "brownBlock.bmp";
+const std::string BROWN_BLOCK_FILE_PATH = SPRITES_PATH + "brownBlock.bmp";
 
 /* States */
 const Uint16 NONE = 0;
@@ -81,7 +88,7 @@ const Uint8 CAMERA = 16;
 const Uint8 TEMPLATE = 32;
 
 /* Player */
-const std::string MEGAMAN_SPRITE_SHEET = CWD+"sprites"+DS+
+const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH + 
     "megamanSpriteSheet.png";
 
 /* Player spritesheet frames */
@@ -159,7 +166,8 @@ std::map<Uint16 , std::vector < SDL_Rect > > MEGAMAN_SPRITES =
 
 
 /* Player */
-const std::string PLAYER_SPRITE_SHEET = "player.png";
+const std::string PLAYER_SPRITE_SHEET = SPRITES_PATH + 
+    "player.png";
 
 /* Player spritesheet frames */
 std::map<Uint16 , std::vector < SDL_Rect > > PLAYER_SPRITES =
@@ -173,13 +181,16 @@ std::map<Uint16 , std::vector < SDL_Rect > > PLAYER_SPRITES =
 };
 
 /* Generic platform */
-const std::string GENERIC_PLATFORM_FILE_PATH = "platform.png";
+const std::string GENERIC_PLATFORM_FILE_PATH = SPRITES_PATH + 
+    "platform.png";
 
 /* Generic enemy */
-const std::string GENERIC_ENEMY_FILE_PATH = "enemy.png";
+const std::string GENERIC_ENEMY_FILE_PATH = SPRITES_PATH + 
+    "enemy.png";
 
 /* Generic projectile */
-const std::string GENERIC_PROJECTILE_FILE_PATH = "projectile.png";
+const std::string GENERIC_PROJECTILE_FILE_PATH = SPRITES_PATH + 
+    "projectile.png";
 
 /* Generic enemy spritesheet frames */
 std::map<Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES =

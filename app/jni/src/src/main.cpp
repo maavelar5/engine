@@ -6,10 +6,10 @@
 #include "player.h"
 #include "platform.h"
 
-#if __APPLE__ || __ANDROID__
-    #include <SDL.h>
+#if __ANDROID__
+#include <SDL.h>
 #else
-    #include <SDL2/SDL.h>
+#include <SDL2/SDL.h>
 #endif
 
 int main( int argc, char* argv[] )
@@ -24,7 +24,7 @@ int main( int argc, char* argv[] )
     while( !game::quit )
     {
         timer::update();
-        
+
         while( SDL_PollEvent( &event ) )
         {
             game::event( event );
@@ -33,15 +33,18 @@ int main( int argc, char* argv[] )
 
         while ( timer::acumulator >= timer::timeStep )
         {
-            entities::move();
+            SDL_Log ( "acumulator: %f \n" , timer::acumulator );
+            player.move();
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }
 
         SDL_RenderClear( game::renderer );
-        entities::render();
+
+        platform.render();
+        player.render();
+
         SDL_RenderPresent( game::renderer );
-        entities::remove();
     }
 
     return 0;

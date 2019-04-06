@@ -3,19 +3,20 @@
 Projectile::Projectile () : Entities ( GENERIC_PROJECTILE_FILE_PATH )
 {
     speed = 400;
-
-    config ^= STATIC | BULLET;
-    screen = { 0 , 0 , 4 , 4 };
 }
 
 Projectile::~Projectile () { }
 
-Uint32 Projectile::add ( float x , float y )
+void Projectile::add ( float x , float y )
 {
-    Uint32 index = Entities::add ( x , y );
+    std::shared_ptr < Entity > entity ( new Entity ());
 
-    entities::linear[ index ]->velocity.x = speed;
-    indices.push_back( index );
+    entity->config = STATIC | BULLET;
+    entity->position = { x , y };
+    entity->screen = { 0 , 0 , 4 , 4 };
+    entity->velocity.x = speed;
 
-    return index;
+    entity->adjust();
+
+    entities.push_back ( entity );
 }

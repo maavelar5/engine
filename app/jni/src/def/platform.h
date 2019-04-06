@@ -9,6 +9,8 @@ struct Platform : public Entities
 {
     Platform ();
     ~Platform ();
+
+    void add ( float , float );
 };
 
 #endif

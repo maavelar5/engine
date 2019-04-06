@@ -6,10 +6,10 @@
 #include <iostream>
 #include <map>
 
-#if __APPLE__ || __ANDROID__
-    #include <SDL.h>
+#if __ANDROID__
+#include <SDL.h>
 #else
-    #include <SDL2/SDL.h>
+#include <SDL2/SDL.h>
 #endif
 
 #include <vector>
@@ -44,6 +44,8 @@ extern const std::string DS;
 
 /* Current working directory */
 extern const std::string CWD;
+
+extern const std::string SPRITES_PATH;
 
 /* Physics */
 extern const Vector GRAVITY;

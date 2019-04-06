@@ -4,35 +4,49 @@ namespace collision
 {
     void collide ()
     {
-         std::shared_ptr < Entity > a , b;
+        std::map < int , std::map < int , bool > > map;
 
-        for ( int x = 0;
-              x < entities::entities.size();
-              x++
-            )
+        for ( auto entity : entities::toCollide )
         {
-            for ( int y = 0;
-                  y < entities::entities[ x ].size();
+            for ( int y = entity->locator.y;
+                  y <= entity->locator.h;
                   y++
                 )
             {
-                for ( int z = 0;
-                      z < entities::entities[ x ][ y ].size();
-                      z++
+                for ( int x = entity->locator.x;
+                      x <= entity->locator.w;
+                      x++
                     )
                 {
-                    a = entities::entities[ x ][ y ][ z ];
-
-                    for ( int w = z + 1;
-                          w < entities::entities[ x ][ y ].size();
-                          w++
-                        )
-                    {
-                        b = entities::entities[ x ][ y ][ w ];
-
-                        detect ( *a , *b );
-                    }
+                    iterate ( entities::entities[ y ][ x ] );
                 }
+            }
+        }
+    }
+
+    void iterate ( std::vector < Entity * > entities )
+    {
+
+        Entity *a , *b;
+
+        for ( int z = 0;
+              z < entities.size() - 1;
+              z++
+            )
+        {
+            a = entities[ z ];
+
+            for ( int w = z + 1;
+                  w < entities.size();
+                  w++
+                )
+            {
+                b = entities[ w ];
+
+                if ( a->config & STATIC && b->config & STATIC)
+                    continue;
+
+                detect ( *a , *b );
             }
         }
     }
@@ -44,7 +58,7 @@ namespace collision
         if ( SDL_IntersectRect ( &a.screen , &b.screen , &result ) )
         {
             int collisionType = getCollisionType ( a.screen , result );
-            
+
             if ( a.config & BULLET ) a.config &= ~ACTIVE;
             if ( b.config & BULLET ) b.config &= ~ACTIVE;
 

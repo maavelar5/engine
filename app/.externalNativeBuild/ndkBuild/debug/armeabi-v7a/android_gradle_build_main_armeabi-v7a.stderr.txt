@@ -1,7 +1,0 @@
-/home/marco/gamedev/engine/app/jni/src/src/player.cpp:48:15: warning: unused variable 'wx' [-Wunused-variable]
-        float wx = ( event.tfinger.x ) * ( WINDOW_WIDTH );
-              ^
-/home/marco/gamedev/engine/app/jni/src/src/player.cpp:49:15: warning: unused variable 'wy' [-Wunused-variable]
-        float wy = ( event.tfinger.y ) * ( WINDOW_HEIGHT );
-              ^
-2 warnings generated.

@@ -2,8 +2,6 @@
 
 Platform::Platform () : Entities ( GENERIC_PLATFORM_FILE_PATH )
 {
-    screen = { 0 , 0 , 32 , 32 };
-
     for ( int x = 0;
           x < 1000;
           x += 32
@@ -22,3 +20,14 @@ Platform::Platform () : Entities ( GENERIC_PLATFORM_FILE_PATH )
 }
 
 Platform::~Platform () { }
+
+void Platform::add ( float x , float y )
+{
+    std::shared_ptr < Entity >  entity (new Entity ());
+
+    entity->position = { x , y };
+    entity->screen = { 0 , 0 , 32, 32 };
+    entity->adjust();
+
+    entities.push_back ( entity );
+}
