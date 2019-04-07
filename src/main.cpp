@@ -5,6 +5,7 @@
 #include "collision.h"
 #include "player.h"
 #include "platform.h"
+#include "tileEditor.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -19,6 +20,7 @@ int main( int argc, char* argv[] )
 
     Player player;
     Platform platform;
+    TileEditor te;
     SDL_Event event;
 
     while( !game::quit )
@@ -29,6 +31,7 @@ int main( int argc, char* argv[] )
         {
             game::event( event );
             player.event ( event );
+            te.event( event );
         }
 
         while ( timer::acumulator >= timer::timeStep )
@@ -41,6 +44,7 @@ int main( int argc, char* argv[] )
         SDL_RenderClear( game::renderer );
 
         platform.render();
+        te.render();
         player.render();
 
         SDL_RenderPresent( game::renderer );

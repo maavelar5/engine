@@ -45,7 +45,7 @@ void Player::event( SDL_Event event )
         float wx = ( event.tfinger.x ) * ( WINDOW_WIDTH );
         float wy = ( event.tfinger.y ) * ( WINDOW_HEIGHT );
 
-        SDL_Log("Coordinates X: %f - Y: %f \n", event.tfinger.x , event.tfinger.y);
+        //SDL_Log("Coordinates X: %f - Y: %f \n", event.tfinger.x , event.tfinger.y);
 
         if ( event.tfinger.x < 0.25 &&
              event.tfinger.y < 0.25)

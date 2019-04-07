@@ -63,6 +63,9 @@ projectile.o : projectile.cpp
 texture.o : texture.cpp
 	$(CC) -c -w $(CPPFLAGS) src/texture.cpp -o obj/texture.o
 
+tileEditor.o : tileEditor.cpp
+	$(CC) -c -w $(CPPFLAGS) src/tileEditor.cpp -o obj/tileEditor.o
+
 timer.o : timer.cpp
 	$(CC) -c -w $(CPPFLAGS) src/timer.cpp -o obj/timer.o
 

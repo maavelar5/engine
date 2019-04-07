@@ -1,7 +1,5 @@
 #include "game.h"
 
-
-
 namespace game
 {
     bool quit = false;
@@ -18,7 +16,7 @@ namespace game
                                     SDL_WINDOWPOS_UNDEFINED,
                                     WINDOW_WIDTH,
                                     WINDOW_HEIGHT,
-                                    SDL_WINDOW_SHOWN );
+                                    SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE );
         if( window )
         {
             renderer = SDL_CreateRenderer( window,
