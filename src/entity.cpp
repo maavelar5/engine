@@ -151,3 +151,8 @@ void Entities::render ()
     }
 }
 
+
+void Entities::add ( float x , float y )
+{
+    
+}

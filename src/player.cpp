@@ -40,12 +40,13 @@ void Player::event( SDL_Event event )
             case SDLK_q: break;
         }
     }
+    #if __ANDROID__
     else if ( event.type == SDL_FINGERDOWN || event.type == SDL_FINGERMOTION )
     {
         float wx = ( event.tfinger.x ) * ( WINDOW_WIDTH );
         float wy = ( event.tfinger.y ) * ( WINDOW_HEIGHT );
 
-        //SDL_Log("Coordinates X: %f - Y: %f \n", event.tfinger.x , event.tfinger.y);
+        SDL_Log("Coordinates X: %f - Y: %f \n", event.tfinger.x , event.tfinger.y);
 
         if ( event.tfinger.x < 0.25 &&
              event.tfinger.y < 0.25)
@@ -81,6 +82,7 @@ void Player::event( SDL_Event event )
                 ? 0
                 : velocity.y;
     }
+    #endif
 }
 
 void Player::render ()

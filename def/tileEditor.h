@@ -3,18 +3,22 @@
 
 #include "entity.h"
 
+#include <fstream>
+#include <map>
+#include <regex>
 #include <SDL2/SDL.h>
-#include <vector>
+#include <string>
+
+#include "platform.h"
 
 struct TileEditor 
 {
-    Uint32 selected;
-    std::vector < std::shared_ptr < Entities > > entities;
+    std::map < std::string , std::shared_ptr < Entities > > entities;
 
     TileEditor ();
     ~TileEditor ();
 
-    void add ( float , float ) , event ( SDL_Event ) , render ();
+    void add ( float , float , std::string ) , render () , load ();
 };
 
 #endif

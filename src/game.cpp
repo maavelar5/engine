@@ -11,12 +11,11 @@ namespace game
     {
         SDL_Init( SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER );
 
-        window = SDL_CreateWindow(  WINDOW_TITLE.c_str(),
-                                    SDL_WINDOWPOS_UNDEFINED,
-                                    SDL_WINDOWPOS_UNDEFINED,
-                                    WINDOW_WIDTH,
-                                    WINDOW_HEIGHT,
-                                    SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE );
+        window = SDL_CreateWindow( WINDOW_TITLE.c_str(),
+                                   SDL_WINDOWPOS_UNDEFINED,
+                                   SDL_WINDOWPOS_UNDEFINED,
+                                   WINDOW_WIDTH , WINDOW_HEIGHT,
+                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
         if( window )
         {
             renderer = SDL_CreateRenderer( window,
@@ -26,7 +25,7 @@ namespace game
             if ( renderer )
             {
                 // make the scaled rendering look smoother.
-                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "linear" );
+                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY , "linear" );
                 SDL_RenderSetLogicalSize( renderer,
                                           GAME_LOGICAL_WIDTH,
                                           GAME_LOGICAL_HEIGHT );

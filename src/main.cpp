@@ -19,7 +19,6 @@ int main( int argc, char* argv[] )
     entities::init();
 
     Player player;
-    Platform platform;
     TileEditor te;
     SDL_Event event;
 
@@ -31,7 +30,6 @@ int main( int argc, char* argv[] )
         {
             game::event( event );
             player.event ( event );
-            te.event( event );
         }
 
         while ( timer::acumulator >= timer::timeStep )
@@ -43,7 +41,6 @@ int main( int argc, char* argv[] )
 
         SDL_RenderClear( game::renderer );
 
-        platform.render();
         te.render();
         player.render();
 
