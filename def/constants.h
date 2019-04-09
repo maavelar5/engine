@@ -106,6 +106,9 @@ extern const std::string GENERIC_ENEMY_FILE_PATH;
 /* Generic projectile */
 extern const std::string GENERIC_PROJECTILE_FILE_PATH;
 
+/* TileEditor file */
+extern const std::string TILE_EDITOR_FILE_PATH;
+
 /* Generic enemy sprites */
 extern std::map <Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES;
 

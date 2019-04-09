@@ -5,6 +5,9 @@ TileEditor::TileEditor ()
     entities [ "gp" ] = std::shared_ptr < Entities >
         ( new Platform () );
 
+    entities [ "gp2" ] = std::shared_ptr < Entities >
+        ( new Platform ( GENERIC_PROJECTILE_FILE_PATH ) );
+
     load();
 }
 
@@ -17,12 +20,12 @@ void TileEditor::add ( float x ,float y , std::string type )
 
 void TileEditor::load ()
 {
-    std::ifstream ifs( "/home/marco/gamedev/engine2/platforms.org" );
+    std::ifstream ifs( TILE_EDITOR_FILE_PATH );
     std::string s( ( std::istreambuf_iterator < char > ( ifs ) ),
                    ( std::istreambuf_iterator < char > () ) );
     ifs.close();
 
-    const std::regex e("[\\s]([0-9]{1,5}),([0-9]{1,5}),([0-9]{1,5}),([0-9]{1,5}),([A-z]*)");
+    const std::regex e("[\\s]([0-9]{1,5}),([0-9]{1,5}),([0-9]{1,5}),([0-9]{1,5}),([A-z0-9]*)");
     std::smatch m;
 
     while ( std::regex_search ( s, m, e ) )
@@ -43,7 +46,7 @@ void TileEditor::load ()
                   y1++ , y += 32 )
             {
                 add ( x , y , type );
-            }            
+            }
         }
 
         s = m.suffix().str();

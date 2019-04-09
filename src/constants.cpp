@@ -192,6 +192,10 @@ const std::string GENERIC_ENEMY_FILE_PATH = SPRITES_PATH +
 const std::string GENERIC_PROJECTILE_FILE_PATH = SPRITES_PATH + 
     "projectile.png";
 
+/* TileEditor file */
+const std::string TILE_EDITOR_FILE_PATH = SPRITES_PATH +
+    "platforms.org";
+
 /* Generic enemy spritesheet frames */
 std::map<Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES =
 {

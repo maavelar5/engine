@@ -1,5 +1,0 @@
-* platform
-  100,100,50,1,gp
-  50,50,1,10,gp
-
-* _regexr.com/4bqbj_

@@ -1,6 +1,6 @@
 #include "platform.h"
 
-Platform::Platform () : Entities ( GENERIC_PLATFORM_FILE_PATH )
+Platform::Platform ( std::string filePath ) : Entities ( filePath )
 {
 
 }

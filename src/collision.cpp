@@ -111,6 +111,7 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y -= h - 1;
         entity.sensor |= BOT_SENSOR;
+        entity.adjust();
     }
 
     void top ( Entity &entity , int h )
@@ -118,8 +119,17 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y += h;
         entity.sensor |= TOP_SENSOR;
+        entity.adjust();
     }
 
-    void left ( Entity &entity , int w ) { entity.position.x += w; }
-    void right ( Entity &entity , int w ) { entity.position.x -= w; }
+    void left ( Entity &entity , int w )
+    {
+        entity.position.x += w;
+        entity.adjust();
+    }
+    void right ( Entity &entity , int w )
+    {
+        entity.position.x -= w;
+        entity.adjust();
+    }
 }

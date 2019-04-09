@@ -7,7 +7,7 @@
 
 struct Platform : public Entities
 {
-    Platform ();
+    Platform ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Platform ();
 
     void add ( float , float );
