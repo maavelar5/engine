@@ -38,7 +38,7 @@ struct Entities : public Texture
     Entities ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Entities ();
 
-    virtual void render () , add ( float , float );
+    virtual void render () , move () , add ( float , float ) = 0;
 };
 
 namespace entities

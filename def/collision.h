@@ -7,7 +7,7 @@
 
 namespace collision
 {
-    void collide () , iterate ( std::vector < Entity * > );
+    void collide () , iterate ( std::vector < Entity * > & );
 
     int getCollisionType ( SDL_Rect , SDL_Rect );
 

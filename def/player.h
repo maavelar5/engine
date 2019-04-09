@@ -14,7 +14,7 @@ struct Player : public Entity , Texture
     Player ();
     ~Player ();
 
-    void event( SDL_Event ) , render ();
+    void event( SDL_Event ) , render () , move ();
 };
 
 #endif

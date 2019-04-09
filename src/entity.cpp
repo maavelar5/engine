@@ -65,7 +65,8 @@ void Entity::move ()
 
     adjust();
 
-    if ( std::find ( entities::toCollide.begin() , entities::toCollide.end(), this ) == entities::toCollide.end() )
+    if ( std::find ( entities::toCollide.begin(),
+                     entities::toCollide.end(), this ) == entities::toCollide.end() )
         entities::toCollide.push_back ( this );
 }
 
@@ -145,14 +146,28 @@ Entities::~Entities () { }
 
 void Entities::render ()
 {
-    for ( auto entity : entities )
+    for ( int index = 0;
+          index < entities.size();
+          index++
+        )
     {
-        entity->render ( texture );
+        if ( !( entities[ index ]->config & ACTIVE ) )
+        {
+            entities.erase( entities.begin() + index );
+            continue;
+        }
+
+        entities[ index ]->render( texture );
     }
 }
 
-
-void Entities::add ( float x , float y )
+void Entities::move ()
 {
-    
+    for ( int index = 0;
+          index < entities.size();
+          index++
+        )
+    {
+        entities[ index ]->move();
+    }
 }

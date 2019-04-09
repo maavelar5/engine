@@ -4,7 +4,7 @@ Player::Player () : Texture ( PLAYER_SPRITE_SHEET )
 {
     screen = { 0 , 0 , 8 , 8 };
     position = { 32 , 32 };
-    config = KINEMATIC | CAMERA;
+    config = KINEMATIC | CAMERA | ACTIVE;
     speed = 100;
 }
 
@@ -89,4 +89,10 @@ void Player::render ()
 {
     Entity::render ( texture );
     projectile.render();
+}
+
+void Player::move ()
+{
+    Entity::move();
+    projectile.move();
 }

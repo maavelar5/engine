@@ -24,9 +24,8 @@ namespace collision
         }
     }
 
-    void iterate ( std::vector < Entity * > entities )
+    void iterate ( std::vector < Entity * > &entities )
     {
-
         Entity *a , *b;
 
         for ( int z = 0;
@@ -36,12 +35,25 @@ namespace collision
         {
             a = entities[ z ];
 
+            if ( !( a->config & ACTIVE ) )
+            {
+                entities.erase ( entities.begin() + z );
+                continue;
+            }
+
             for ( int w = z + 1;
                   w < entities.size();
                   w++
                 )
             {
                 b = entities[ w ];
+
+                if ( !( b->config & ACTIVE ) )
+                {
+                    entities.erase ( entities.begin() + w );
+                    continue;
+                }
+
 
                 if ( a->config & STATIC && b->config & STATIC)
                     continue;
