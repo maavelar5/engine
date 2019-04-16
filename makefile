@@ -51,6 +51,9 @@ game.o : game.cpp
 main.o : main.cpp
 	$(CC) -c -w $(CPPFLAGS) src/main.cpp -o obj/main.o
 
+mapper.o : mapper.cpp
+	$(CC) -c -w $(CPPFLAGS) src/mapper.cpp -o obj/mapper.o
+
 platform.o : platform.cpp
 	$(CC) -c -w $(CPPFLAGS) src/platform.cpp -o obj/platform.o
 
@@ -62,9 +65,6 @@ projectile.o : projectile.cpp
 
 texture.o : texture.cpp
 	$(CC) -c -w $(CPPFLAGS) src/texture.cpp -o obj/texture.o
-
-tileEditor.o : tileEditor.cpp
-	$(CC) -c -w $(CPPFLAGS) src/tileEditor.cpp -o obj/tileEditor.o
 
 timer.o : timer.cpp
 	$(CC) -c -w $(CPPFLAGS) src/timer.cpp -o obj/timer.o

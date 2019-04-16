@@ -4,8 +4,7 @@
 #include "camera.h"
 #include "collision.h"
 #include "player.h"
-#include "platform.h"
-#include "tileEditor.h"
+#include "mapper.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -19,7 +18,7 @@ int main( int argc, char* argv[] )
     entities::init();
 
     Player player;
-    TileEditor te;
+    Mapper mapper;
     SDL_Event event;
 
     while( !game::quit )
@@ -41,7 +40,7 @@ int main( int argc, char* argv[] )
 
         SDL_RenderClear( game::renderer );
 
-        te.render();
+        mapper.render();
         player.render();
 
         SDL_RenderPresent( game::renderer );

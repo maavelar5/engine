@@ -32,12 +32,18 @@ namespace entities
 
 }
 
-Entity::Entity ()
+Entity::Entity ( float x , float y , int w , int h )
 {
-    screen = locator = { 0 , 0 , 0 , 0 };
+    locator = { 0 , 0 , 0 , 0 };
+    screen.x = floor ( x - camera::position.x );
+    screen.y = floor ( y - camera::position.y );
+    screen.w = w;
+    screen.h = h;
+    position.x = x;
+    position.y = y;
     config = ACTIVE | STATIC;
 
-    entities::entities[ 0 ][ 0 ].push_back( this );
+    setLocator ();
 }
 
 Entity::~Entity () { }
@@ -146,28 +152,21 @@ Entities::~Entities () { }
 
 void Entities::render ()
 {
-    for ( int index = 0;
-          index < entities.size();
-          index++
-        )
+    for ( auto entity : entities )
     {
-        if ( !( entities[ index ]->config & ACTIVE ) )
-        {
-            entities.erase( entities.begin() + index );
-            continue;
-        }
-
-        entities[ index ]->render( texture );
+        entity->render ( texture );
     }
 }
 
 void Entities::move ()
 {
-    for ( int index = 0;
-          index < entities.size();
-          index++
-        )
+    for ( auto entity : entities )
     {
-        entities[ index ]->move();
+        entity->move();
     }
+}
+
+void Entities::add ( float x , float y , int w , int h )
+{
+    entities.push_back ( std::shared_ptr < Entity > (new Entity ( x , y , w , h ) ));
 }

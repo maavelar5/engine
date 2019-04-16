@@ -24,7 +24,7 @@ struct Entity
     SDL_Rect screen , locator;
     Uint8 config , sensor;
 
-    Entity ();
+    Entity ( float , float , int , int );
     ~Entity ();
 
     void add (), adjust() , move () , render ( SDL_Texture * ),
@@ -38,7 +38,7 @@ struct Entities : public Texture
     Entities ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Entities ();
 
-    virtual void render () , move () , add ( float , float ) = 0;
+    virtual void render () , move () , add ( float , float , int , int );
 };
 
 namespace entities
