@@ -1,5 +1,5 @@
-#ifndef TEXTURE_H_INCLUDED
-#define TEXTURE_H_INCLUDED
+#ifndef TEXTURE
+#define TEXTURE
 
 #include "game.h"
 

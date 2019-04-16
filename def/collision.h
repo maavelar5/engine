@@ -1,5 +1,5 @@
-#ifndef COLLISION_H_INCLUDED
-#define COLLISION_H_INCLUDED
+#ifndef COLLISION
+#define COLLISION
 
 #include "constants.h"
 #include "entity.h"

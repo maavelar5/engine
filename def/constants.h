@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_H_INCLUDED
-#define CONSTANTS_H_INCLUDED
+#ifndef CONSTANTS
+#define CONSTANTS
 
 #include "vector.h"
 

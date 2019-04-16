@@ -1,5 +1,5 @@
-#ifndef ENTITY_H_INCLUDED
-#define ENTITY_H_INCLUDED
+#ifndef ENTITY
+#define ENTITY
 
 #include "camera.h"
 #include "game.h"
