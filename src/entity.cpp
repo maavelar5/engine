@@ -35,12 +35,13 @@ namespace entities
 Entity::Entity ( float x , float y , int w , int h )
 {
     locator = { 0 , 0 , 0 , 0 };
+
     screen.x = floor ( x - camera::position.x );
     screen.y = floor ( y - camera::position.y );
     screen.w = w;
     screen.h = h;
-    position.x = x;
-    position.y = y;
+
+    position = { x , y };
     config = ACTIVE | STATIC;
 
     setLocator ();
@@ -50,30 +51,40 @@ Entity::~Entity () { }
 
 void Entity::move ()
 {
-    position.x += velocity.x * timer::acumulator;
+    if ( velocity.x || velocity.y )
+    {
+        position.x += velocity.x * timer::acumulator;
 
-    if ( config & BULLET )
-        return;
+        if ( config & CAMERA )
+            camera::move ( velocity , screen );
 
-    if ( config & CAMERA )
-        camera::move ( velocity , screen );
+        if ( position.x <= 0 )
+            position.x = 0;
+        else if ( position.x >= SCENARIO_WIDTH )
+            position.x = SCENARIO_WIDTH;
 
-    if ( position.x <= 0 )
-        position.x = 0;
-    else if ( position.x >= SCENARIO_WIDTH )
-        position.x = SCENARIO_WIDTH;
+        position.y += velocity.y * timer::acumulator;
+
+        if ( position.y <= 0 )
+            position.y = 0;
+        else if ( position.y >= SCENARIO_HEIGHT )
+            position.y = SCENARIO_HEIGHT;
+
+        sensor &= ~BOT_SENSOR;
+
+        adjust();
+
+    }
 
     if ( !( sensor & BOT_SENSOR ) )
         velocity.y += GRAVITY.y;
 
-    position.y += velocity.y * timer::acumulator;
-    sensor &= ~BOT_SENSOR;
-
-    adjust();
-
     if ( std::find ( entities::toCollide.begin(),
-                     entities::toCollide.end(), this ) == entities::toCollide.end() )
+                     entities::toCollide.end(),
+                     this ) == entities::toCollide.end() )
         entities::toCollide.push_back ( this );
+
+    updateLocator ();
 }
 
 void Entity::render ( SDL_Texture *texture )
@@ -88,12 +99,8 @@ void Entity::render ( SDL_Texture *texture )
 
 void Entity::adjust ()
 {
-    deleteLocator();
-
     screen.x = floor( position.x - camera::position.x );
     screen.y = floor( position.y - camera::position.y );
-
-    setLocator();
 }
 
 void Entity::setLocator ()
@@ -141,6 +148,12 @@ void Entity::deleteLocator ()
                        entities::entities[ y ][ x ].end());
         }
     }
+}
+
+void Entity::updateLocator ()
+{
+    deleteLocator ();
+    setLocator ();
 }
 
 Entities::Entities ( std::string filePath ) : Texture ( filePath )

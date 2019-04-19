@@ -4,8 +4,6 @@ namespace collision
 {
     void collide ()
     {
-        std::map < int , std::map < int , bool > > map;
-
         for ( auto entity : entities::toCollide )
         {
             for ( int y = entity->locator.y;
@@ -22,6 +20,8 @@ namespace collision
                 }
             }
         }
+
+        entities::toCollide.clear();
     }
 
     void iterate ( std::vector < Entity * > &entities )
@@ -123,6 +123,7 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y -= h - 1;
         entity.sensor |= BOT_SENSOR;
+
         entity.adjust();
     }
 
@@ -131,17 +132,20 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y += h;
         entity.sensor |= TOP_SENSOR;
+
         entity.adjust();
     }
 
     void left ( Entity &entity , int w )
     {
         entity.position.x += w;
+
         entity.adjust();
     }
     void right ( Entity &entity , int w )
     {
         entity.position.x -= w;
+
         entity.adjust();
     }
 }

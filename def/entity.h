@@ -27,8 +27,8 @@ struct Entity
     Entity ( float , float , int , int );
     ~Entity ();
 
-    void add (), adjust() , move () , render ( SDL_Texture * ),
-        setLocator (), deleteLocator ();
+    void adjust() , move () , render ( SDL_Texture * ),
+        setLocator (), deleteLocator () , updateLocator ();
 };
 
 struct Entities : public Texture

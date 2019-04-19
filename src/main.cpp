@@ -5,6 +5,7 @@
 #include "collision.h"
 #include "player.h"
 #include "mapper.h"
+#include "hud.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -14,12 +15,15 @@
 
 int main( int argc, char* argv[] )
 {
-    game::init();
-    entities::init();
+    game::init ();
+    entities::init ();
+    hud::init ();
 
     Player player;
     Mapper mapper;
     SDL_Event event;
+
+    Uint32 frames = 0;
 
     while( !game::quit )
     {
@@ -43,7 +47,19 @@ int main( int argc, char* argv[] )
         mapper.render();
         player.render();
 
+        //hud::draw (std::to_string ( entities::toCollide.size() ) );
+
+        float avgFPS = frames / ( SDL_GetTicks() / 1000.f );
+        if( avgFPS > 2000000 )
+        {
+            avgFPS = 0;
+        }
+
+        hud::draw ( std::to_string ( avgFPS ) );
+
         SDL_RenderPresent( game::renderer );
+
+        frames++;
     }
 
     return 0;
