@@ -1,9 +1,8 @@
 #include "player.h"
 
-Player::Player () : Texture ( PLAYER_SPRITE_SHEET )
+Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
+                    Entity ( 32 , 32 , 8 , 8 )
 {
-    screen = { 0 , 0 , 8 , 8 };
-    position = { 32 , 32 };
     config = KINEMATIC | CAMERA | ACTIVE;
     speed = 100;
 }
@@ -22,7 +21,7 @@ void Player::event( SDL_Event event )
                 ? -300
                 : velocity.y; break;
             case SDLK_q:
-                projectile.add ( position.x + 10 , position.y );
+                projectile.add ( position.x + 8 , position.y );
                 break;
         case SDLK_l: game::quit = SDL_TRUE; break;
         }

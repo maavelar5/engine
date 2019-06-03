@@ -1,5 +1,5 @@
-#ifndef PROJECTILE_H_INCLUDED
-#define PROJECTILE_H_INCLUDED
+#ifndef PROJECTILE
+#define PROJECTILE
 
 #include "constants.h"
 #include "entity.h"

@@ -1,5 +1,5 @@
-#ifndef PLAYER_H_INCLUDED
-#define PLAYER_H_INCLUDED
+#ifndef PLAYER
+#define PLAYER
 
 #include "entity.h"
 #include "game.h"

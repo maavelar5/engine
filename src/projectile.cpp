@@ -9,11 +9,9 @@ Projectile::~Projectile () { }
 
 void Projectile::add ( float x , float y )
 {
-    std::shared_ptr < Entity > entity ( new Entity ());
+    std::shared_ptr < Entity > entity ( new Entity ( x , y , 4 , 4 ) );
 
     entity->config ^= STATIC | BULLET;
-    entity->position = { x , y };
-    entity->screen = { 0 , 0 , 4 , 4 };
     entity->velocity.x = speed;
 
     entity->adjust();

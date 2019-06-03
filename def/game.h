@@ -1,5 +1,5 @@
-#ifndef GAME_H_INCLUDED
-#define GAME_H_INCLUDED
+#ifndef GAME
+#define GAME
 
 #include "constants.h"
 #include "timer.h"

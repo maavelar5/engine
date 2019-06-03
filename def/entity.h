@@ -1,5 +1,5 @@
-#ifndef ENTITY_H_INCLUDED
-#define ENTITY_H_INCLUDED
+#ifndef ENTITY
+#define ENTITY
 
 #include "camera.h"
 #include "game.h"
@@ -24,11 +24,11 @@ struct Entity
     SDL_Rect screen , locator;
     Uint8 config , sensor;
 
-    Entity ();
+    Entity ( float , float , int , int );
     ~Entity ();
 
-    void add (), adjust() , move () , render ( SDL_Texture * ),
-        setLocator (), deleteLocator ();
+    void adjust() , move () , render ( SDL_Texture * ),
+        setLocator (), deleteLocator () , updateLocator ();
 };
 
 struct Entities : public Texture
@@ -38,7 +38,7 @@ struct Entities : public Texture
     Entities ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Entities ();
 
-    virtual void render () , move () , add ( float , float ) = 0;
+    virtual void render () , move () , add ( float , float , int , int );
 };
 
 namespace entities
