@@ -3,15 +3,15 @@
 namespace timer
 {
     float acumulator, timeStep , currentTime , previousTime , frameTime;
-    
-    void init() 
+
+    void init () 
     {
         previousTime = ( SDL_GetTicks() / 1000.f );
         acumulator = frameTime = currentTime = acumulator = 0;
         timeStep = 0.01;
     }
 
-    void update()
+    void update ()
     {
         currentTime = ( SDL_GetTicks() / 1000.f );
         frameTime = currentTime - previousTime;

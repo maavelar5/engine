@@ -2,9 +2,11 @@
 
 namespace entities
 {
-    std::vector < std::vector < std::vector < std::shared_ptr < Entity > > > > entities;
-    std::map < Uint32 , std::shared_ptr < Entity > > linear;
-    Uint32 currentIndex = 0;
+    std::vector
+    < std::vector < std::vector
+                    < Entity * > > > entities;
+
+    std::vector < Entity * > toCollide;
 
     void init ()
     {
@@ -16,75 +18,76 @@ namespace entities
               y++
             )
         {
-            entities.push_back(std::vector < std::vector <  std::shared_ptr < Entity > > > ());
+            entities.push_back(std::vector < std::vector < Entity * > > ());
 
             for ( int x = 0;
                   x < width;
                   x++
                 )
             {
-                entities[ y ].push_back(std::vector < std::shared_ptr < Entity > > ());
-            }   
+                entities[ y ].push_back(std::vector <  Entity * > ());
+            }
         }
     }
 
-    void move ()
-    {
-        for ( auto &entity : linear )
-        {
-            entity.second->move();
-        }
-    }
-
-    void render ()
-    {
-        for ( auto &entity : linear )
-        {
-            entity.second->render();
-        }
-    }
-
-    void remove ()
-    {
-        for ( auto &entity : linear )
-        {
-            if ( !( entity.second->config & ACTIVE ) )
-                linear.erase (entity.first);
-        }
-    }
-
-    Uint32 add ( std::string filePath , SDL_Texture *texture )
-    {
-        std::shared_ptr < Entity > entity( new Entity ( filePath , texture ) );
-        entity->index = ++currentIndex;
-
-        entities[ 0 ][ 0 ].push_back( entity );
-        linear[ entity->index ] = entity;
-
-        return entity->index;
-    }
 }
 
-Entity::Entity ( std::string filePath , SDL_Texture *texture )
+Entity::Entity ()
 {
     screen = locator = { 0 , 0 , 0 , 0 };
-    sensor = 0;
     config = ACTIVE | STATIC;
 
-    if ( texture ) this->texture = texture;
-    else this->texture = loadTexture ( filePath );
+    entities::entities[ 0 ][ 0 ].push_back( this );
 }
 
 Entity::~Entity () { }
 
+void Entity::move ()
+{
+    position.x += velocity.x * timer::acumulator;
+
+    if ( config & BULLET )
+        return;
+
+    if ( config & CAMERA )
+        camera::move ( velocity , screen );
+
+    if ( position.x <= 0 )
+        position.x = 0;
+    else if ( position.x >= SCENARIO_WIDTH )
+        position.x = SCENARIO_WIDTH;
+
+    if ( !( sensor & BOT_SENSOR ) )
+        velocity.y += GRAVITY.y;
+
+    position.y += velocity.y * timer::acumulator;
+    sensor &= ~BOT_SENSOR;
+
+    adjust();
+
+    if ( std::find ( entities::toCollide.begin(),
+                     entities::toCollide.end(), this ) == entities::toCollide.end() )
+        entities::toCollide.push_back ( this );
+}
+
+void Entity::render ( SDL_Texture *texture )
+{
+    adjust ();
+
+    SDL_RenderCopy( game::renderer,
+                    texture,
+                    nullptr,
+                    &screen );
+}
+
 void Entity::adjust ()
 {
-    deleteLocator ();
+    deleteLocator();
 
     screen.x = floor( position.x - camera::position.x );
     screen.y = floor( position.y - camera::position.y );
 
-    setLocator ();
+    setLocator();
 }
 
 void Entity::setLocator ()
@@ -104,7 +107,7 @@ void Entity::setLocator ()
               x++
             )
         {
-            entities::entities[ y ][ x ].push_back( entities::linear [ index ] );
+            entities::entities[ y ][ x ].push_back( this );
         }
     }
 
@@ -128,80 +131,43 @@ void Entity::deleteLocator ()
                 .erase(std::remove(
                            entities::entities[ y ][ x ].begin(),
                            entities::entities[ y ][ x ].end(),
-                           entities::linear [ index ]),
+                           this),
                        entities::entities[ y ][ x ].end());
         }
     }
 }
-void Entity::move ()
+
+Entities::Entities ( std::string filePath ) : Texture ( filePath )
 {
-    if ( config & STATIC ) return;
-
-    position.x += velocity.x * timer::acumulator;
-
-    if ( config & BULLET ) return;
-
-    if ( config & CAMERA ) camera::move ( velocity , screen );
-
-    if ( position.x <= 0 ) position.x = 0;
-    else if ( position.x >= SCENARIO_WIDTH ) position.x = SCENARIO_WIDTH;
-
-    if ( !( sensor & BOT_SENSOR ) ) velocity.y += GRAVITY.y;
-
-    position.y += velocity.y * timer::acumulator;
-    sensor &= ~BOT_SENSOR;
-
-    adjust ();
-}
-
-void Entity::render ()
-{
-    adjust ();
-
-    SDL_RenderCopy( game::renderer,
-                    texture,
-                    NULL,
-                    &screen );    
-}
-
-SDL_Texture * Entity::loadTexture ( std::string filePath )
-{
-    SDL_Surface *surface = IMG_Load( filePath.c_str() );
-    SDL_Texture *texture = nullptr;
-
-    if ( surface )
-    {
-        texture = SDL_CreateTextureFromSurface( game::renderer , surface );
-        SDL_FreeSurface( surface );
-    }
-    else { printf("%s\n",SDL_GetError()); }
-
-    return texture;
-}
-
-Entities::Entities ( std::string filePath )
-{
-    texture = Entity::loadTexture ( filePath );
-    screen = { 0 , 0 , 0 , 0 };
-    config = ACTIVE | STATIC;
+    
 }
 
 Entities::~Entities () { }
 
-Uint32 Entities::add ( float x , float y )
+void Entities::render ()
 {
-    std::shared_ptr < Entity > entity( new Entity ( "" , texture ) );
+    for ( int index = 0;
+          index < entities.size();
+          index++
+        )
+    {
+        if ( !( entities[ index ]->config & ACTIVE ) )
+        {
+            entities.erase( entities.begin() + index );
+            continue;
+        }
 
-    entity->index = ++entities::currentIndex;
-    entity->config = config;
-    entity->position = { x , y };
-    entity->screen.w = screen.w;
-    entity->screen.h = screen.h;
+        entities[ index ]->render( texture );
+    }
+}
 
-    entities::entities[ 0 ][ 0 ].push_back( entity );
-    entities::linear[ entity->index ] = entity;
-
-    entity->adjust();
-
-    return entity->index;
+void Entities::move ()
+{
+    for ( int index = 0;
+          index < entities.size();
+          index++
+        )
+    {
+        entities[ index ]->move();
+    }
 }

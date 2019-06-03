@@ -5,9 +5,13 @@
 #include "collision.h"
 #include "player.h"
 #include "platform.h"
+#include "tileEditor.h"
 
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#endif
 
 int main( int argc, char* argv[] )
 {
@@ -15,13 +19,13 @@ int main( int argc, char* argv[] )
     entities::init();
 
     Player player;
-    Platform platform;
+    TileEditor te;
     SDL_Event event;
 
     while( !game::quit )
     {
         timer::update();
-        
+
         while( SDL_PollEvent( &event ) )
         {
             game::event( event );
@@ -30,15 +34,17 @@ int main( int argc, char* argv[] )
 
         while ( timer::acumulator >= timer::timeStep )
         {
-            entities::move();
+            player.move();
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }
 
         SDL_RenderClear( game::renderer );
-        entities::render();
+
+        te.render();
+        player.render();
+
         SDL_RenderPresent( game::renderer );
-        entities::remove();
     }
 
     return 0;

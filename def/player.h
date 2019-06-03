@@ -4,17 +4,17 @@
 #include "entity.h"
 #include "game.h"
 #include "projectile.h"
+#include "texture.h"
 
-struct Player
+struct Player : public Entity , Texture
 {
-    float speed;
+    int speed;
     Projectile projectile;
-    std::shared_ptr < Entity > entity;
-    
+
     Player ();
     ~Player ();
 
-    void event( SDL_Event );
+    void event( SDL_Event ) , render () , move ();
 };
 
 #endif

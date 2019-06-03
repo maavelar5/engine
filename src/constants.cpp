@@ -5,7 +5,7 @@ const int WINDOW_WIDTH = 512;
 const int WINDOW_HEIGHT = 480;
 
 /* Window logical size */
-const int GAME_LOGICAL_WIDTH = 512;
+const int GAME_LOGICAL_WIDTH = 256;
 const int GAME_LOGICAL_HEIGHT = 240;
 
 /* Game camera rect */
@@ -41,6 +41,13 @@ const std::string CWD =
     #endif
 #endif
 
+const std::string SPRITES_PATH = 
+#if _WIN32 || __unix__ || __APPLE__
+    CWD + "sprites" + DS;
+#elif __ANDROID__
+    "";
+#endif
+
 /* Physics */
 const Vector GRAVITY( 0 , 6 );
 
@@ -50,7 +57,7 @@ const int SCENARIO_HEIGHT = 240;
 const SDL_Color BLUE_SKY = { 92 , 148 , 252 , 0 };
 
 /* Brown block filepath */
-const std::string BROWN_BLOCK_FILE_PATH = CWD+"sprites"+DS+"brownBlock.bmp";
+const std::string BROWN_BLOCK_FILE_PATH = SPRITES_PATH + "brownBlock.bmp";
 
 /* States */
 const Uint16 NONE = 0;
@@ -81,7 +88,7 @@ const Uint8 CAMERA = 16;
 const Uint8 TEMPLATE = 32;
 
 /* Player */
-const std::string MEGAMAN_SPRITE_SHEET = CWD+"sprites"+DS+
+const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH + 
     "megamanSpriteSheet.png";
 
 /* Player spritesheet frames */
@@ -159,7 +166,7 @@ std::map<Uint16 , std::vector < SDL_Rect > > MEGAMAN_SPRITES =
 
 
 /* Player */
-const std::string PLAYER_SPRITE_SHEET = CWD+"sprites"+DS+
+const std::string PLAYER_SPRITE_SHEET = SPRITES_PATH + 
     "player.png";
 
 /* Player spritesheet frames */
@@ -174,16 +181,20 @@ std::map<Uint16 , std::vector < SDL_Rect > > PLAYER_SPRITES =
 };
 
 /* Generic platform */
-const std::string GENERIC_PLATFORM_FILE_PATH = CWD+"sprites"+DS+
+const std::string GENERIC_PLATFORM_FILE_PATH = SPRITES_PATH + 
     "platform.png";
 
 /* Generic enemy */
-const std::string GENERIC_ENEMY_FILE_PATH = CWD+"sprites"+DS+
+const std::string GENERIC_ENEMY_FILE_PATH = SPRITES_PATH + 
     "enemy.png";
 
 /* Generic projectile */
-const std::string GENERIC_PROJECTILE_FILE_PATH = CWD+"sprites"+DS+
+const std::string GENERIC_PROJECTILE_FILE_PATH = SPRITES_PATH + 
     "projectile.png";
+
+/* TileEditor file */
+const std::string TILE_EDITOR_FILE_PATH = SPRITES_PATH +
+    "platforms.org";
 
 /* Generic enemy spritesheet frames */
 std::map<Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES =

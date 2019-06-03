@@ -5,17 +5,14 @@
 #include "entity.h"
 #include "vector.h"
 
-#include <algorithm>
-#include <SDL2/SDL.h>
-
 namespace collision
 {
-    void collide ();
+    void collide () , iterate ( std::vector < Entity * > & );
 
-    int detect ( Entity & , Entity & ),
-        getCollisionType ( SDL_Rect , SDL_Rect );
+    int getCollisionType ( SDL_Rect , SDL_Rect );
 
-    void top ( Entity & , int ),
+    void detect ( Entity & , Entity & ),
+        top ( Entity & , int ),
         bot ( Entity & , int ),
         left ( Entity & , int ),
         right ( Entity & , int );

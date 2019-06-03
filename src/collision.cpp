@@ -4,40 +4,66 @@ namespace collision
 {
     void collide ()
     {
-        std::shared_ptr < Entity > a , b;
+        std::map < int , std::map < int , bool > > map;
 
-        for ( int x = 0;
-              x < entities::entities.size();
-              x++
-            )
+        for ( auto entity : entities::toCollide )
         {
-            for ( int y = 0;
-                  y < entities::entities[ x ].size();
+            for ( int y = entity->locator.y;
+                  y <= entity->locator.h;
                   y++
                 )
             {
-                for ( int z = 0;
-                      z < entities::entities[ x ][ y ].size();
-                      z++
+                for ( int x = entity->locator.x;
+                      x <= entity->locator.w;
+                      x++
                     )
                 {
-                    a = entities::entities[ x ][ y ][ z ];
-
-                    for ( int w = z + 1;
-                          w < entities::entities[ x ][ y ].size();
-                          w++
-                        )
-                    {
-                        b = entities::entities[ x ][ y ][ w ];
-
-                        detect ( *a , *b );
-                    }
+                    iterate ( entities::entities[ y ][ x ] );
                 }
             }
         }
     }
 
-    int detect ( Entity &a , Entity &b )
+    void iterate ( std::vector < Entity * > &entities )
+    {
+        Entity *a , *b;
+
+        for ( int z = 0;
+              z < entities.size() - 1;
+              z++
+            )
+        {
+            a = entities[ z ];
+
+            if ( !( a->config & ACTIVE ) )
+            {
+                entities.erase ( entities.begin() + z );
+                continue;
+            }
+
+            for ( int w = z + 1;
+                  w < entities.size();
+                  w++
+                )
+            {
+                b = entities[ w ];
+
+                if ( !( b->config & ACTIVE ) )
+                {
+                    entities.erase ( entities.begin() + w );
+                    continue;
+                }
+
+
+                if ( a->config & STATIC && b->config & STATIC)
+                    continue;
+
+                detect ( *a , *b );
+            }
+        }
+    }
+
+    void detect ( Entity &a , Entity &b )
     {
         SDL_Rect result = { 0 , 0 , 0 , 0 };
 
@@ -97,6 +123,7 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y -= h - 1;
         entity.sensor |= BOT_SENSOR;
+        entity.adjust();
     }
 
     void top ( Entity &entity , int h )
@@ -104,8 +131,17 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y += h;
         entity.sensor |= TOP_SENSOR;
+        entity.adjust();
     }
 
-    void left ( Entity &entity , int w ) { entity.position.x += w; }
-    void right ( Entity &entity , int w ) { entity.position.x -= w; }
+    void left ( Entity &entity , int w )
+    {
+        entity.position.x += w;
+        entity.adjust();
+    }
+    void right ( Entity &entity , int w )
+    {
+        entity.position.x -= w;
+        entity.adjust();
+    }
 }
