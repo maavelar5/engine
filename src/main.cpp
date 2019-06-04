@@ -47,9 +47,10 @@ int main( int argc, char* argv[] )
         mapper.render();
         player.render();
 
-        //hud::draw (std::to_string ( entities::toCollide.size() ) );
+//        hud::draw (std::to_string ( entities::toCollide.size() ) , black );
 
         float avgFPS = frames / ( SDL_GetTicks() / 1000.f );
+
         if( avgFPS > 2000000 )
         {
             avgFPS = 0;

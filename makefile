@@ -1,3 +1,7 @@
+#OBJ directory
+MYDIR=./obj
+#[ -d $(MYDIR) ] || mkdir -p $(MYDIR)
+
 #EXE speficies the exe file
 EXE = marcoman
 
