@@ -49,11 +49,17 @@ collision.o : collision.cpp
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
 
+font.o : font.cpp
+	$(CC) -c -w $(CPPFLAGS) src/font.cpp -o obj/font.o
+
 game.o : game.cpp
 	$(CC) -c -w $(CPPFLAGS) src/game.cpp -o obj/game.o
 
 hud.o : hud.cpp
 	$(CC) -c -w $(CPPFLAGS) src/hud.cpp -o obj/hud.o
+
+info.o : info.cpp
+	$(CC) -c -w $(CPPFLAGS) src/info.cpp -o obj/info.o
 
 main.o : main.cpp
 	$(CC) -c -w $(CPPFLAGS) src/main.cpp -o obj/main.o

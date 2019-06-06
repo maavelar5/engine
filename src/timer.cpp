@@ -2,13 +2,15 @@
 
 namespace timer
 {
-    float acumulator, timeStep , currentTime , previousTime , frameTime;
+    float acumulator, timeStep , currentTime , previousTime , frameTime , FPS;
+    Uint32 frames;
 
     void init () 
     {
         previousTime = ( SDL_GetTicks() / 1000.f );
         acumulator = frameTime = currentTime = acumulator = 0;
         timeStep = 0.01;
+        frames = 1;
     }
 
     void update ()
@@ -21,5 +23,15 @@ namespace timer
         else { } 
 
         acumulator += frameTime;
+    }
+
+    void updateFPS ()
+    {
+        FPS = frames / ( SDL_GetTicks() / 1000.f );
+
+        if ( FPS > 2000000 )
+            FPS = 0;
+
+        frames++;
     }
 }

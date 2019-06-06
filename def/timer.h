@@ -9,9 +9,10 @@
 
 namespace timer
 {
-    extern float acumulator, timeStep , currentTime , previousTime , frameTime;
-    
-    void init () , update ();
+    extern float acumulator, timeStep , currentTime , previousTime , frameTime , FPS;
+    extern Uint32 frames;
+
+    void init () , update () , updateFPS ();
 }
 
 #endif // TIMER_H_INCLUDED

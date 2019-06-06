@@ -4,8 +4,8 @@ namespace game
 {
     bool quit = false;
 
-    SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
+    SDL_Window *window = nullptr , *debugWindow = nullptr;
+    SDL_Renderer *renderer = nullptr , *debugRenderer = nullptr;
 
     bool init ()
     {
@@ -16,6 +16,9 @@ namespace game
                                    SDL_WINDOWPOS_UNDEFINED,
                                    WINDOW_WIDTH , WINDOW_HEIGHT,
                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+
+
+
         if( window )
         {
             renderer = SDL_CreateRenderer( window,
@@ -52,11 +55,36 @@ namespace game
                     } 
                 }
 
+                initDebugObjects ();
+                TTF_Init();
+
                 return SDL_TRUE;
             }
         }
     
         return SDL_FALSE;
+    }
+
+    bool initDebugObjects ()
+    {
+        debugWindow = SDL_CreateWindow( "Debugging Window",
+                                        SDL_WINDOWPOS_UNDEFINED,
+                                        SDL_WINDOWPOS_UNDEFINED,
+                                        1920 , 1080,
+                                        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+        
+        if ( debugWindow )
+        {
+
+            debugRenderer = SDL_CreateRenderer( debugWindow , -1,
+                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+
+            if ( debugRenderer )
+            {
+                // make the scaled rendering look smoother.
+                SDL_SetRenderDrawColor( debugRenderer , 0 , 0 , 0 , 0 );
+            }
+        }
     }
 
     void event ( SDL_Event event )

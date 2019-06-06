@@ -74,4 +74,10 @@ extern const std::string MAPPER_FILE_PATH;
 /* Sensor valuess */
 extern const Uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR;
 
+/* HUD colors and other shit */
+
+extern const SDL_Color white , black;
+extern const SDL_Rect LT , T , RT;
+
+
 #endif

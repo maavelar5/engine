@@ -6,6 +6,8 @@
 #include "player.h"
 #include "mapper.h"
 #include "hud.h"
+#include "info.h"
+#include "font.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -17,13 +19,11 @@ int main( int argc, char* argv[] )
 {
     game::init ();
     entities::init ();
-    hud::init ();
+    font::init ();
 
     Player player;
     Mapper mapper;
     SDL_Event event;
-
-    Uint32 frames = 0;
 
     while( !game::quit )
     {
@@ -43,24 +43,20 @@ int main( int argc, char* argv[] )
         }
 
         SDL_RenderClear( game::renderer );
+        SDL_RenderClear ( game::debugRenderer );
 
         mapper.render();
         player.render();
 
-//        hud::draw (std::to_string ( entities::toCollide.size() ) , black );
+        timer::updateFPS ();
 
-        float avgFPS = frames / ( SDL_GetTicks() / 1000.f );
+        info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
+        info::draw ( "objects: " , std::to_string ( entities::toCollide.size() ));
 
-        if( avgFPS > 2000000 )
-        {
-            avgFPS = 0;
-        }
+        SDL_RenderPresent ( game::renderer );
+        SDL_RenderPresent ( game::debugRenderer );
 
-        hud::draw ( std::to_string ( avgFPS ) );
-
-        SDL_RenderPresent( game::renderer );
-
-        frames++;
+        info::x = info::y = 1;
     }
 
     return 0;

@@ -10,13 +10,15 @@
 #include <SDL2/SDL.h>
 #endif
 
+#include <SDL2/SDL_ttf.h>
+
 namespace game
 {
     extern bool quit;
-    extern SDL_Window *window;
-    extern SDL_Renderer *renderer;
+    extern SDL_Window *window , *debugWindow;
+    extern SDL_Renderer *renderer , *debugRenderer;
 
-    bool init ();
+    bool init () , initDebugObjects ();
     void event ( SDL_Event event );
 }
 
