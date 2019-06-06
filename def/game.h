@@ -10,6 +10,8 @@
 #include <SDL2/SDL.h>
 #endif
 
+#include <Box2D/Box2D.h>
+
 namespace game
 {
     extern bool quit;
@@ -18,6 +20,14 @@ namespace game
 
     bool init ();
     void event ( SDL_Event event );
+}
+
+namespace physics
+{
+    extern b2Vec2 gravity;
+    extern b2World world;
+
+    bool init ();
 }
 
 #endif // GAME_H_INCLUDED

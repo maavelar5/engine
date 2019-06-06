@@ -9,10 +9,7 @@ Projectile::~Projectile () { }
 
 void Projectile::add ( float x , float y )
 {
-    std::shared_ptr < Entity > entity ( new Entity ( x , y , 4 , 4 ) );
-
-    entity->config ^= STATIC | BULLET;
-    entity->velocity.x = speed;
+    std::shared_ptr < Entity > entity ( new Entity ( x , y , 4 , 4 , b2_kinematicBody ) );
 
     entity->adjust();
 

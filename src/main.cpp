@@ -2,7 +2,6 @@
 #include "timer.h"
 #include "constants.h"
 #include "camera.h"
-#include "collision.h"
 #include "player.h"
 #include "mapper.h"
 #include "hud.h"
@@ -16,7 +15,6 @@
 int main( int argc, char* argv[] )
 {
     game::init ();
-    entities::init ();
     hud::init ();
 
     Player player;
@@ -25,22 +23,19 @@ int main( int argc, char* argv[] )
 
     Uint32 frames = 0;
 
-    while( !game::quit )
+    while ( !game::quit )
     {
-        timer::update();
+        timer::update ();
 
-        while( SDL_PollEvent( &event ) )
+        while ( SDL_PollEvent( &event ) )
         {
             game::event( event );
             player.event ( event );
         }
 
-        while ( timer::acumulator >= timer::timeStep )
-        {
-            player.move();
-            collision::collide();
-            timer::acumulator -= timer::timeStep;
-        }
+        physics::world.Step(1.0/60.0, 6, 2);
+
+        
 
         SDL_RenderClear( game::renderer );
 
@@ -51,12 +46,23 @@ int main( int argc, char* argv[] )
 
         float avgFPS = frames / ( SDL_GetTicks() / 1000.f );
 
-        if( avgFPS > 2000000 )
+        if ( avgFPS > 2000000 )
         {
             avgFPS = 0;
         }
 
-        hud::draw ( std::to_string ( avgFPS ) );
+        //hud::draw ( std::to_string ( avgFPS ) );
+
+        hud::draw (std::to_string ( player.screen.x ) + " - " +
+                   std::to_string ( player.screen.y ));
+
+        hud::draw (std::to_string ( player.body->GetPosition().x ) + " - " +
+                   std::to_string ( player.body->GetPosition().y ) , RT);
+
+        /*hud::draw (std::to_string ( player.body->GetWorldCenter().x ) + " - " +
+          std::to_string ( player.body->GetWorldCenter().y ) , LT);*/
+
+        hud::draw (std::to_string ( player.body->GetLinearVelocity().x), LT);
 
         SDL_RenderPresent( game::renderer );
 

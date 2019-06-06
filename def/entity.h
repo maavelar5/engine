@@ -14,21 +14,30 @@
 #include <SDL2/SDL_image.h>
 #endif
 
-#include <algorithm>
-#include <memory>
 #include <vector>
+
+#include <Box2D/Box2D.h>
 
 struct Entity
 {
-    Vector position , velocity;
-    SDL_Rect screen , locator;
-    Uint8 config , sensor;
+    SDL_Rect screen;
 
-    Entity ( float , float , int , int );
+    b2Vec2 position;
+
+    b2BodyDef bodyDefinition;
+    b2Body *body;
+    b2PolygonShape polygonShape;
+    b2FixtureDef fixtureDefinition;
+
+
+    Uint8 movement;
+
+
+    Entity ( float x , float y , float w , float h ,
+             b2BodyType type = b2_staticBody );
     ~Entity ();
 
-    void adjust() , move () , render ( SDL_Texture * ),
-        setLocator (), deleteLocator () , updateLocator ();
+    void adjust() , render ( SDL_Texture * );
 };
 
 struct Entities : public Texture
@@ -38,18 +47,7 @@ struct Entities : public Texture
     Entities ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Entities ();
 
-    virtual void render () , move () , add ( float , float , int , int );
+    virtual void render () , add ( float , float , float , float );
 };
-
-namespace entities
-{
-    extern std::vector
-    < std::vector < std::vector
-                    < Entity * > > > entities;
-
-    extern std::vector < Entity * > toCollide;
-
-    void init ();
-}
 
 #endif

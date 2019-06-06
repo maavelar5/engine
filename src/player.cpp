@@ -1,25 +1,27 @@
 #include "player.h"
 
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
-                    Entity ( 32 , 32 , 8 , 8 )
+                    Entity ( 32 , 32 , 8 , 8 , b2_dynamicBody )
 {
-    config = KINEMATIC | CAMERA | ACTIVE;
-    speed = 100;
+    speed = 10;
 }
 
 Player::~Player () { }
 
 void Player::event( SDL_Event event )
 {
+    b2Vec2 velocity = body->GetLinearVelocity();
+
     if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
         {
             case SDLK_a: velocity.x -= speed; break;
             case SDLK_d: velocity.x += speed; break;
-            case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
-                ? -300
-                : velocity.y; break;
+            case SDLK_w: velocity.y -= speed; break;
+            case SDLK_s: velocity.y += speed; break;
+
+            case SDLK_SPACE: velocity.y = -5; break;
             case SDLK_q:
                 projectile.add ( position.x + 8 , position.y );
                 break;
@@ -32,7 +34,10 @@ void Player::event( SDL_Event event )
         {
             case SDLK_a: velocity.x += speed; break;
             case SDLK_d: velocity.x -= speed; break;
-            case SDLK_SPACE: velocity.y = (velocity.y < 0)
+            case SDLK_w: velocity.y += speed; break;
+            case SDLK_s: velocity.y -= speed; break;
+
+            case SDLK_SPACE: velocity.y = (velocity.y > 0)
                 ? 0
                 : velocity.y;
                 break;
@@ -57,9 +62,10 @@ void Player::event( SDL_Event event )
 
         else if ( event.tfinger.x < 0.1 &&
                   event.tfinger.y > 0.80 )
-            velocity.y = ( sensor & BOT_SENSOR )
-                ? -300
-                : velocity.y;
+            //velocity.y = ( sensor & BOT_SENSOR )
+            //? -300
+            //: velocity.y;
+            break;
 
         else if ( event.tfinger.x > 0.9 &&
                   event.tfinger.y > 0.80 )
@@ -82,6 +88,8 @@ void Player::event( SDL_Event event )
                 : velocity.y;
     }
     #endif
+
+    body->SetLinearVelocity ( velocity );   
 }
 
 void Player::render ()
@@ -90,8 +98,8 @@ void Player::render ()
     projectile.render();
 }
 
-void Player::move ()
+void Player::update ()
 {
-    Entity::move();
-    projectile.move();
+ 
+
 }

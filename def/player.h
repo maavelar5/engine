@@ -8,13 +8,13 @@
 
 struct Player : public Entity , Texture
 {
-    int speed;
+    float speed;
     Projectile projectile;
 
     Player ();
     ~Player ();
 
-    void event( SDL_Event ) , render () , move ();
+    void event( SDL_Event ) , render () , update ();
 };
 
 #endif

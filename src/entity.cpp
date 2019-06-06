@@ -1,91 +1,28 @@
 #include "entity.h"
 
-namespace entities
+const float M2P = 5.0;
+const float P2M = 1/M2P;
+
+Entity::Entity ( float x , float y , float w , float h,
+                 b2BodyType type )
 {
-    std::vector
-    < std::vector < std::vector
-                    < Entity * > > > entities;
-
-    std::vector < Entity * > toCollide;
-
-    void init ()
-    {
-        int width = SCENARIO_WIDTH / 100 + 1,   //GAME_LOGICAL_WIDTH + 1,
-            height = SCENARIO_HEIGHT / 100 + 1; //GAME_LOGICAL_HEIGHT + 1;
-        
-        for ( int y = 0;
-              y < height;
-              y++
-            )
-        {
-            entities.push_back(std::vector < std::vector < Entity * > > ());
-
-            for ( int x = 0;
-                  x < width;
-                  x++
-                )
-            {
-                entities[ y ].push_back(std::vector <  Entity * > ());
-            }
-        }
-    }
-
-}
-
-Entity::Entity ( float x , float y , int w , int h )
-{
-    locator = { 0 , 0 , 0 , 0 };
-
-    screen.x = floor ( x - camera::position.x );
-    screen.y = floor ( y - camera::position.y );
     screen.w = w;
     screen.h = h;
 
-    position = { x , y };
-    config = ACTIVE | STATIC;
+    bodyDefinition.type = type;
+    bodyDefinition.position.Set ( x * P2M , y * P2M );
 
-    setLocator ();
+    body = physics::world.CreateBody ( &bodyDefinition );
+
+    polygonShape.SetAsBox ( P2M * w / 2 , P2M * h / 2);
+    
+    fixtureDefinition.shape = &polygonShape;
+    fixtureDefinition.density = 1;
+
+    body->CreateFixture (&fixtureDefinition);
 }
 
 Entity::~Entity () { }
-
-void Entity::move ()
-{
-    if ( velocity.x || velocity.y )
-    {
-        position.x += velocity.x * timer::acumulator;
-
-        if ( config & CAMERA )
-            camera::move ( velocity , screen );
-
-        if ( position.x <= 0 )
-            position.x = 0;
-        else if ( position.x >= SCENARIO_WIDTH )
-            position.x = SCENARIO_WIDTH;
-
-        position.y += velocity.y * timer::acumulator;
-
-        if ( position.y <= 0 )
-            position.y = 0;
-        else if ( position.y >= SCENARIO_HEIGHT )
-            position.y = SCENARIO_HEIGHT;
-
-        sensor &= ~BOT_SENSOR;
-
-        adjust();
-
-    }
-
-    if ( !( sensor & BOT_SENSOR ) )
-        velocity.y += GRAVITY.y;
-
-    if ( std::find ( entities::toCollide.begin(),
-                     entities::toCollide.end(),
-                     this ) == entities::toCollide.end() )
-        entities::toCollide.push_back ( this );
-
-    updateLocator ();
-}
 
 void Entity::render ( SDL_Texture *texture )
 {
@@ -99,61 +36,12 @@ void Entity::render ( SDL_Texture *texture )
 
 void Entity::adjust ()
 {
-    screen.x = floor( position.x - camera::position.x );
-    screen.y = floor( position.y - camera::position.y );
-}
+    //screen.x = floor( position.x - camera::position.x );
+    //screen.y = floor( position.y - camera::position.y );
 
-void Entity::setLocator ()
-{
-    int xId = position.x / 100,
-        yId = position.y / 100,
-        wId = ( position.x + screen.w ) / 100,
-        hId = ( position.y + screen.h ) / 100;
+    screen.x = floor ( ( body->GetPosition().x * M2P ) - screen.w / 2 );
+    screen.y = floor ( ( body->GetPosition().y * M2P ) - screen.h / 2 );
 
-    for ( int y = yId;
-          y <= hId;
-          y++
-        )
-    {
-        for ( int x = xId;
-              x <= wId;
-              x++
-            )
-        {
-            entities::entities[ y ][ x ].push_back( this );
-        }
-    }
-
-    locator = { xId , yId , wId , hId };
-}
-
-void Entity::deleteLocator ()
-{
-    for ( int y = locator.y;
-          y <= locator.h;
-          y++
-        )
-    {
-        for ( int x = locator.x;
-              x <= locator.w;
-              x++
-            )
-        {
-
-            entities::entities[ y ][ x ]
-                .erase(std::remove(
-                           entities::entities[ y ][ x ].begin(),
-                           entities::entities[ y ][ x ].end(),
-                           this),
-                       entities::entities[ y ][ x ].end());
-        }
-    }
-}
-
-void Entity::updateLocator ()
-{
-    deleteLocator ();
-    setLocator ();
 }
 
 Entities::Entities ( std::string filePath ) : Texture ( filePath )
@@ -171,15 +59,7 @@ void Entities::render ()
     }
 }
 
-void Entities::move ()
-{
-    for ( auto entity : entities )
-    {
-        entity->move();
-    }
-}
-
-void Entities::add ( float x , float y , int w , int h )
+void Entities::add ( float x , float y , float w , float h )
 {
     entities.push_back ( std::shared_ptr < Entity > (new Entity ( x , y , w , h ) ));
 }

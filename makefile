@@ -25,7 +25,7 @@ CFLAGS = -g -w
 CPPFLAGS = -I def
 
 #SDL2_FLAGS
-SDL2_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+SDL2_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lBox2D
 
 #LINKER_FLAGS, condition to determine if windows or not
 ifeq ($(OS),Windows_NT)
@@ -42,9 +42,6 @@ camera.o : camera.cpp
 
 constants.o : constants.cpp
 	$(CC) -c -w $(CPPFLAGS) src/constants.cpp -o obj/constants.o
-
-collision.o : collision.cpp
-	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
 
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
