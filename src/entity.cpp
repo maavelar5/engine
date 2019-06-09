@@ -2,37 +2,19 @@
 
 namespace entities
 {
-    std::vector
-    < std::vector < std::vector
-                    < Entity * > > > entities;
+    std::map < std::string , std::vector < Entity * > > kinematics , statics;
+    std::vector < Entity * > queue;
 
-    std::vector < Entity * > toCollide;
-
-    void init ()
+    void addHashIfNotExists ( std::string positionHash,
+                              std::map < std::string , std::vector < Entity * > > * collection )
     {
-        int width = SCENARIO_WIDTH / 100 + 1,   //GAME_LOGICAL_WIDTH + 1,
-            height = SCENARIO_HEIGHT / 100 + 1; //GAME_LOGICAL_HEIGHT + 1;
-        
-        for ( int y = 0;
-              y < height;
-              y++
-            )
+        if ( collection->find ( positionHash ) == collection->end () ) 
         {
-            entities.push_back(std::vector < std::vector < Entity * > > ());
-
-            for ( int x = 0;
-                  x < width;
-                  x++
-                )
-            {
-                entities[ y ].push_back(std::vector <  Entity * > ());
-            }
+            ( *collection )[ positionHash ] = std::vector < Entity * > ();
         }
     }
-
 }
-
-Entity::Entity ( float x , float y , int w , int h )
+Entity::Entity ( float x , float y , int w , int h , Uint8 config )
 {
     locator = { 0 , 0 , 0 , 0 };
 
@@ -42,7 +24,11 @@ Entity::Entity ( float x , float y , int w , int h )
     screen.h = h;
 
     position = { x , y };
-    config = ACTIVE | STATIC;
+    this->config = ACTIVE | config;
+
+    collection = ( config & STATIC )
+        ? &entities::statics
+        : &entities::kinematics;
 
     setLocator ();
 }
@@ -51,38 +37,35 @@ Entity::~Entity () { }
 
 void Entity::move ()
 {
-    if ( velocity.x || velocity.y )
-    {
-        position.x += velocity.x * timer::acumulator;
+    position.x += velocity.x * timer::acumulator;
 
-        if ( config & CAMERA )
-            camera::move ( velocity , screen );
+    if ( config & CAMERA )
+        camera::move ( velocity , screen );
 
-        if ( position.x <= 0 )
-            position.x = 0;
-        else if ( position.x >= SCENARIO_WIDTH )
-            position.x = SCENARIO_WIDTH;
+    if ( position.x <= 0 )
+        position.x = 0;
+    else if ( position.x >= SCENARIO_WIDTH )
+        position.x = SCENARIO_WIDTH;
 
-        position.y += velocity.y * timer::acumulator;
+    position.y += velocity.y * timer::acumulator;
 
-        if ( position.y <= 0 )
-            position.y = 0;
-        else if ( position.y >= SCENARIO_HEIGHT )
-            position.y = SCENARIO_HEIGHT;
+    if ( position.y <= 0 )
+        position.y = 0;
+    else if ( position.y >= SCENARIO_HEIGHT )
+        position.y = 220;
 
-        sensor &= ~BOT_SENSOR;
+    sensor &= ~BOT_SENSOR;
 
-        adjust();
+    adjust();
 
-    }
 
     if ( !( sensor & BOT_SENSOR ) )
         velocity.y += GRAVITY.y;
 
-    if ( std::find ( entities::toCollide.begin(),
-                     entities::toCollide.end(),
-                     this ) == entities::toCollide.end() )
-        entities::toCollide.push_back ( this );
+    if ( std::find ( entities::queue.begin(),
+                     entities::queue.end(),
+                     this ) == entities::queue.end() )
+                     entities::queue.push_back ( this );
 
     updateLocator ();
 }
@@ -105,30 +88,14 @@ void Entity::adjust ()
 
 void Entity::setLocator ()
 {
-    int xId = position.x / 100,
-        yId = position.y / 100,
-        wId = ( position.x + screen.w ) / 100,
-        hId = ( position.y + screen.h ) / 100;
+    SDL_Rect locator = { floor ( position.x / 100 ),
+                         floor ( position.y / 100 ),
+                         floor ( ( position.x + screen.w ) / 100 ),
+                         floor ( ( position.y + screen.h ) / 100 ) };
 
-    for ( int y = yId;
-          y <= hId;
-          y++
-        )
-    {
-        for ( int x = xId;
-              x <= wId;
-              x++
-            )
-        {
-            entities::entities[ y ][ x ].push_back( this );
-        }
-    }
+    std::string positionHash = "";
+ 
 
-    locator = { xId , yId , wId , hId };
-}
-
-void Entity::deleteLocator ()
-{
     for ( int y = locator.y;
           y <= locator.h;
           y++
@@ -139,13 +106,39 @@ void Entity::deleteLocator ()
               x++
             )
         {
+            positionHash = getPositionHash ( x , y );
 
-            entities::entities[ y ][ x ]
-                .erase(std::remove(
-                           entities::entities[ y ][ x ].begin(),
-                           entities::entities[ y ][ x ].end(),
-                           this),
-                       entities::entities[ y ][ x ].end());
+            entities::addHashIfNotExists ( positionHash , collection );
+            (*collection) [ positionHash ].push_back ( this );
+        }
+    }
+
+    this->locator = locator;
+}
+
+void Entity::deleteLocator ()
+{
+    std::string positionHash = "";
+
+    for ( int y = locator.y;
+          y <= locator.h;
+          y++
+        )
+    {
+        for ( int x = locator.x;
+              x <= locator.w;
+              x++
+            )
+        {
+            positionHash = getPositionHash ( x , y );
+            
+            ( *collection )[ positionHash ].erase (
+                std::remove (
+                    ( *collection )[ positionHash ].begin(),
+                    ( *collection )[ positionHash ].end(),
+                    this
+                    ),
+                ( *collection )[ positionHash ].end());
         }
     }
 }
@@ -154,6 +147,11 @@ void Entity::updateLocator ()
 {
     deleteLocator ();
     setLocator ();
+}
+
+std::string Entity::getPositionHash ( int x , int y )
+{
+    return "(" + std::to_string ( y ) + ")" + "(" + std::to_string ( x ) + ")";
 }
 
 Entities::Entities ( std::string filePath ) : Texture ( filePath )

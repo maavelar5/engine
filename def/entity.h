@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <map>
 
 struct Entity
 {
@@ -24,11 +25,15 @@ struct Entity
     SDL_Rect screen , locator;
     Uint8 config , sensor;
 
-    Entity ( float , float , int , int );
+    std::map < std::string , std::vector < Entity * > > * collection;
+
+    Entity ( float , float , int , int , Uint8 config = STATIC );
     ~Entity ();
 
     void adjust() , move () , render ( SDL_Texture * ),
         setLocator (), deleteLocator () , updateLocator ();
+
+    static std::string getPositionHash ( int , int );
 };
 
 struct Entities : public Texture
@@ -43,13 +48,10 @@ struct Entities : public Texture
 
 namespace entities
 {
-    extern std::vector
-    < std::vector < std::vector
-                    < Entity * > > > entities;
+    extern std::map < std::string , std::vector < Entity * > > kinematics , statics;
+    extern std::vector < Entity * > queue;
 
-    extern std::vector < Entity * > toCollide;
-
-    void init ();
+    void addHashIfNotExists ( std::string , std::map < std::string , std::vector < Entity * > > * collection );
 }
 
 #endif

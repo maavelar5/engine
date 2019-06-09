@@ -1,9 +1,8 @@
 #include "player.h"
 
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
-                    Entity ( 32 , 32 , 8 , 8 )
+                    Entity ( 32 , 32 , 8 , 8 , KINEMATIC | CAMERA | ACTIVE )
 {
-    config = KINEMATIC | CAMERA | ACTIVE;
     speed = 100;
 }
 
@@ -23,7 +22,11 @@ void Player::event( SDL_Event event )
             case SDLK_q:
                 projectile.add ( position.x + 8 , position.y );
                 break;
-        case SDLK_l: game::quit = SDL_TRUE; break;
+            case SDLK_w:
+                position.x = 100;
+                position.y = 100;
+                break;
+            case SDLK_l: game::quit = SDL_TRUE; break;
         }
     }
     else if( event.type == SDL_KEYUP && event.key.repeat == 0 )

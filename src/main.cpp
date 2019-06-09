@@ -18,7 +18,6 @@
 int main( int argc, char* argv[] )
 {
     game::init ();
-    entities::init ();
     font::init ();
 
     Player player;
@@ -51,7 +50,7 @@ int main( int argc, char* argv[] )
         timer::updateFPS ();
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
-        info::draw ( "objects: " , std::to_string ( entities::toCollide.size() ));
+        info::draw ( "objects: " , std::to_string ( entities::kinematics.size() ));
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );

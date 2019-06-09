@@ -4,7 +4,7 @@ namespace collision
 {
     void collide ()
     {
-        for ( auto entity : entities::toCollide )
+        for ( auto &entity : entities::queue )
         {
             for ( int y = entity->locator.y;
                   y <= entity->locator.h;
@@ -16,50 +16,22 @@ namespace collision
                       x++
                     )
                 {
-                    iterate ( entities::entities[ y ][ x ] );
+                    std::string positionHash = Entity::getPositionHash ( x , y );
+                    iterate ( (*entity) , entities::statics[ positionHash ] );
                 }
             }
         }
 
-        entities::toCollide.clear();
+        //entities::queue.clear();
     }
 
-    void iterate ( std::vector < Entity * > &entities )
+    void iterate ( Entity &entity , std::vector < Entity * > &entities )
     {
-        Entity *a , *b;
+        Entity *a;
 
-        for ( int z = 0;
-              z < entities.size() - 1;
-              z++
-            )
+        for ( auto &platform : entities )
         {
-            a = entities[ z ];
-
-            if ( !( a->config & ACTIVE ) )
-            {
-                entities.erase ( entities.begin() + z );
-                continue;
-            }
-
-            for ( int w = z + 1;
-                  w < entities.size();
-                  w++
-                )
-            {
-                b = entities[ w ];
-
-                if ( !( b->config & ACTIVE ) )
-                {
-                    entities.erase ( entities.begin() + w );
-                    continue;
-                }
-
-
-                if ( a->config & STATIC && b->config & STATIC)
-                    continue;
-
-                detect ( *a , *b );
-            }
+            detect ( entity , (*platform));
         }
     }
 
