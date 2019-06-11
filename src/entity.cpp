@@ -58,7 +58,6 @@ void Entity::move ()
 
     adjust();
 
-
     if ( !( sensor & BOT_SENSOR ) )
         velocity.y += GRAVITY.y;
 
