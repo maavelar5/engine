@@ -23,7 +23,7 @@ namespace game
         {
             renderer = SDL_CreateRenderer( window,
                                            -1,
-                                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+                                           SDL_RENDERER_ACCELERATED );
 
             if ( renderer )
             {
@@ -77,7 +77,7 @@ namespace game
         {
 
             debugRenderer = SDL_CreateRenderer( debugWindow , -1,
-                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+                                                SDL_RENDERER_ACCELERATED );
 
             if ( debugRenderer )
             {

@@ -47,7 +47,7 @@ const std::string SPRITES_PATH =
 #endif
 
 /* Physics */
-const Vector GRAVITY( 0 , 6 );
+const Vector GRAVITY( 0 , 400 );
 
 /* Scenario size */
 const int SCENARIO_WIDTH = 7168;

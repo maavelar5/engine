@@ -3,7 +3,8 @@
 namespace timer
 {
     float acumulator, timeStep , currentTime , previousTime , frameTime , FPS;
-    Uint32 frames;
+    Uint32 frames , nextTime;
+    Uint8 TICK_INTERVAL;
 
     void init () 
     {
@@ -11,6 +12,8 @@ namespace timer
         acumulator = frameTime = currentTime = acumulator = 0;
         timeStep = 0.01;
         frames = 1;
+        TICK_INTERVAL = 10;
+        nextTime = SDL_GetTicks() + TICK_INTERVAL;
     }
 
     void update ()
@@ -33,5 +36,16 @@ namespace timer
             FPS = 0;
 
         frames++;
+    }
+
+    Uint32 timeLeft ()
+    {
+        Uint32 now;
+
+        now = SDL_GetTicks();
+        if(nextTime <= now)
+            return 0;
+        else
+            return nextTime - now;
     }
 }

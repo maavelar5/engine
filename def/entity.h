@@ -21,13 +21,14 @@
 
 struct Entity
 {
-    Vector position , velocity;
+    Vector position , velocity,
+        previousPosition , previousVelocity;
     SDL_Rect screen , locator;
-    Uint8 config , sensor;
+    Uint8 config , sensor , status;
 
     std::map < std::string , std::vector < Entity * > > * collection;
 
-    Entity ( float , float , int , int , Uint8 config = STATIC );
+    Entity ( float , float , int , int , Uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
     void adjust() , move () , render ( SDL_Texture * ),

@@ -22,7 +22,7 @@ namespace collision
             }
         }
 
-        //entities::queue.clear();
+        entities::queue.clear();
     }
 
     void iterate ( Entity &entity , std::vector < Entity * > &entities )

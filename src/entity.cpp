@@ -24,7 +24,7 @@ Entity::Entity ( float x , float y , int w , int h , Uint8 config )
     screen.h = h;
 
     position = { x , y };
-    this->config = ACTIVE | config;
+    this->config = config;
 
     collection = ( config & STATIC )
         ? &entities::statics
@@ -37,6 +37,8 @@ Entity::~Entity () { }
 
 void Entity::move ()
 {
+    previousPosition = position;
+
     position.x += velocity.x * timer::acumulator;
 
     if ( config & CAMERA )
@@ -52,14 +54,14 @@ void Entity::move ()
     if ( position.y <= 0 )
         position.y = 0;
     else if ( position.y >= SCENARIO_HEIGHT )
-        position.y = 220;
+        position.y = SCENARIO_HEIGHT;
 
     sensor &= ~BOT_SENSOR;
 
     adjust();
 
     if ( !( sensor & BOT_SENSOR ) )
-        velocity.y += GRAVITY.y;
+        velocity.y += GRAVITY.y * timer::acumulator;
 
     if ( std::find ( entities::queue.begin(),
                      entities::queue.end(),
@@ -144,8 +146,16 @@ void Entity::deleteLocator ()
 
 void Entity::updateLocator ()
 {
-    deleteLocator ();
-    setLocator ();
+    SDL_Rect locator = { floor ( position.x / 100 ),
+                         floor ( position.y / 100 ),
+                         floor ( ( position.x + screen.w ) / 100 ),
+                         floor ( ( position.y + screen.h ) / 100 ) };
+
+    if ( this->locator.x != locator.x || this->locator.y != locator.y || this->locator.w != locator.w || this->locator.h != locator.h )
+    {
+        deleteLocator ();
+        setLocator ();
+    }
 }
 
 std::string Entity::getPositionHash ( int x , int y )

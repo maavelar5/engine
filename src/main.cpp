@@ -34,6 +34,9 @@ int main( int argc, char* argv[] )
             player.event ( event );
         }
 
+        SDL_RenderClear( game::renderer );
+        SDL_RenderClear ( game::debugRenderer );
+
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
@@ -41,21 +44,22 @@ int main( int argc, char* argv[] )
             timer::acumulator -= timer::timeStep;
         }
 
-        SDL_RenderClear( game::renderer );
-        SDL_RenderClear ( game::debugRenderer );
-
         mapper.render();
         player.render();
 
         timer::updateFPS ();
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
-        info::draw ( "objects: " , std::to_string ( entities::kinematics.size() ));
+        info::draw ( "objects: " , std::to_string ( entities::queue.size() ));
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );
 
         info::x = info::y = 1;
+
+//        SDL_Delay ( timer::timeLeft() );
+//        timer::nextTime += timer::TICK_INTERVAL;
+
     }
 
     return 0;

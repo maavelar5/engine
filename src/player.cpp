@@ -1,15 +1,17 @@
 #include "player.h"
 
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
-                    Entity ( 32 , 32 , 8 , 8 , KINEMATIC | CAMERA | ACTIVE )
+                    Entity ( 32 , 32 , 32 , 32 , KINEMATIC | CAMERA | ACTIVE )
 {
-    speed = 100;
+    speed = 200;
 }
 
 Player::~Player () { }
 
 void Player::event( SDL_Event event )
 {
+    previousVelocity = velocity;
+
     if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
@@ -17,7 +19,7 @@ void Player::event( SDL_Event event )
             case SDLK_a: velocity.x -= speed; break;
             case SDLK_d: velocity.x += speed; break;
             case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
-                ? -300
+                ? -500
                 : velocity.y; break;
             case SDLK_q:
                 projectile.add ( position.x + 8 , position.y );
