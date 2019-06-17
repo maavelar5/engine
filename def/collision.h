@@ -5,6 +5,8 @@
 #include "entity.h"
 #include "vector.h"
 
+#include <algorithm>
+
 namespace collision
 {
     void collide () , iterate ( Entity & , std::vector < Entity * > & );

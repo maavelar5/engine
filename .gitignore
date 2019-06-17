@@ -1,4 +1,4 @@
 *.o
 .DS_*
-marcoman
+marcoman*
 dump.rdb

@@ -10,19 +10,23 @@ Player::~Player () { }
 
 void Player::event( SDL_Event event )
 {
+    previousVelocity = velocity;
+
     if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
         {
             case SDLK_a: velocity.x -= speed; break;
             case SDLK_d: velocity.x += speed; break;
+            case SDLK_w: velocity.y -= speed; break;
+            case SDLK_s: velocity.y += speed; break;
             case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
                 ? -300
                 : velocity.y; break;
             case SDLK_q:
                 projectile.add ( position.x + 8 , position.y );
                 break;
-            case SDLK_w:
+            case SDLK_e:
                 position.x = 100;
                 position.y = 100;
                 break;
@@ -35,6 +39,8 @@ void Player::event( SDL_Event event )
         {
             case SDLK_a: velocity.x += speed; break;
             case SDLK_d: velocity.x -= speed; break;
+            case SDLK_w: velocity.y += speed; break;
+            case SDLK_s: velocity.y -= speed; break;
             case SDLK_SPACE: velocity.y = (velocity.y < 0)
                 ? 0
                 : velocity.y;
