@@ -51,7 +51,7 @@ int main( int argc, char* argv[] )
 
         mapper.render();
         player.render();
-        
+
         timer::updateFPS ();
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
@@ -62,7 +62,6 @@ int main( int argc, char* argv[] )
         SDL_RenderPresent ( game::debugRenderer );
 
         info::x = info::y = 1;
- 
     }
 
     return 0;
