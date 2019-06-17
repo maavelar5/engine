@@ -23,7 +23,7 @@ struct Entity
 {
     Vector position , velocity,
         previousPosition , previousVelocity;
-    SDL_Rect screen , locator;
+    SDL_Rect screen , locator , previousScreen , previousLocator;
     Uint8 config , sensor , status;
 
     std::map < std::string , std::vector < Entity * > > * collection;

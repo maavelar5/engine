@@ -1,5 +1,5 @@
 * platforms
   0,200,2000,32,gp
   0,120,32,100,gp
-
+  100,120,32,32,gp
 * _regexr.com/4bqbj_

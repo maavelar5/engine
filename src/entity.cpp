@@ -18,12 +18,11 @@ Entity::Entity ( float x , float y , int w , int h , Uint8 config )
 {
     locator = { 0 , 0 , 0 , 0 };
 
-    screen.x = floor ( x - camera::position.x );
-    screen.y = floor ( y - camera::position.y );
-    screen.w = w;
-    screen.h = h;
+    screen = previousScreen = { floor ( x - camera::position.x ),
+                                  floor ( y - camera::position.y ),
+                                  w, h };
+    position = previousPosition = { x , y };
 
-    position = { x , y };
     this->config = config;
 
     collection = ( config & STATIC )
@@ -58,15 +57,10 @@ void Entity::move ()
 
     sensor &= ~BOT_SENSOR;
 
-    adjust();
-
     if ( !( sensor & BOT_SENSOR ) )
         velocity.y += GRAVITY.y * timer::acumulator;
 
-    if ( std::find ( entities::queue.begin(),
-                     entities::queue.end(),
-                     this ) == entities::queue.end() )
-                     entities::queue.push_back ( this );
+    entities::queue.push_back ( this );
 
     updateLocator ();
 }
@@ -75,16 +69,24 @@ void Entity::render ( SDL_Texture *texture )
 {
     adjust ();
 
-    SDL_RenderCopy( game::renderer,
-                    texture,
-                    nullptr,
-                    &screen );
+    SDL_RenderCopy ( game::renderer,
+                     texture,
+                     nullptr,
+                     &screen );
 }
 
 void Entity::adjust ()
 {
-    screen.x = floor( position.x - camera::position.x );
-    screen.y = floor( position.y - camera::position.y );
+    if ( config & KINEMATIC )
+    {
+        screen.x = floor( ( position.x * timer::interpolation + previousPosition.x * ( 1.0 - timer::interpolation ) ) - camera::position.x );
+        screen.y = floor( ( position.y * timer::interpolation + previousPosition.y * ( 1.0 - timer::interpolation ) ) - camera::position.y );
+    }
+    else
+    {
+        screen.x = floor( position.x - camera::position.x );
+        screen.y = floor( position.y - camera::position.y );
+    }
 }
 
 void Entity::setLocator ()
@@ -151,7 +153,10 @@ void Entity::updateLocator ()
                          floor ( ( position.x + screen.w ) / 100 ),
                          floor ( ( position.y + screen.h ) / 100 ) };
 
-    if ( this->locator.x != locator.x || this->locator.y != locator.y || this->locator.w != locator.w || this->locator.h != locator.h )
+    if ( this->locator.x != locator.x ||
+         this->locator.y != locator.y ||
+         this->locator.w != locator.w ||
+         this->locator.h != locator.h )
     {
         deleteLocator ();
         setLocator ();
@@ -160,7 +165,7 @@ void Entity::updateLocator ()
 
 std::string Entity::getPositionHash ( int x , int y )
 {
-    return "(" + std::to_string ( y ) + ")" + "(" + std::to_string ( x ) + ")";
+    return std::to_string ( y ) + "," + std::to_string ( x );
 }
 
 Entities::Entities ( std::string filePath ) : Texture ( filePath )

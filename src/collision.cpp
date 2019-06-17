@@ -27,8 +27,6 @@ namespace collision
 
     void iterate ( Entity &entity , std::vector < Entity * > &entities )
     {
-        Entity *a;
-
         for ( auto &platform : entities )
         {
             detect ( entity , (*platform));
@@ -37,37 +35,25 @@ namespace collision
 
     void detect ( Entity &a , Entity &b )
     {
-        SDL_Rect result = { 0 , 0 , 0 , 0 };
+        float x1 = a.position.x , y1 = a.position.y , w1 = x1 + a.screen.w , h1 = y1 + a.screen.h,
+            x2 = b.position.x , y2 = b.position.y , w2 = x2 + b.screen.w , h2 = y2 + b.screen.h;
 
-        if ( SDL_IntersectRect ( &a.screen , &b.screen , &result ) )
+        if ( x1 < w2 && w1 > x2 && y1 < h2 && h1 > y2 )
         {
-            int collisionType = getCollisionType ( a.screen , result );
+            float x3 = ( x1 >= x2 ) ? x1 : x2,
+                y3 = ( y1 >= y2 ) ? y1 : y2,
+                w3 = ( w1 <= w2 ) ? w1 : w2,
+                h3 = ( h1 <= h2 ) ? h1 : h2;
 
-            if ( a.config & BULLET ) a.config &= ~ACTIVE;
-            if ( b.config & BULLET ) b.config &= ~ACTIVE;
-
-            if ( collisionType == BOT_SENSOR )
+            if ( w3 - x3 >= h3 - y3 )
             {
-                if ( a.config & KINEMATIC && a.velocity.y >= 0 ) { bot ( a , result.h ); }
-                if ( b.config & KINEMATIC && b.velocity.y <= 0 ) { top ( b , result.h ); }
+                if ( y1 == y3 ) { top ( a , h3 - y3 ); }
+                else { bot ( a , h3 - y3 ); }
             }
-
-            else if ( collisionType == TOP_SENSOR )
+            else
             {
-                if ( a.config & KINEMATIC && a.velocity.y <= 0 ) { top ( a , result.h ); }
-                if ( b.config & KINEMATIC && b.velocity.y >= 0 ) { bot ( b , result.h ); }
-            }
-
-            else if ( collisionType == RIGHT_SENSOR )
-            {
-                if ( a.config & KINEMATIC ) { right( a , result.w ); }
-                if ( b.config & KINEMATIC ) { left( b , result.w ); }
-            }
-
-            else if ( collisionType == LEFT_SENSOR )
-            {
-                if ( a.config & KINEMATIC ) { left( a , result.w ); }
-                if ( b.config & KINEMATIC ) { right( b , result.w ); }
+                if ( x1 == x3 ) { left ( a , w3 - x3 ); }
+                else { right ( a , w3 - x3 ); }
             }
         }
     }
@@ -75,17 +61,6 @@ namespace collision
     int getCollisionType ( SDL_Rect a , SDL_Rect b )
     {
         int collisionType = -1;
-
-        if ( b.w >= b.h )
-        {
-            if ( a.y == b.y ) { collisionType = TOP_SENSOR; }
-            else { collisionType = BOT_SENSOR; }
-        }
-        else
-        {
-            if ( a.x == b.x ) { collisionType = LEFT_SENSOR; }
-            else { collisionType = RIGHT_SENSOR; }
-        }
 
         return collisionType;        
     }
@@ -95,29 +70,23 @@ namespace collision
         entity.velocity.y = 0;
         entity.position.y -= h - 1;
         entity.sensor |= BOT_SENSOR;
-
-        entity.adjust();
     }
 
     void top ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y += h;
+        entity.position.y += h + 1;
         entity.sensor |= TOP_SENSOR;
-
-        entity.adjust();
     }
 
     void left ( Entity &entity , int w )
     {
         entity.position.x += w;
-
-        entity.adjust();
+        entity.sensor |= LEFT_SENSOR;
     }
     void right ( Entity &entity , int w )
     {
         entity.position.x -= w;
-
-        entity.adjust();
+        entity.sensor |= RIGHT_SENSOR;
     }
 }

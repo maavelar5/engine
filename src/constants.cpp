@@ -5,7 +5,7 @@ const int WINDOW_WIDTH = 512;
 const int WINDOW_HEIGHT = 480;
 
 /* Window logical size */
-const int GAME_LOGICAL_WIDTH = 256;
+const int GAME_LOGICAL_WIDTH = 512;
 const int GAME_LOGICAL_HEIGHT = 240;
 
 /* Game camera rect */
@@ -47,7 +47,7 @@ const std::string SPRITES_PATH =
 #endif
 
 /* Physics */
-const Vector GRAVITY( 0 , 400 );
+const Vector GRAVITY( 0 , 500 );
 
 /* Scenario size */
 const int SCENARIO_WIDTH = 7168;

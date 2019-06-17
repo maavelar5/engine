@@ -24,8 +24,14 @@ int main( int argc, char* argv[] )
     Mapper mapper;
     SDL_Event event;
 
-    while( !game::quit )
+    SDL_RaiseWindow ( game::window );
+    SDL_HideWindow ( game::debugWindow );
+
+    while ( !game::quit )
     {
+        SDL_RenderClear( game::renderer );
+        SDL_RenderClear ( game::debugRenderer );
+
         timer::update();
 
         while( SDL_PollEvent( &event ) )
@@ -34,9 +40,6 @@ int main( int argc, char* argv[] )
             player.event ( event );
         }
 
-        SDL_RenderClear( game::renderer );
-        SDL_RenderClear ( game::debugRenderer );
-
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
@@ -44,22 +47,25 @@ int main( int argc, char* argv[] )
             timer::acumulator -= timer::timeStep;
         }
 
+        timer::interpolation = timer::acumulator / timer::timeStep;
+
         mapper.render();
         player.render();
-
+        
         timer::updateFPS ();
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
-        info::draw ( "objects: " , std::to_string ( entities::queue.size() ));
+        info::draw ( "Objects: " , std::to_string ( entities::queue.size() ));
+        info::draw ( "curr: " , std::to_string ( player.screen.x ) + " " + std::to_string ( player.screen.y ) );
+        info::draw ( "prev: " , std::to_string ( player.previousScreen.x ) + " " + std::to_string ( player.previousScreen.y ) );
 
+        info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));
+        
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );
 
         info::x = info::y = 1;
-
-//        SDL_Delay ( timer::timeLeft() );
-//        timer::nextTime += timer::TICK_INTERVAL;
-
+ 
     }
 
     return 0;

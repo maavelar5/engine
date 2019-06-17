@@ -23,12 +23,13 @@ namespace game
         {
             renderer = SDL_CreateRenderer( window,
                                            -1,
-                                           SDL_RENDERER_ACCELERATED );
+                                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 
             if ( renderer )
             {
                 // make the scaled rendering look smoother.
-                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY , "linear" );
+                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
+                SDL_SetHint( SDL_HINT_RENDER_VSYNC  , "linear" );
                 SDL_RenderSetLogicalSize( renderer,
                                           GAME_LOGICAL_WIDTH,
                                           GAME_LOGICAL_HEIGHT );
@@ -75,9 +76,8 @@ namespace game
         
         if ( debugWindow )
         {
-
             debugRenderer = SDL_CreateRenderer( debugWindow , -1,
-                                                SDL_RENDERER_ACCELERATED );
+                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
 
             if ( debugRenderer )
             {

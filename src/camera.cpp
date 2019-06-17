@@ -8,7 +8,7 @@ namespace camera
     {
         float distance = velocity.x * timer::acumulator;
 
-        if( velocity.x > 0 )
+        if ( velocity.x > 0 )
         {
             if( screen.x >= CAMERA_OFFSET.w  &&
                 position.x <= ( SCENARIO_WIDTH - WINDOW_WIDTH ) )
@@ -18,7 +18,7 @@ namespace camera
         }
         else
         {
-            if( screen.x <= CAMERA_OFFSET.x &&
+            if ( screen.x <= CAMERA_OFFSET.x &&
                 position.x > 0 )
             {
                 position.x += distance;
