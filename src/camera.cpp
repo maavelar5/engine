@@ -4,11 +4,9 @@ namespace camera
 {
     Vector position;
 
-    void move ( Vector &velocity , SDL_Rect &screen )
+    void move ( float distance , SDL_Rect &screen )
     {
-        float distance = velocity.x * timer::acumulator;
-
-        if ( velocity.x > 0 )
+        if ( distance > 0 )
         {
             if( screen.x >= CAMERA_OFFSET.w  &&
                 position.x <= ( SCENARIO_WIDTH - WINDOW_WIDTH ) )

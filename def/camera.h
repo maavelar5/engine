@@ -15,7 +15,7 @@ namespace camera
 {
     extern Vector position;
 
-    void move ( Vector & , SDL_Rect & );
+    void move ( float , SDL_Rect & );
 }
 
 #endif // CAMERA_H_INCLUDED

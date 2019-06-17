@@ -56,9 +56,6 @@ int main( int argc, char* argv[] )
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
         info::draw ( "Objects: " , std::to_string ( entities::queue.size() ));
-        info::draw ( "curr: " , std::to_string ( player.screen.x ) + " " + std::to_string ( player.screen.y ) );
-        info::draw ( "prev: " , std::to_string ( player.previousScreen.x ) + " " + std::to_string ( player.previousScreen.y ) );
-
         info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));
         
         SDL_RenderPresent ( game::renderer );

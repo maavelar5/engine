@@ -18,16 +18,19 @@ Entity::Entity ( float x , float y , int w , int h , Uint8 config )
 {
     locator = { 0 , 0 , 0 , 0 };
 
-    screen = previousScreen = { floor ( x - camera::position.x ),
-                                  floor ( y - camera::position.y ),
-                                  w, h };
-    position = previousPosition = { x , y };
+    screen = { floor ( x - camera::position.x ),
+               floor ( y - camera::position.y ),
+               w , h };
+
+    position = { x , y };
 
     this->config = config;
 
     collection = ( config & STATIC )
         ? &entities::statics
         : &entities::kinematics;
+
+    sensor = 1;
 
     setLocator ();
 }
@@ -39,26 +42,14 @@ void Entity::move ()
     previousPosition = position;
 
     position.x += velocity.x * timer::acumulator;
-
-    if ( config & CAMERA )
-        camera::move ( velocity , screen );
-
-    if ( position.x <= 0 )
-        position.x = 0;
-    else if ( position.x >= SCENARIO_WIDTH )
-        position.x = SCENARIO_WIDTH;
-
     position.y += velocity.y * timer::acumulator;
-
-    if ( position.y <= 0 )
-        position.y = 0;
-    else if ( position.y >= SCENARIO_HEIGHT )
-        position.y = SCENARIO_HEIGHT;
 
     sensor &= ~BOT_SENSOR;
 
-    if ( !( sensor & BOT_SENSOR ) )
+    if ( sensor & ~BOT_SENSOR )
         velocity.y += GRAVITY.y * timer::acumulator;
+
+    positionLimits ();
 
     entities::queue.push_back ( this );
 
@@ -77,16 +68,26 @@ void Entity::render ( SDL_Texture *texture )
 
 void Entity::adjust ()
 {
+    Vector position = this->position;
+
     if ( config & KINEMATIC )
     {
-        screen.x = floor( ( position.x * timer::interpolation + previousPosition.x * ( 1.0 - timer::interpolation ) ) - camera::position.x );
-        screen.y = floor( ( position.y * timer::interpolation + previousPosition.y * ( 1.0 - timer::interpolation ) ) - camera::position.y );
+        float cameraDistance = renderPosition.x;
+
+        renderPosition.x = position.x * timer::interpolation +
+            previousPosition.x * ( 1.0 - timer::interpolation );
+
+        renderPosition.y = position.y * timer::interpolation +
+            previousPosition.y * ( 1.0 - timer::interpolation );
+
+        if ( config & CAMERA )
+            camera::move ( renderPosition.x - cameraDistance , screen );
+
+        position = renderPosition;
     }
-    else
-    {
-        screen.x = floor( position.x - camera::position.x );
-        screen.y = floor( position.y - camera::position.y );
-    }
+
+    screen.x = floor( position.x - camera::position.x );
+    screen.y = floor( position.y - camera::position.y );
 }
 
 void Entity::setLocator ()
@@ -161,6 +162,19 @@ void Entity::updateLocator ()
         deleteLocator ();
         setLocator ();
     }
+}
+
+void Entity::positionLimits ()
+{
+    if ( position.y <= 0 )
+        position.y = 0;
+    else if ( position.y >= SCENARIO_HEIGHT )
+        position.y = SCENARIO_HEIGHT;
+
+    if ( position.x <= 0 )
+        position.x = 0;
+    else if ( position.x >= SCENARIO_WIDTH )
+        position.x = SCENARIO_WIDTH;
 }
 
 std::string Entity::getPositionHash ( int x , int y )

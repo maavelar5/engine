@@ -22,8 +22,10 @@
 struct Entity
 {
     Vector position , velocity,
-        previousPosition , previousVelocity;
-    SDL_Rect screen , locator , previousScreen , previousLocator;
+        previousPosition , previousVelocity , renderPosition;
+
+    SDL_Rect screen , locator;
+
     Uint8 config , sensor , status;
 
     std::map < std::string , std::vector < Entity * > > * collection;
@@ -31,8 +33,8 @@ struct Entity
     Entity ( float , float , int , int , Uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
-    void adjust() , move () , render ( SDL_Texture * ),
-        setLocator (), deleteLocator () , updateLocator ();
+    void adjust() , move () , render ( SDL_Texture * ), setLocator (),
+        deleteLocator () , updateLocator () , positionLimits ();
 
     static std::string getPositionHash ( int , int );
 };
