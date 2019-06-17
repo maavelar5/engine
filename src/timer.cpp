@@ -2,8 +2,12 @@
 
 namespace timer
 {
-    float acumulator, timeStep , currentTime , previousTime , frameTime , FPS;
-    Uint32 frames;
+    float acumulator, timeStep , currentTime , previousTime , frameTime , FPS , interpolation;
+    Uint32 frames , loops , nextGameTick;
+
+    const int TICKS_PER_SECOND = 30;
+    const int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
+    const int MAX_FRAMESKIP = 5;
 
     void init () 
     {
@@ -11,6 +15,8 @@ namespace timer
         acumulator = frameTime = currentTime = acumulator = 0;
         timeStep = 0.01;
         frames = 1;
+        nextGameTick = SDL_GetTicks();
+        interpolation = 0;
     }
 
     void update ()
