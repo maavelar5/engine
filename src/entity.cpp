@@ -44,16 +44,23 @@ void Entity::move ()
     position.x += velocity.x * timer::acumulator;
     position.y += velocity.y * timer::acumulator;
 
-    sensor &= ~BOT_SENSOR;
-
-    if ( sensor & ~BOT_SENSOR )
+    if ( !( sensor & BOT_SENSOR ) )
         velocity.y += GRAVITY.y * timer::acumulator;
 
     positionLimits ();
 
-    entities::queue.push_back ( this );
+    if ( previousPosition.x != position.x || previousPosition.y != position.y )
+    {
+        sensor = NONE_SENSOR;
 
-    updateLocator ();
+        if ( velocity.y == 0 )
+            velocity.y += 1;
+
+        entities::queue.push_back ( this );
+        updateLocator ();        
+    }
+
+
 }
 
 void Entity::render ( SDL_Texture *texture )

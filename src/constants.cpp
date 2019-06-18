@@ -86,7 +86,7 @@ const std::string MAPPER_FILE_PATH = SPRITES_PATH +
     "platforms.org";
 
 /* Sensor values */
-const Uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8;
+const Uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8 , NONE_SENSOR = 0;
 
 /* HUD colors and other shit */
 const SDL_Color white = { 255 , 255 , 255 },

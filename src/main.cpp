@@ -57,12 +57,16 @@ int main( int argc, char* argv[] )
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
         info::draw ( "Objects: " , std::to_string ( entities::queue.size() ));
         info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));
-        
+        info::draw ( "SENSOR: " , std::to_string ( player.sensor ));
+        info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));        
+
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );
 
         info::x = info::y = 1;
     }
+
+    SDL_Quit();
 
     return 0;
 }
