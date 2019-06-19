@@ -41,26 +41,19 @@ void Entity::move ()
 {
     previousPosition = position;
 
-    position.x += velocity.x * timer::acumulator;
-    position.y += velocity.y * timer::acumulator;
-
     if ( !( sensor & BOT_SENSOR ) )
-        velocity.y += GRAVITY.y * timer::acumulator;
+    {
+        velocity.y += GRAVITY.y * timer::timeStep;
+        velocity.y = ( velocity.y > MAX_GRAVITY ) ? MAX_GRAVITY : velocity.y;
+    }
+
+    position.x += velocity.x * timer::timeStep;
+    position.y += velocity.y * timer::timeStep;
 
     positionLimits ();
 
-    if ( previousPosition.x != position.x || previousPosition.y != position.y )
-    {
-        sensor = NONE_SENSOR;
-
-        if ( velocity.y == 0 )
-            velocity.y += 1;
-
-        entities::queue.push_back ( this );
-        updateLocator ();        
-    }
-
-
+    entities::queue.push_back ( this );
+    updateLocator ();        
 }
 
 void Entity::render ( SDL_Texture *texture )

@@ -25,7 +25,7 @@ int main( int argc, char* argv[] )
     SDL_Event event;
 
     SDL_RaiseWindow ( game::window );
-    SDL_HideWindow ( game::debugWindow );
+    //SDL_HideWindow ( game::debugWindow );
 
     while ( !game::quit )
     {
@@ -58,7 +58,7 @@ int main( int argc, char* argv[] )
         info::draw ( "Objects: " , std::to_string ( entities::queue.size() ));
         info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));
         info::draw ( "SENSOR: " , std::to_string ( player.sensor ));
-        info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));        
+        info::draw ( "velocity.y: " , std::to_string ( player.velocity.y ) );        
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );

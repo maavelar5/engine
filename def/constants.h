@@ -79,5 +79,7 @@ extern const Uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR , NONE_S
 extern const SDL_Color white , black;
 extern const SDL_Rect LT , T , RT;
 
+/* MAX GRAVITY */
+extern const float MAX_GRAVITY;
 
 #endif

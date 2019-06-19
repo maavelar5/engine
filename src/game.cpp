@@ -29,7 +29,6 @@ namespace game
             {
                 // make the scaled rendering look smoother.
                 SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
-                SDL_SetHint( SDL_HINT_RENDER_VSYNC  , "linear" );
                 SDL_RenderSetLogicalSize( renderer,
                                           GAME_LOGICAL_WIDTH,
                                           GAME_LOGICAL_HEIGHT );
