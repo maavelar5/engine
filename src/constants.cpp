@@ -47,7 +47,7 @@ const std::string SPRITES_PATH =
 #endif
 
 /* Physics */
-const Vector GRAVITY( 0 , 750 );
+const Vector GRAVITY( 0 , 1000 );
 
 /* Scenario size */
 const int SCENARIO_WIDTH = 7168;
@@ -95,4 +95,4 @@ const SDL_Color white = { 255 , 255 , 255 },
 const SDL_Rect LT = {  10 , 10 , 50 , 50 } , T = { 100 , 10 , 50 , 50 } , RT = { 200 , 10 , 50 , 50 };
 
 /* MAX GRAVITY */
-const float MAX_GRAVITY = 750.0;
+const float MAX_GRAVITY = 500.0;

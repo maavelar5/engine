@@ -1,5 +1,88 @@
 #include "collision.h"
 
+AABB::AABB ( float x , float y , float w , float h )
+{
+    this->x = x;
+    this->y = y;
+    this->w = w;
+    this->h = h;
+}
+
+AABB::~AABB () { }
+
+bool AABB::left ( AABB intersection )
+{
+    if ( intersection.x >= x &&
+         intersection.y >= y &&
+         intersection.w <= x + 4 &&
+         intersection.h <= h )
+    {
+        return true;        
+    }
+
+    else
+    {
+        return false;        
+    }
+}
+
+bool AABB::right ( AABB intersection )
+{
+    if ( intersection.x >= x + 4 &&
+         intersection.y >= y &&
+         intersection.w <= w &&
+         intersection.h <= h )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool AABB::top ( AABB intersection )
+{
+    if ( intersection.x >= x &&
+         intersection.y >= y &&
+         intersection.w <= w &&
+         intersection.h <= y + 4 )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool AABB::bot ( AABB intersection )
+{
+    if ( intersection.x >= x &&
+         intersection.y >= y + 4 &&
+         intersection.w <= w &&
+         intersection.h <= h )
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool AABB::checkIntersection ( AABB a , AABB b )
+{
+    
+    if ( a.x < b.w &&
+         a.w > b.x &&
+         a.y < b.h &&
+         a.h > b.y )
+        return true;
+    else
+        return false;
+}
+
 namespace collision
 {
     void collide ()
@@ -35,76 +118,62 @@ namespace collision
         }
     }
 
-    void detect ( Entity &a , Entity &b )
+    void detect ( Entity &entity , Entity &platform )
     {
-        float x1 = floor(a.position.x), y1 = floor(a.position.y),
-            w1 = x1 + a.screen.w, h1 = y1 + a.screen.h,
-            x2 = floor(b.position.x) , y2 = floor(b.position.y),
-            w2 = x2 + b.screen.w , h2 = y2 + b.screen.h;
+        AABB a ( floor(entity.position.x), floor(entity.position.y),
+                 floor(entity.position.x) + entity.screen.w,
+                 floor(entity.position.y) + entity.screen.h );
 
-        if ( x1 < w2 && w1 > x2 && y1 < h2 && h1 > y2 )
+        AABB b ( floor(platform.position.x) , floor(platform.position.y),
+                 floor(platform.position.x) + platform.screen.w,
+                 floor(platform.position.y) + platform.screen.h );
+
+        if ( AABB::checkIntersection ( a , b ) )
         {
-            float x3 = ( x1 >= x2 ) ? x1 : x2,
-                y3 = ( y1 >= y2 ) ? y1 : y2,
-                w3 = ( w1 <= w2 ) ? w1 : w2,
-                h3 = ( h1 <= h2 ) ? h1 : h2;
+            AABB c ( ( a.x >= b.x ) ? a.x : b.x,
+                     ( a.y >= b.y ) ? a.y : b.y,
+                     ( a.w <= b.w ) ? a.w : b.w,
+                     ( a.h <= b.h ) ? a.h : b.h );
 
-            float topX = x1 , topY = y1 , topW = w1 , topH = y1 + 7;
-            float botX = x1 , botY = y1 + 1 , botW = w1 , botH = h1;
-            float leftX = x1 , leftY = y1, leftW = x1 + 7 , leftH = h1;
-            float rightX = x1 + 1 , rightY = y1 , rightW = w1 , rightH = h1;
-
-            if ( x3 >= topX &&
-                 w3 <= topW &&
-                 y3 >= topY &&
-                 h3 <= topH )
+            if ( a.top ( c ) )
             {
-                if ( a.velocity.y > 0 )
+                if ( entity.velocity.y > 0 )
                     return;
 
-                top ( a , h3 - y3 );
+                top ( entity , c.h - c.y );
             }
-            else if ( x3 >= botX &&
-                      w3 <= botW &&
-                      y3 >= botY &&
-                      h3 <= botH )
+            else if ( a.bot ( c ) )
             { 
-                if ( a.velocity.y < 0 )
+                if ( entity.velocity.y < 0 )
                     return;
 
-                bot ( a , h3 - y3 );
+                bot ( entity , c.h - c.y );
             }
-            else if ( x3 >= leftX &&
-                      w3 <= leftW &&
-                      y3 >= leftY &&
-                      h3 <= leftH )
+            else if ( a.left ( c ) )
             { 
-                left ( a , w3 - x3 );               
+                left ( entity , c.w - c.x );               
             }
-            else if ( x3 >= rightX &&
-                      w3 <= rightW &&
-                      y3 >= rightY &&
-                      h3 <= rightH )
+            else if ( a.right ( c ) )
             { 
-                right ( a , w3 - x3 );               
+                right ( entity , c.w - c.x );               
             }
-            else if ( x1 == x3 &&
-                      y1 == y3 &&
-                      w1 == w3 &&
-                      h1 == h3 )
+            else if ( a.x == c.x &&
+                      a.y == c.y &&
+                      a.w == c.w &&
+                      a.h == c.h )
             {
-                if ( a.previousVelocity.y > 0 )
-                    top ( a , h3 - y3 );
+                if ( entity.previousVelocity.y > 0 )
+                    top ( entity , c.h - c.y );
             }
             else
             {
                 // FAIL: Check why the case failed
                 SDL_Log ( "Player    => x1: %.2f y1: %.2f w1: %.2f h1: %.2f \n",
-                          x1 , y1 , w1 , h1 );
+                          a.x , a.y , a.w , a.h );
                 SDL_Log ( "Platform  => x2: %.2f y2: %.2f w2: %.2f h2: %.2f \n",
-                          x2 , y2 , w2 , h2 );
-                SDL_Log ( "Intersect => x3: %.2f y3: %.2f w3: %.2f h3: %.2f \n",
-                          x3 , y3 , w3 , h3 );
+                          b.x , b.y , b.w , b.h );
+                SDL_Log ( "Intersect => c.x: %.2f c.y: %.2f c.w: %.2f c.h: %.2f \n",
+                          c.x , c.y , c.w , c.h );
 
                 SDL_Log ( "\n\n" );
             }
