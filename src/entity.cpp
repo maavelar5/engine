@@ -44,11 +44,12 @@ void Entity::move ()
     if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) )
     {
         velocity.y += GRAVITY.y * timer::timeStep;
-        velocity.y = ( velocity.y > MAX_GRAVITY ) ? MAX_GRAVITY : velocity.y;
+        velocity.y = ( velocity.y > MAX_GRAVITY )
+            ? MAX_GRAVITY
+            : velocity.y;
     }
     
-    position.x += velocity.x * timer::timeStep;
-    position.y += velocity.y * timer::timeStep;
+    position += velocity * timer::timeStep;
 
     positionLimits ();
 
@@ -56,7 +57,7 @@ void Entity::move ()
     updateLocator ();
 }
 
-void Entity::move ( Vector a )
+void Entity::move ( Vector a , Uint8 speed , Uint8 minDistance )
 {
     previousPosition = position;
 
@@ -70,10 +71,13 @@ void Entity::move ( Vector a )
 
     Vector direction = position - a;
 
-    if ( direction.length() > 50 )
+    if ( direction.length() > minDistance )
     {
         direction.normalize();
-        position += direction * 1;
+
+        float value = speed * timer::timeStep;
+
+        position += direction * ( speed * timer::timeStep );
 
         position.getAngle ( a );
         positionLimits ();
@@ -100,7 +104,7 @@ void Entity::adjust ()
 {
     Vector position = this->position;
 
-    if ( config & KINEMATIC )
+    if ( config & KINEMATIC && previousPosition != position )
     {
         float cameraDistance = renderPosition.x;
 
@@ -212,6 +216,11 @@ std::string Entity::getPositionHash ( int x , int y )
     return std::to_string ( y ) + "," + std::to_string ( x );
 }
 
+void Entity::update ()
+{
+    
+}
+
 Entities::Entities ( Uint8 config , std::string filePath )
     : Texture ( filePath )
 {
@@ -243,7 +252,7 @@ void Entities::move ( Vector a )
 {
     for ( auto &entity : entities )
     {
-        entity->move( a );
+        entity->move( a , speed );
     }
 }
 

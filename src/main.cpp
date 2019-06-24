@@ -42,7 +42,7 @@ int main( int argc, char* argv[] )
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
-            enemies.move ( player.position );
+            enemies.update ( player.position );
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }

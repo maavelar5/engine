@@ -7,9 +7,7 @@
 
 struct Projectile : public Entities
 {
-    int speed;
-
-    Projectile ();
+    Projectile ( Uint8 );
     ~Projectile ();
 
     void add ( float , float );

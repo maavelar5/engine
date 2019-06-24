@@ -21,8 +21,8 @@
 
 struct Entity
 {
-    Vector position , velocity,
-        previousPosition , previousVelocity , renderPosition;
+    Vector position , velocity, previousPosition,
+        previousVelocity , renderPosition;
 
     SDL_Rect screen , locator;
 
@@ -33,8 +33,12 @@ struct Entity
     Entity ( float , float , int , int , Uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
-    void adjust() , move () , move ( Vector ) , render ( SDL_Texture * ),
-        setLocator (), deleteLocator () , updateLocator () , positionLimits ();
+    void adjust () , render ( SDL_Texture * ) , setLocator (),
+        deleteLocator (), updateLocator () , positionLimits ();
+
+    virtual void move () , update (),
+        move ( Vector , Uint8 speed , Uint8 minDistance = 0 );
+        
 
     static std::string getPositionHash ( int , int );
 };
@@ -42,7 +46,7 @@ struct Entity
 struct Entities : public Texture
 {
     std::vector < std::shared_ptr < Entity > > entities;
-    Uint8 config;
+    Uint8 speed , config;
 
     Entities ( Uint8 config = ACTIVE | STATIC,
                std::string filePath = GENERIC_PLATFORM_FILE_PATH );

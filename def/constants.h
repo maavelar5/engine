@@ -78,11 +78,16 @@ extern const std::string MAPPER_FILE_PATH;
 extern const Uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR , NONE_SENSOR;
 
 /* HUD colors and other shit */
-
 extern const SDL_Color white , black;
 extern const SDL_Rect LT , T , RT;
 
 /* MAX GRAVITY */
 extern const float MAX_GRAVITY;
+
+/* ENEMY MOVES */
+const Uint8 ENEMY_NONE = 0;
+const Uint8 ENEMY_MOVE = 1;
+const Uint8 ENEMY_SEARCH = 2;
+const Uint8 ENEMY_ATTACK = 3;
 
 #endif
