@@ -33,8 +33,8 @@ struct Entity
     Entity ( float , float , int , int , Uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
-    void adjust() , move () , render ( SDL_Texture * ), setLocator (),
-        deleteLocator () , updateLocator () , positionLimits ();
+    void adjust() , move () , move ( Vector ) , render ( SDL_Texture * ),
+        setLocator (), deleteLocator () , updateLocator () , positionLimits ();
 
     static std::string getPositionHash ( int , int );
 };
@@ -42,19 +42,25 @@ struct Entity
 struct Entities : public Texture
 {
     std::vector < std::shared_ptr < Entity > > entities;
+    Uint8 config;
 
-    Entities ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
+    Entities ( Uint8 config = ACTIVE | STATIC,
+               std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Entities ();
 
-    virtual void render () , move () , add ( float , float , int , int );
+    virtual void render () , move () , move ( Vector ),
+        add ( float , float , int , int );
 };
 
 namespace entities
 {
-    extern std::map < std::string , std::vector < Entity * > > kinematics , statics;
+    extern std::map < std::string ,
+                      std::vector < Entity * > > kinematics , statics;
     extern std::vector < Entity * > queue;
 
-    void addHashIfNotExists ( std::string , std::map < std::string , std::vector < Entity * > > * collection );
+    void addHashIfNotExists ( std::string,
+                              std::map < std::string , std::vector
+                              < Entity * > > * collection );
 }
 
 #endif

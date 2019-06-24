@@ -37,6 +37,9 @@ endif
 all : $(OBJS)
 	$(CC) $(OBJS_DIR) $(CFLAGS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(EXE)
 
+automated_movement.o : automated_movement.cpp
+	$(CC) -c -w $(CPPFLAGS) src/automated_movement.cpp -o obj/automated_movement.o
+
 camera.o : camera.cpp
 	$(CC) -c -w $(CPPFLAGS) src/camera.cpp -o obj/camera.o
 
@@ -45,6 +48,9 @@ constants.o : constants.cpp
 
 collision.o : collision.cpp
 	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
+
+enemy.o : enemy.cpp
+	$(CC) -c -w $(CPPFLAGS) src/enemy.cpp -o obj/enemy.o
 
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o

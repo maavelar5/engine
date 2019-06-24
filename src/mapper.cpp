@@ -27,14 +27,14 @@ void Mapper::load ()
 
     while ( std::regex_search ( s , m , e ) )
     {
-        int X = std::stoi( m[ 1 ] ),
-            Y = std::stoi( m[ 2 ] ),
-            W = std::stoi( m[ 3 ] ),
-            H = std::stoi( m[ 4 ] );
+        int x = std::stoi( m[ 1 ] ),
+            y = std::stoi( m[ 2 ] ),
+            w = std::stoi( m[ 3 ] ),
+            h = std::stoi( m[ 4 ] );
 
         std::string type = m[ 5 ];
 
-        add ( X , Y , W , H , type );
+        add ( x , y , w , h , type );
 
         s = m.suffix().str();
     }

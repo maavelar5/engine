@@ -77,6 +77,10 @@ const std::string GENERIC_PLATFORM_FILE_PATH = SPRITES_PATH +
 const std::string GENERIC_ENEMY_FILE_PATH = SPRITES_PATH + 
     "enemy.png";
 
+/* Arrow enemy */
+const std::string ARROW_FILE_PATH = SPRITES_PATH + 
+    "arrow.png";
+
 /* Generic projectile */
 const std::string GENERIC_PROJECTILE_FILE_PATH = SPRITES_PATH + 
     "projectile.png";

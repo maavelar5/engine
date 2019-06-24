@@ -10,77 +10,55 @@ AABB::AABB ( float x , float y , float w , float h )
 
 AABB::~AABB () { }
 
-bool AABB::left ( AABB intersection )
+bool AABB::left ( AABB a )
 {
-    if ( intersection.x >= x &&
-         intersection.y >= y &&
-         intersection.w <= x + 4 &&
-         intersection.h <= h )
-    {
-        return true;        
-    }
+    float value = ( ( w - x ) / 10 ) * 9;
 
-    else
-    {
-        return false;        
-    }
+    return ( a.x >= x && a.y >= y && a.w <= x + value && a.h <= h )
+        ? true
+        : false;
 }
 
-bool AABB::right ( AABB intersection )
+bool AABB::right ( AABB a )
 {
-    if ( intersection.x >= x + 4 &&
-         intersection.y >= y &&
-         intersection.w <= w &&
-         intersection.h <= h )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    float value = ( w - x ) / 10;
+
+    return ( a.x >= x + value && a.y >= y && a.w <= w && a.h <= h )
+        ? true
+        : false;
 }
 
-bool AABB::top ( AABB intersection )
+bool AABB::top ( AABB a )
 {
-    if ( intersection.x >= x &&
-         intersection.y >= y &&
-         intersection.w <= w &&
-         intersection.h <= y + 4 )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    float value = ( h - y ) / 10 * 9;
+
+    return ( a.x >= x && a.y >= y && a.w <= w && a.h <= y + value )
+        ? true
+        : false;
 }
 
-bool AABB::bot ( AABB intersection )
+bool AABB::bot ( AABB a )
 {
-    if ( intersection.x >= x &&
-         intersection.y >= y + 4 &&
-         intersection.w <= w &&
-         intersection.h <= h )
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    float value = ( h - y ) / 10;
+
+    return (a.x >= x && a.y >= y + value && a.w <= w && a.h <= h )
+        ? true
+        : false;
+}
+
+AABB AABB::getIntersection ( AABB a , AABB b )
+{
+    return AABB( ( a.x >= b.x ) ? a.x : b.x,
+                 ( a.y >= b.y ) ? a.y : b.y,
+                 ( a.w <= b.w ) ? a.w : b.w,
+                 ( a.h <= b.h ) ? a.h : b.h );
 }
 
 bool AABB::checkIntersection ( AABB a , AABB b )
 {
-    
-    if ( a.x < b.w &&
-         a.w > b.x &&
-         a.y < b.h &&
-         a.h > b.y )
-        return true;
-    else
-        return false;
+    return ( a.x < b.w && a.w > b.x && a.y < b.h && a.h > b.y )
+        ? true
+        : false;
 }
 
 namespace collision
@@ -114,7 +92,8 @@ namespace collision
     {
         for ( auto &platform : entities )
         {
-            detect ( entity , (*platform));
+            if ( entity.config & ACTIVE )
+                detect ( entity , (*platform));
         }
     }
 
@@ -130,23 +109,20 @@ namespace collision
 
         if ( AABB::checkIntersection ( a , b ) )
         {
-            AABB c ( ( a.x >= b.x ) ? a.x : b.x,
-                     ( a.y >= b.y ) ? a.y : b.y,
-                     ( a.w <= b.w ) ? a.w : b.w,
-                     ( a.h <= b.h ) ? a.h : b.h );
-
-            if ( a.top ( c ) )
+            if ( entity.config & BULLET )
             {
-                if ( entity.velocity.y > 0 )
-                    return;
+                entity.config &= ~ACTIVE;
+                return;
+            }
 
+            AABB c = AABB::getIntersection ( a , b );
+
+            if ( a.top ( c ) && entity.velocity.y < 0 )
+            {
                 top ( entity , c.h - c.y );
             }
-            else if ( a.bot ( c ) )
+            else if ( a.bot ( c ) && entity.velocity.y >= 0 )
             { 
-                if ( entity.velocity.y < 0 )
-                    return;
-
                 bot ( entity , c.h - c.y );
             }
             else if ( a.left ( c ) )
@@ -157,25 +133,22 @@ namespace collision
             { 
                 right ( entity , c.w - c.x );               
             }
-            else if ( a.x == c.x &&
-                      a.y == c.y &&
-                      a.w == c.w &&
-                      a.h == c.h )
+            else if ( a.x == c.x && a.y == c.y &&
+                      a.w == c.w && a.h == c.h )
             {
-                if ( entity.previousVelocity.y > 0 )
-                    top ( entity , c.h - c.y );
+                // This shouldn't happen
+                // TODO: Validate nearest wall and set proper collision
             }
             else
             {
-                // FAIL: Check why the case failed
-                SDL_Log ( "Player    => x1: %.2f y1: %.2f w1: %.2f h1: %.2f \n",
+                // FAIL: Check coordinates in which the resolution failed
+                SDL_Log ( "Kinematic => x: %.2f y: %.2f w: %.2f h: %.2f \n",
                           a.x , a.y , a.w , a.h );
-                SDL_Log ( "Platform  => x2: %.2f y2: %.2f w2: %.2f h2: %.2f \n",
+                SDL_Log ( "Platform  => x: %.2f y: %.2f w: %.2f h: %.2f \n",
                           b.x , b.y , b.w , b.h );
-                SDL_Log ( "Intersect => c.x: %.2f c.y: %.2f c.w: %.2f c.h: %.2f \n",
+                SDL_Log ( "Intersect => x: %.2f y: %.2f w: %.2f h: %.2f \n",
                           c.x , c.y , c.w , c.h );
-
-                SDL_Log ( "\n\n" );
+                SDL_Log ( "Collision detection failed\n\n" );
             }
         }
     }

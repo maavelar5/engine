@@ -8,6 +8,7 @@
 #include "hud.h"
 #include "info.h"
 #include "font.h"
+#include "enemy.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -24,14 +25,12 @@ int main( int argc, char* argv[] )
     Mapper mapper;
     SDL_Event event;
 
-    SDL_RaiseWindow ( game::window );
-    //SDL_HideWindow ( game::debugWindow );
+    Enemies enemies;
+
+    enemies.add ( 100 , 50 , 32 , 32 );
 
     while ( !game::quit )
     {
-        SDL_RenderClear( game::renderer );
-        SDL_RenderClear ( game::debugRenderer );
-
         timer::update();
 
         while( SDL_PollEvent( &event ) )
@@ -43,22 +42,27 @@ int main( int argc, char* argv[] )
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
+            enemies.move ( player.position );
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }
 
         timer::interpolation = timer::acumulator / timer::timeStep;
 
+        SDL_RenderClear( game::renderer );
+        SDL_RenderClear ( game::debugRenderer );
+
         mapper.render();
         player.render();
+        enemies.render();
 
         timer::updateFPS ();
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
-        info::draw ( "Objects: " , std::to_string ( entities::queue.size() ));
-        info::draw ( "interpolation: " , std::to_string ( timer::interpolation ));
-        info::draw ( "SENSOR: " , std::to_string ( player.sensor ));
-        info::draw ( "velocity.y: " , std::to_string ( player.velocity.y ) );        
+        info::draw ( "Projectiles: " , std::to_string (
+                         player.projectile.entities.size() ) );
+        info::draw ( "X: " , std::to_string ( player.position.x ) );
+        info::draw ( "Y: " , std::to_string ( player.position.y ) );
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );

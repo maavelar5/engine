@@ -9,7 +9,7 @@ namespace game
 
     bool init ()
     {
-        SDL_Init( SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER );
+        SDL_Init( SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER );
 
         window = SDL_CreateWindow( WINDOW_TITLE.c_str(),
                                    SDL_WINDOWPOS_UNDEFINED,
@@ -51,7 +51,7 @@ namespace game
                             break;
                         else
                             fprintf( stderr, "Could not open gamecontroller %i: %s\n" , i, SDL_GetError() );
-                    } 
+                    }
                 }
 
                 initDebugObjects ();
@@ -67,15 +67,16 @@ namespace game
     bool initDebugObjects ()
     {
         debugWindow = SDL_CreateWindow( "Debugging Window",
-                                        SDL_WINDOWPOS_UNDEFINED,
-                                        SDL_WINDOWPOS_UNDEFINED,
-                                        1920 , 1080,
-                                        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
-        
+                                        0 , 0,
+                                        512 , 1080,
+                                        SDL_WINDOW_SHOWN |
+                                        SDL_WINDOW_RESIZABLE );
+
         if ( debugWindow )
         {
             debugRenderer = SDL_CreateRenderer( debugWindow , -1,
-                                                SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+                                                SDL_RENDERER_ACCELERATED |
+                                                SDL_RENDERER_PRESENTVSYNC );
 
             if ( debugRenderer )
             {
@@ -88,7 +89,18 @@ namespace game
     void event ( SDL_Event event )
     {
         if ( event.type == SDL_QUIT )
-            quit = SDL_TRUE;
+        {
+            quit = SDL_TRUE;            
+        }
+        else if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
+        {
+            switch( event.key.keysym.sym )
+            {
+                case SDLK_l: game::quit = SDL_TRUE; break;
+                case SDLK_o: SDL_ShowWindow ( game::debugWindow ); break;
+                case SDLK_h: SDL_HideWindow ( game::debugWindow ); break;
+            }
+        }
     }
     
 }

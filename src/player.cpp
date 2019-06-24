@@ -3,7 +3,7 @@
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
                     Entity ( 32 , 32 , 8 , 8 , KINEMATIC | CAMERA | ACTIVE )
 {
-    speed = 100;
+    speed = 200;
 }
 
 Player::~Player () { }
@@ -30,7 +30,6 @@ void Player::event( SDL_Event event )
                 position.x = 100;
                 position.y = 100;
                 break;
-            case SDLK_l: game::quit = SDL_TRUE; break;
         }
     }
     else if( event.type == SDL_KEYUP && event.key.repeat == 0 )

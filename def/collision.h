@@ -16,6 +16,8 @@ struct AABB
 
     bool top ( AABB ) , right ( AABB ) , bot ( AABB ) , left ( AABB );
 
+    static AABB getIntersection  ( AABB , AABB );
+
     static bool checkIntersection ( AABB , AABB );
 };
 

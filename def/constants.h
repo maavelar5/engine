@@ -65,6 +65,9 @@ extern const std::string GENERIC_PLATFORM_FILE_PATH;
 /* Generic enemy */
 extern const std::string GENERIC_ENEMY_FILE_PATH;
 
+/* Arrow enemy */
+extern const std::string ARROW_FILE_PATH;
+
 /* Generic projectile */
 extern const std::string GENERIC_PROJECTILE_FILE_PATH;
 

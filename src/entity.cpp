@@ -22,7 +22,7 @@ Entity::Entity ( float x , float y , int w , int h , Uint8 config )
                floor ( y - camera::position.y ),
                w , h };
 
-    position = { x , y };
+    previousPosition = position = { x , y };
 
     this->config = config;
 
@@ -41,29 +41,59 @@ void Entity::move ()
 {
     previousPosition = position;
 
-    if ( !( sensor & BOT_SENSOR ) )
+    if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) )
     {
         velocity.y += GRAVITY.y * timer::timeStep;
         velocity.y = ( velocity.y > MAX_GRAVITY ) ? MAX_GRAVITY : velocity.y;
     }
-
+    
     position.x += velocity.x * timer::timeStep;
     position.y += velocity.y * timer::timeStep;
 
     positionLimits ();
 
     entities::queue.push_back ( this );
-    updateLocator ();        
+    updateLocator ();
+}
+
+void Entity::move ( Vector a )
+{
+    previousPosition = position;
+
+    if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) )
+    {
+        velocity.y += GRAVITY.y * timer::timeStep;
+        velocity.y = ( velocity.y > MAX_GRAVITY )
+            ? MAX_GRAVITY
+            : velocity.y;
+    }
+
+    Vector direction = position - a;
+
+    if ( direction.length() > 50 )
+    {
+        direction.normalize();
+        position += direction * 1;
+
+        position.getAngle ( a );
+        positionLimits ();
+
+        entities::queue.push_back ( this );
+        updateLocator ();        
+    }
 }
 
 void Entity::render ( SDL_Texture *texture )
 {
     adjust ();
 
-    SDL_RenderCopy ( game::renderer,
-                     texture,
-                     nullptr,
-                     &screen );
+    SDL_RenderCopyEx( game::renderer,
+                      texture,
+                      nullptr,
+                      &screen,
+                      position.angle,
+                      nullptr,
+                      SDL_FLIP_NONE );
 }
 
 void Entity::adjust ()
@@ -182,30 +212,43 @@ std::string Entity::getPositionHash ( int x , int y )
     return std::to_string ( y ) + "," + std::to_string ( x );
 }
 
-Entities::Entities ( std::string filePath ) : Texture ( filePath )
+Entities::Entities ( Uint8 config , std::string filePath )
+    : Texture ( filePath )
 {
-    
+    this->config = config;
 }
 
 Entities::~Entities () { }
 
 void Entities::render ()
 {
-    for ( auto entity : entities )
+    for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
     {
-        entity->render ( texture );
+        if ( (*entity)->config & ACTIVE )
+            (*entity)->render ( texture );
+        else
+            entities.erase ( entity-- );
     }
 }
 
 void Entities::move ()
 {
-    for ( auto entity : entities )
+    for ( auto &entity : entities )
     {
         entity->move();
     }
 }
 
+void Entities::move ( Vector a )
+{
+    for ( auto &entity : entities )
+    {
+        entity->move( a );
+    }
+}
+
 void Entities::add ( float x , float y , int w , int h )
 {
-    entities.push_back ( std::shared_ptr < Entity > (new Entity ( x , y , w , h ) ));
+    entities.push_back ( std::shared_ptr < Entity > (
+                             new Entity ( x , y , w , h  , config ) ));
 }
