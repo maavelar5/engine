@@ -8,14 +8,14 @@
 struct Timer
 {
     Uint32 delay , currentTime;
-    Uint8 status , config;
+    Uint8 status;
 
     Timer ( Uint32 , Uint8 config = 1 );
     Timer ();
     ~Timer ();
 
     void start () , stop () , pause ();
-    Uint8 check ();    
+    Uint8 check ();
 };
 
 struct AutomatedMovement

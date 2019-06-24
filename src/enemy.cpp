@@ -2,7 +2,7 @@
 
 Enemy::Enemy ( float x , float y , float w , float h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC ),
-    projectiles ( 1000 )
+    projectiles ( 1000 , this )
 {
 
     moves [ ENEMY_NONE ] = Timer ( 3000 );
@@ -35,13 +35,15 @@ void Enemy::update ( Vector a , Uint8 speed )
     switch ( current )
     {
         case ENEMY_MOVE:
+            projectiles.isActive = false;
             move ( a , speed , 50 );
             break;
         case ENEMY_SEARCH:
+            projectiles.isActive = false;
             search ( a );
             break;
         case ENEMY_ATTACK:
-            projectiles.add ( position.x , position.y );
+            projectiles.isActive = true;
             break;
         default:
             break;
@@ -61,6 +63,7 @@ void Enemies::update ( Vector a )
     for ( auto &entity : entities )
     {
         entity->update ( a , speed );
+        entity->projectiles.update ();
         entity->projectiles.move ( a );
     }
 }

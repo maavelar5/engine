@@ -2,7 +2,7 @@
 
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
                     Entity ( 32 , 32 , 8 , 8 , KINEMATIC | CAMERA | ACTIVE ),
-                    projectile ( 1000 )
+                    projectile ( 1000 , this )
 {
     speed = 200;
 }
@@ -25,7 +25,7 @@ void Player::event( SDL_Event event )
                 ? -400
                 : velocity.y; break;
             case SDLK_q:
-                projectile.add ( position.x + 8 , position.y );
+                projectile.isActive = true;
                 break;
             case SDLK_e:
                 position.x = 100;
@@ -45,7 +45,7 @@ void Player::event( SDL_Event event )
                 ? 0
                 : velocity.y;
                 break;
-            case SDLK_q: break;
+            case SDLK_q: projectile.isActive = false; break;
         }
     }
     #if __ANDROID__
@@ -102,5 +102,6 @@ void Player::render ()
 void Player::move ()
 {
     Entity::move();
+    projectile.update();
     projectile.move();
 }

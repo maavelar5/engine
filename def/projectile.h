@@ -4,13 +4,20 @@
 #include "constants.h"
 #include "entity.h"
 #include "texture.h"
+#include "automated_movement.h"
 
-struct Projectile : public Entities
+#include <memory>
+
+struct Projectile : public Entities , Timer
 {
-    Projectile ( Uint8 );
+    Entity *entity;
+
+    Projectile ( Uint8 , Entity * );
     ~Projectile ();
 
-    void add ( float , float );
+    void add ( float , float ) , update ();
+
+    bool isActive;
 };
 
 #endif

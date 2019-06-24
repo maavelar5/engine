@@ -53,7 +53,7 @@ struct Entities : public Texture
     ~Entities ();
 
     virtual void render () , move () , move ( Vector ),
-        add ( float , float , int , int );
+        add ( float , float , int , int ) , update ();
 };
 
 namespace entities

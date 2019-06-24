@@ -261,3 +261,8 @@ void Entities::add ( float x , float y , int w , int h )
     entities.push_back ( std::shared_ptr < Entity > (
                              new Entity ( x , y , w , h  , config ) ));
 }
+
+void Entities::update ()
+{
+    
+}

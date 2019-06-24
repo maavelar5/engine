@@ -4,6 +4,7 @@ Timer::Timer ( Uint32 delay , Uint8 config )
 {
     this->delay = delay;
     status = 0;
+    currentTime = 0;
 }
 
 Timer::Timer () { }
