@@ -15,7 +15,7 @@ OBJS = $(notdir $(patsubst %.cpp,%.o,$(wildcard src/*.cpp)))
 OBJS_DIR = $(addprefix obj/,$(OBJS))
 
 #CC specifies which compiler we're using
-CC = g++ -std=c++14
+CC = g++ -std=c++17
 
 #CFLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings

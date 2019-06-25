@@ -26,7 +26,7 @@ struct Entity
 
     SDL_Rect screen , locator;
 
-    Uint8 config , sensor , status;
+    Uint8 config , sensor;
 
     std::map < std::string , std::vector < Entity * > > * collection;
 
@@ -43,17 +43,57 @@ struct Entity
     static std::string getPositionHash ( int , int );
 };
 
+template < class T >
 struct Entities : public Texture
 {
-    std::vector < std::shared_ptr < Entity > > entities;
+    std::vector < std::shared_ptr < T > > entities;
     Uint8 speed , config;
+    
+    Entities ( Uint8 config , std::string filePath ) :
+        Texture ( filePath )
+    {
+        this->config = config;
+    }
 
-    Entities ( Uint8 config = ACTIVE | STATIC,
-               std::string filePath = GENERIC_PLATFORM_FILE_PATH );
-    ~Entities ();
+    ~Entities () { }
 
-    virtual void render () , move () , move ( Vector ),
-        add ( float , float , int , int ) , update ();
+    virtual void render ()
+    {
+        for ( auto entity = entities.begin();
+              entity != entities.end();
+              entity++ )
+        {
+            if ( (*entity)->config & ACTIVE )
+            {
+                (*entity)->render ( texture );                
+            }
+            else
+            {
+                entities.erase ( entity-- );                
+            }
+        }
+    }
+
+    virtual void move ()
+    {
+        for ( auto &entity : entities )
+        {
+            entity->move();
+        }
+    }
+
+    virtual void move ( Vector &vector )
+    {
+        for ( auto &entity : entities )
+        {
+            entity->move( vector , speed );
+        }
+    }
+
+    virtual add ( float x , float y , int w , int h )
+    {
+        entities.push_back ( std::shared_ptr < T > ( new T ( x , y , w , h ) ) );
+    }
 };
 
 namespace entities

@@ -8,16 +8,15 @@
 
 #include <memory>
 
-struct Projectile : public Entities , Timer
+struct Projectile : public Entities < Entity > , Timer
 {
-    Entity *entity;
+    Entity * entity;
+    bool isActive;
 
-    Projectile ( Uint8 , Entity * );
+    Projectile ( Uint8 speed , Entity * entity );
     ~Projectile ();
 
-    void add ( float , float ) , update ();
-
-    bool isActive;
+    void add ( float , float ) ,  update ();
 };
 
 #endif

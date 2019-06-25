@@ -19,16 +19,14 @@ struct Enemy : public Entity , AutomatedMovement
     void search ( Vector ) , update ( Vector , Uint8 );
 };
 
-struct Enemies : public Entities
+struct Enemies : public Entities < Enemy >
 {
-    std::vector < std::shared_ptr < Enemy > > entities;
+    Entity *entity;
 
-    Enemies ();
+    Enemies ( Entity * entity = nullptr );
     ~Enemies ();
 
-    void update ( Vector ) , render () override,
-        add ( float , float , int , int ) override;
-
+    void update () , render () override , add ( float , float );
 };
 
 #endif

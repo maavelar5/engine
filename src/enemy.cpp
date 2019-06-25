@@ -51,27 +51,28 @@ void Enemy::update ( Vector a , Uint8 speed )
 
 }
 
-Enemies::Enemies () : Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
+Enemies::Enemies ( Entity * entity ) : Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
 {
     speed = 200;
+    this->entity = entity;
 }
 
 Enemies::~Enemies () { }
 
-void Enemies::update ( Vector a )
+void Enemies::update ()
 {
     for ( auto &entity : entities )
     {
-        entity->update ( a , speed );
+        entity->update ( entity->position , speed );
         entity->projectiles.update ();
-        entity->projectiles.move ( a );
+        entity->projectiles.move ( entity->position );
     }
 }
 
-void Enemies::add ( float x , float y , int w , int h )
+void Enemies::add ( float x , float y )
 {
     entities.push_back ( std::shared_ptr < Enemy > (
-                             new Enemy ( x , y , w , h  ) ) );
+                             new Enemy ( x , y , 32 , 32  ) ) );
 }
 
 void Enemies::render ()
