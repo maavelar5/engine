@@ -1,4 +1,4 @@
-((nil . ((projectile-project-compilation-cmd . "mingw32-make")
-         (projectile-project-run-cmd . "marcoman.exe")
-         (company-clang-arguments . ("-I/c/Users/marco/AppData/Roaming/engine/def/"))
+((nil . ((projectile-project-compilation-cmd . "make")
+         (projectile-project-run-cmd . "./marcoman")
+         (company-clang-arguments . ("-I/home/marco/engine/def/"))
          )))
