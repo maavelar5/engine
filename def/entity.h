@@ -49,7 +49,7 @@ struct Entities : public Texture
     std::vector < std::shared_ptr < T > > entities;
     Uint8 speed , config;
     
-    Entities ( Uint8 config , std::string filePath ) :
+    Entities ( Uint8 config = ACTIVE | STATIC , std::string filePath = GENERIC_PLATFORM_FILE_PATH ) :
         Texture ( filePath )
     {
         this->config = config;
@@ -90,7 +90,7 @@ struct Entities : public Texture
         }
     }
 
-    virtual add ( float x , float y , int w , int h )
+    virtual void add ( float x , float y , int w , int h )
     {
         entities.push_back ( std::shared_ptr < T > ( new T ( x , y , w , h ) ) );
     }
