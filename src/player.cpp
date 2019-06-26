@@ -2,7 +2,7 @@
 
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
                     Entity ( 32 , 32 , 8 , 8 , KINEMATIC | CAMERA | ACTIVE ),
-                    projectile ( 1000 , this )
+                    projectile ( 400 , this )
 {
     speed = 200;
 }

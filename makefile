@@ -29,7 +29,7 @@ SDL2_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 
 #LINKER_FLAGS, condition to determine if windows or not
 ifeq ($(OS),Windows_NT)
-	LINKER_FLAGS = -w -Wl,-subsystem,windows -lmingw32 -lSDL2main $(SDL2_FLAGS)
+	LINKER_FLAGS = -static-libstdc++ -w -Wl,-subsystem,windows -lmingw32 -lSDL2main $(SDL2_FLAGS)
 else
 	LINKER_FLAGS = $(SDL2_FLAGS)
 endif
