@@ -8,7 +8,7 @@
 
 struct Player : public Entity , Texture
 {
-    int speed;
+    uint16 speed;
     Projectile projectile;
 
     Player ();

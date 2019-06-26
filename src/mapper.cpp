@@ -2,8 +2,8 @@
 
 Mapper::Mapper ()
 {
-    entities [ "gp" ] = std::shared_ptr < Entities >
-        ( new Entities () );
+    entities [ "gp" ] = std::shared_ptr < Entities < Entity > >
+        ( new Entities < Entity > () );
 
     load();
 }

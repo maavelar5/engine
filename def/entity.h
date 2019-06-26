@@ -26,34 +26,75 @@ struct Entity
 
     SDL_Rect screen , locator;
 
-    Uint8 config , sensor , status;
+    uint8 config , status , sensor;
 
     std::map < std::string , std::vector < Entity * > > * collection;
 
-    Entity ( float , float , int , int , Uint8 config = STATIC | ACTIVE );
+    Entity ( float , float , int , int , uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
     void adjust () , render ( SDL_Texture * ) , setLocator (),
         deleteLocator (), updateLocator () , positionLimits ();
 
-    virtual void move () , update (),
-        move ( Vector , Uint8 speed , Uint8 minDistance = 0 );
+    virtual void move (),
+        move ( Vector , uint16 speed , uint8 minDistance = 0 );
         
-
     static std::string getPositionHash ( int , int );
 };
 
+template < class T >
 struct Entities : public Texture
 {
-    std::vector < std::shared_ptr < Entity > > entities;
-    Uint8 speed , config;
+    std::vector < std::shared_ptr < T > > entities;
+    uint8 config;
+    uint16 speed;
 
-    Entities ( Uint8 config = ACTIVE | STATIC,
-               std::string filePath = GENERIC_PLATFORM_FILE_PATH );
-    ~Entities ();
+    Entities ( int config = ACTIVE | STATIC,
+               std::string filePath = GENERIC_PLATFORM_FILE_PATH ) :
+        Texture ( filePath )
+    {
+        this->config = config;
+    }
 
-    virtual void render () , move () , move ( Vector ),
-        add ( float , float , int , int ) , update ();
+    ~Entities () { }
+
+    virtual void render ()
+    {
+        for ( auto entity = entities.begin();
+              entity != entities.end();
+              entity++ )
+        {
+            if ( (*entity)->config & ACTIVE )
+            {
+                (*entity)->render ( texture );                
+            }
+            else
+            {
+                entities.erase ( entity-- );                
+            }
+        }
+    }
+
+    virtual void move ()
+    {
+        for ( auto &entity : entities )
+        {
+            entity->move();
+        }
+    }
+
+    virtual void move ( Vector &vector )
+    {
+        for ( auto &entity : entities )
+        {
+            entity->move( vector , speed );
+        }
+    }
+
+    virtual void add ( float x , float y , int w , int h )
+    {
+        entities.push_back ( std::shared_ptr < T > ( new T ( x , y , w , h ) ) );
+    }
 };
 
 namespace entities

@@ -25,9 +25,9 @@ int main( int argc, char* argv[] )
     Mapper mapper;
     SDL_Event event;
 
-    Enemies enemies;
+    Enemies enemies ( &player );
 
-    enemies.add ( 100 , 50 , 32 , 32 );
+    enemies.add ( 100 , 50 , 32 , 32  );
 
     while ( !game::quit )
     {
@@ -42,7 +42,7 @@ int main( int argc, char* argv[] )
         while ( timer::acumulator >= timer::timeStep )
         {
             player.move();
-            enemies.update ( player.position );
+            enemies.update ();
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }

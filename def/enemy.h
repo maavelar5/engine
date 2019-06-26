@@ -16,19 +16,18 @@ struct Enemy : public Entity , AutomatedMovement
     Enemy ( float , float , float , float );
     ~Enemy ();
 
-    void search ( Vector ) , update ( Vector , Uint8 );
+    void search ( Vector ) , update ( Vector , uint16 );
 };
 
-struct Enemies : public Entities
+struct Enemies : public Entities < Enemy >
 {
-    std::vector < std::shared_ptr < Enemy > > entities;
+    Entity *entity;
+    uint8 minDistance;
 
-    Enemies ();
+    Enemies ( Entity * entity = nullptr );
     ~Enemies ();
 
-    void update ( Vector ) , render () override,
-        add ( float , float , int , int ) override;
-
+    void update () , render () override;
 };
 
 #endif

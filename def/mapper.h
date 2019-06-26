@@ -11,7 +11,7 @@
 
 struct Mapper
 {
-    std::map < std::string , std::shared_ptr < Entities > > entities;
+    std::map < std::string , std::shared_ptr < Entities < Entity > > > entities;
 
     Mapper ();
     ~Mapper ();

@@ -2,15 +2,14 @@
 
 Enemy::Enemy ( float x , float y , float w , float h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC ),
-    projectiles ( 1000 , this )
+    projectiles ( 300 , this )
 {
 
-    moves [ ENEMY_NONE ] = Timer ( 3000 );
     moves [ ENEMY_MOVE ] = Timer ( 3000 );
-    moves [ ENEMY_SEARCH ] = Timer ( 3000 );
-    moves [ ENEMY_ATTACK ] = Timer ( 3000 );
+    moves [ ENEMY_SEARCH ] = Timer ( 1000 );
+    moves [ ENEMY_ATTACK ] = Timer ( 2000 );
 
-    current = ENEMY_NONE;
+    current = ENEMY_MOVE;
 
     moves[ current ].start();
 }
@@ -22,12 +21,12 @@ void Enemy::search ( Vector a )
     position.getAngle ( a );
 }
 
-void Enemy::update ( Vector a , Uint8 speed )
+void Enemy::update ( Vector a , uint16 speed )
 {
     if ( moves [ current ].check() == 2 )
     {
         current = ( current >= ENEMY_ATTACK )
-            ? ENEMY_NONE
+            ? ENEMY_MOVE
             : current + 1;
         moves [ current ].start ();
     }
@@ -44,34 +43,31 @@ void Enemy::update ( Vector a , Uint8 speed )
             break;
         case ENEMY_ATTACK:
             projectiles.isActive = true;
+            search ( a );
             break;
         default:
             break;
     }
-
 }
 
-Enemies::Enemies () : Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
+Enemies::Enemies ( Entity * entity ) :
+    Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
 {
-    speed = 200;
+    speed = 100;
+    this->entity = entity;
+    minDistance = 50;
 }
 
 Enemies::~Enemies () { }
 
-void Enemies::update ( Vector a )
+void Enemies::update ()
 {
     for ( auto &entity : entities )
     {
-        entity->update ( a , speed );
+        entity->update ( this->entity->position , speed );
         entity->projectiles.update ();
-        entity->projectiles.move ( a );
+        entity->projectiles.move ( this->entity->position );
     }
-}
-
-void Enemies::add ( float x , float y , int w , int h )
-{
-    entities.push_back ( std::shared_ptr < Enemy > (
-                             new Enemy ( x , y , w , h  ) ) );
 }
 
 void Enemies::render ()
