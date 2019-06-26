@@ -20,6 +20,10 @@
     #include <unistd.h>
 #endif
 
+typedef unsigned char uint8;
+typedef unsigned short int uint16;
+typedef unsigned int uint32;
+
 /* Window size */
 extern const int WINDOW_WIDTH;
 extern const int WINDOW_HEIGHT;
@@ -50,11 +54,11 @@ extern const int SCENARIO_WIDTH;
 extern const int SCENARIO_HEIGHT;
 
 /* Entity configuration */
-extern const Uint8 ACTIVE;
-extern const Uint8 STATIC;
-extern const Uint8 KINEMATIC;
-extern const Uint8 BULLET;
-extern const Uint8 CAMERA;
+extern const uint8 ACTIVE;
+extern const uint8 STATIC;
+extern const uint8 KINEMATIC;
+extern const uint8 BULLET;
+extern const uint8 CAMERA;
 
 /* Player */
 extern const std::string PLAYER_SPRITE_SHEET;
@@ -75,7 +79,7 @@ extern const std::string GENERIC_PROJECTILE_FILE_PATH;
 extern const std::string MAPPER_FILE_PATH;
 
 /* Sensor valuess */
-extern const Uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR , NONE_SENSOR;
+extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR , NONE_SENSOR;
 
 /* HUD colors and other shit */
 extern const SDL_Color white , black;
@@ -85,9 +89,9 @@ extern const SDL_Rect LT , T , RT;
 extern const float MAX_GRAVITY;
 
 /* ENEMY MOVES */
-const Uint8 ENEMY_NONE = 0;
-const Uint8 ENEMY_MOVE = 1;
-const Uint8 ENEMY_SEARCH = 2;
-const Uint8 ENEMY_ATTACK = 3;
+const uint8 ENEMY_NONE = 0;
+const uint8 ENEMY_MOVE = 1;
+const uint8 ENEMY_SEARCH = 2;
+const uint8 ENEMY_ATTACK = 3;
 
 #endif

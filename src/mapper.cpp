@@ -12,9 +12,7 @@ Mapper::~Mapper () { }
 
 void Mapper::add ( float x , float y , int w , int h , std::string type )
 {
-    std::shared_ptr < Entity > entity ( new Entity ( x , y , w , h ) );
-    
-    entities[ type ]->entities.push_back ( entity );
+    entities[ type ]->add ( x , y , w , h );
 }
 
 void Mapper::load ()

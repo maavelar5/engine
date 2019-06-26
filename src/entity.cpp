@@ -14,7 +14,7 @@ namespace entities
         }
     }
 }
-Entity::Entity ( float x , float y , int w , int h , Uint8 config )
+Entity::Entity ( float x , float y , int w , int h , uint8 config )
 {
     locator = { 0 , 0 , 0 , 0 };
 
@@ -22,7 +22,7 @@ Entity::Entity ( float x , float y , int w , int h , Uint8 config )
                floor ( y - camera::position.y ),
                w , h };
 
-    previousPosition = position = { x , y };
+    renderPosition = previousPosition = position = { x , y };
 
     this->config = config;
 
@@ -57,7 +57,7 @@ void Entity::move ()
     updateLocator ();
 }
 
-void Entity::move ( Vector a , Uint8 speed , Uint8 minDistance )
+void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
 {
     previousPosition = position;
 
@@ -104,20 +104,20 @@ void Entity::adjust ()
 {
     Vector position = this->position;
 
-    if ( config & KINEMATIC && previousPosition != position )
+    if ( config & KINEMATIC )
     {
-        float cameraDistance = renderPosition.x;
+        Vector renderPosition = ( position * timer::interpolation ) +
+            ( previousPosition * ( 1.0 - timer::interpolation ) );
 
-        renderPosition.x = position.x * timer::interpolation +
-            previousPosition.x * ( 1.0 - timer::interpolation );
+        if ( abs( renderPosition.x - this->renderPosition.x ) >= 1 ||
+             abs( renderPosition.y - this->renderPosition.y ) >= 1 )
+        {
+            if ( config & CAMERA )
+                camera::move ( renderPosition.x - this->renderPosition.x,
+                               screen );
 
-        renderPosition.y = position.y * timer::interpolation +
-            previousPosition.y * ( 1.0 - timer::interpolation );
-
-        if ( config & CAMERA )
-            camera::move ( renderPosition.x - cameraDistance , screen );
-
-        position = renderPosition;
+            position = this->renderPosition = renderPosition;
+        }
     }
 
     screen.x = floor( position.x - camera::position.x );
@@ -214,9 +214,4 @@ void Entity::positionLimits ()
 std::string Entity::getPositionHash ( int x , int y )
 {
     return std::to_string ( y ) + "," + std::to_string ( x );
-}
-
-void Entity::update ()
-{
-    
 }

@@ -27,7 +27,7 @@ int main( int argc, char* argv[] )
 
     Enemies enemies ( &player );
 
-    enemies.add ( 100 , 50 );
+    enemies.add ( 100 , 50 , 32 , 32  );
 
     while ( !game::quit )
     {

@@ -1,6 +1,6 @@
 #include "projectile.h"
 
-Projectile::Projectile ( Uint8 speed , Entity * entity ) :
+Projectile::Projectile ( uint16 speed , Entity * entity ) :
     Entities ( ACTIVE | KINEMATIC | BULLET , GENERIC_PROJECTILE_FILE_PATH ),
     Timer ( 1000 )
 {

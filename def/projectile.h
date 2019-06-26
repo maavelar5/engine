@@ -13,7 +13,7 @@ struct Projectile : public Entities < Entity > , Timer
     Entity * entity;
     bool isActive;
 
-    Projectile ( Uint8 speed , Entity * entity );
+    Projectile ( uint16 speed , Entity * entity );
     ~Projectile ();
 
     void add ( float , float ) ,  update ();

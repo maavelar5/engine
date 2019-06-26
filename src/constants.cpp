@@ -54,12 +54,12 @@ const int SCENARIO_WIDTH = 7168;
 const int SCENARIO_HEIGHT = 240;
 
 /* Entity configuration */
-const Uint8 ACTIVE = 1;
-const Uint8 STATIC = 2;
-const Uint8 KINEMATIC = 4;
-const Uint8 BULLET = 8;
-const Uint8 CAMERA = 16;
-const Uint8 TEMPLATE = 32;
+const uint8 ACTIVE = 1;
+const uint8 STATIC = 2;
+const uint8 KINEMATIC = 4;
+const uint8 BULLET = 8;
+const uint8 CAMERA = 16;
+const uint8 TEMPLATE = 32;
 
 /* Player */
 const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH + 
@@ -90,7 +90,7 @@ const std::string MAPPER_FILE_PATH = SPRITES_PATH +
     "platforms.org";
 
 /* Sensor values */
-const Uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8 , NONE_SENSOR = 0;
+const uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8 , NONE_SENSOR = 0;
 
 /* HUD colors and other shit */
 const SDL_Color white = { 255 , 255 , 255 },

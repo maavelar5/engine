@@ -26,20 +26,19 @@ struct Entity
 
     SDL_Rect screen , locator;
 
-    Uint8 config , sensor;
+    uint8 config , status , sensor;
 
     std::map < std::string , std::vector < Entity * > > * collection;
 
-    Entity ( float , float , int , int , Uint8 config = STATIC | ACTIVE );
+    Entity ( float , float , int , int , uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
     void adjust () , render ( SDL_Texture * ) , setLocator (),
         deleteLocator (), updateLocator () , positionLimits ();
 
-    virtual void move () , update (),
-        move ( Vector , Uint8 speed , Uint8 minDistance = 0 );
+    virtual void move (),
+        move ( Vector , uint16 speed , uint8 minDistance = 0 );
         
-
     static std::string getPositionHash ( int , int );
 };
 
@@ -47,9 +46,11 @@ template < class T >
 struct Entities : public Texture
 {
     std::vector < std::shared_ptr < T > > entities;
-    Uint8 speed , config;
-    
-    Entities ( Uint8 config = ACTIVE | STATIC , std::string filePath = GENERIC_PLATFORM_FILE_PATH ) :
+    uint8 config;
+    uint16 speed;
+
+    Entities ( int config = ACTIVE | STATIC,
+               std::string filePath = GENERIC_PLATFORM_FILE_PATH ) :
         Texture ( filePath )
     {
         this->config = config;
