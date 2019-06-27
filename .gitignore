@@ -2,3 +2,5 @@
 .DS_*
 marcoman*
 dump.rdb
+debug/
+release/

@@ -1,9 +1,19 @@
 #OBJ directory
-MYDIR=./obj
-#[ -d $(MYDIR) ] || mkdir -p $(MYDIR)
+DIRS=debug release obj
 
-#EXE speficies the exe file
-EXE = marcoman
+$(shell mkdir -p $(DIRS))
+
+#BIN speficies the bin file
+DEBUG_BIN = debug/marcoman
+RELEASE_BIN = release/marcoman
+
+#DEBUG commands
+DEBUG_CP = $(shell cp -r sprites debug/)
+DEBUG = $(DEBUG_BIN) $(DEBUG_CP)
+
+#RELEASE commands
+RELEASE_CP = $(shell cp dll/* release/) $(shell cp -r sprites release/)
+RELEASE = $(RELEASE_BIN) $(RELEASE_CP)
 
 #VPATH specifies the directories used
 VPATH = ./src:./def:./obj
@@ -24,18 +34,28 @@ CFLAGS = -g -w
 #CPPFLAGS specifies the preprocesor flags
 CPPFLAGS = -I def
 
-#SDL2_FLAGS
+#SDL2 linker flags
 SDL2_FLAGS = -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+
+#Static linker flags
+STATIC_LINKER_FLAGS = -static-libgcc -static-libstdc++ -Wl,-Bstatic,--whole-archive -lwinpthread -Wl,--no-whole-archive
+
+#Windows specific flags
+WINDOWS_FLAGS = -w -Wl,-subsystem,windows -lmingw32 -lSDL2main
 
 #LINKER_FLAGS, condition to determine if windows or not
 ifeq ($(OS),Windows_NT)
-	LINKER_FLAGS = -static-libstdc++ -w -Wl,-subsystem,windows -lmingw32 -lSDL2main $(SDL2_FLAGS)
+	LINKER_FLAGS = $(WINDOWS_FLAGS) $(SDL2_FLAGS) $(STATIC_LINKER_FLAGS)
 else
-	LINKER_FLAGS = $(SDL2_FLAGS)
+	LINKER_FLAGS = $(SDL2_FLAGS) $(STATIC_LINKER_FLAGS)
 endif
 
+
 all : $(OBJS)
-	$(CC) $(OBJS_DIR) $(CFLAGS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(EXE)
+	$(CC) $(OBJS_DIR) $(CFLAGS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(DEBUG)
+
+release : $(OBJS)
+	$(CC) $(OBJS_DIR) $(CFLAGS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(RELEASE)
 
 automated_movement.o : automated_movement.cpp
 	$(CC) -c -w $(CPPFLAGS) src/automated_movement.cpp -o obj/automated_movement.o
@@ -91,5 +111,13 @@ timer.o : timer.cpp
 vector.o : vector.cpp
 	$(CC) -c -w $(CPPFLAGS) src/vector.cpp -o obj/vector.o
 
-clean :
-	rm $(EXE) $(OBJS_DIR)
+clean_debug :
+	rm -rf debug/*
+
+clean_release :
+	rm -rf release/*
+
+clean_objs :
+	rm -rf obj/*
+
+clean : clean_debug clean_release clean_objs
