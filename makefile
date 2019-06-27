@@ -47,7 +47,7 @@ WINDOWS_FLAGS = -w -Wl,-subsystem,windows -lmingw32 -lSDL2main
 ifeq ($(OS),Windows_NT)
 	LINKER_FLAGS = $(WINDOWS_FLAGS) $(SDL2_FLAGS) $(STATIC_LINKER_FLAGS)
 else
-	LINKER_FLAGS = $(SDL2_FLAGS) $(STATIC_LINKER_FLAGS)
+	LINKER_FLAGS = $(SDL2_FLAGS)
 endif
 
 
