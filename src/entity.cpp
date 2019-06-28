@@ -31,6 +31,7 @@ Entity::Entity ( float x , float y , int w , int h , uint8 config )
         : &entities::kinematics;
 
     sensor = 1;
+    flip = SDL_FLIP_NONE;
 
     setLocator ();
 }
@@ -91,13 +92,14 @@ void Entity::render ( SDL_Texture *texture )
 {
     adjust ();
 
+
     SDL_RenderCopyEx( game::renderer,
                       texture,
                       nullptr,
                       &screen,
                       position.angle,
                       nullptr,
-                      SDL_FLIP_NONE );
+                      flip );
 }
 
 void Entity::adjust ()
@@ -117,6 +119,15 @@ void Entity::adjust ()
                                screen );
 
             position = this->renderPosition = renderPosition;
+        }
+
+        if ( velocity.x < 0 )
+        {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        else if ( velocity.x > 0 )
+        {
+            flip = SDL_FLIP_NONE;
         }
     }
 

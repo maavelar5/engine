@@ -65,6 +65,8 @@ namespace collision
 {
     void collide ()
     {
+        std::string positionHash = "";
+
         for ( auto &entity : entities::queue )
         {
             for ( int y = entity->locator.y;
@@ -79,8 +81,10 @@ namespace collision
                 {
                     entity->sensor = NONE_SENSOR;
 
-                    std::string positionHash = Entity::getPositionHash ( x , y );
+                    positionHash = Entity::getPositionHash ( x , y );
+
                     iterate ( (*entity) , entities::statics[ positionHash ] );
+                    iterate ( (*entity) , entities::kinematics[ positionHash ] );
                 }
             }
         }
@@ -117,11 +121,13 @@ namespace collision
 
             AABB c = AABB::getIntersection ( a , b );
 
-            if ( a.top ( c ) && entity.velocity.y < 0 )
+            if ( a.top ( c ) &&
+                 ( entity.velocity.y < 0 || entity.config & DIRECTIONAL ) )
             {
                 top ( entity , c.h - c.y );
             }
-            else if ( a.bot ( c ) && entity.velocity.y >= 0 )
+            else if ( a.bot ( c ) &&
+                      ( entity.velocity.y >= 0 || entity.config & DIRECTIONAL ) )
             { 
                 bot ( entity , c.h - c.y );
             }
@@ -151,13 +157,6 @@ namespace collision
                 SDL_Log ( "Collision detection failed\n\n" );
             }
         }
-    }
-
-    int getCollisionType ( SDL_Rect a , SDL_Rect b )
-    {
-        int collisionType = -1;
-
-        return collisionType;        
     }
 
     void bot ( Entity &entity , int h )

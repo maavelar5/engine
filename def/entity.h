@@ -28,6 +28,8 @@ struct Entity
 
     uint8 config , status , sensor;
 
+    SDL_RendererFlip flip;
+
     std::map < std::string , std::vector < Entity * > > * collection;
 
     Entity ( float , float , int , int , uint8 config = STATIC | ACTIVE );

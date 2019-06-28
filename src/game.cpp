@@ -9,7 +9,7 @@ namespace game
 
     bool init ()
     {
-        SDL_Init( SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_TIMER );
+        SDL_Init( SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER );
 
         window = SDL_CreateWindow( WINDOW_TITLE.c_str(),
                                    SDL_WINDOWPOS_UNDEFINED,

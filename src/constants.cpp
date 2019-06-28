@@ -58,8 +58,8 @@ const uint8 ACTIVE = 1;
 const uint8 STATIC = 2;
 const uint8 KINEMATIC = 4;
 const uint8 BULLET = 8;
-const uint8 CAMERA = 16;
-const uint8 TEMPLATE = 32;
+const uint8 DIRECTIONAL = 16;
+const uint8 CAMERA = 32;
 
 /* Player */
 const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH + 
@@ -67,7 +67,7 @@ const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH +
 
 /* Player */
 const std::string PLAYER_SPRITE_SHEET = SPRITES_PATH + 
-    "player.png";
+    "player_arrow.png";
 
 /* Generic platform */
 const std::string GENERIC_PLATFORM_FILE_PATH = SPRITES_PATH + 

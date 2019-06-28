@@ -58,6 +58,7 @@ extern const uint8 ACTIVE;
 extern const uint8 STATIC;
 extern const uint8 KINEMATIC;
 extern const uint8 BULLET;
+extern const uint8 DIRECTIONAL;
 extern const uint8 CAMERA;
 
 /* Player */
