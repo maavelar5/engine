@@ -22,8 +22,21 @@ struct AABB
 
 namespace collision
 {
-    void collide () , iterate ( Entity & , std::vector < Entity * > & ),
-        detect ( Entity & , Entity & ) , top ( Entity & , int ),
+    void collide () , iterate ( Entity & , std::vector < Entity * > & );
+
+    namespace kinematics
+    {
+        void solve ( AABB , AABB , AABB ) , top () , bot (),
+            left () , right ();
+    }
+
+    namespace statics
+    {
+        void solve ( AABB , AABB , AABB ) , top () , bot (),
+            left () , right ();
+    }
+
+    void detect ( Entity & , Entity & ) , top ( Entity & , int ),
         bot ( Entity & , int ) , left ( Entity & , int ),
         right ( Entity & , int );
 }

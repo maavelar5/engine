@@ -41,17 +41,17 @@ bool AABB::bot ( AABB a )
 {
     float value = ( h - y ) / 10;
 
-    return (a.x >= x && a.y >= y + value && a.w <= w && a.h <= h )
+    return ( a.x >= x && a.y >= y + value && a.w <= w && a.h <= h )
         ? true
         : false;
 }
 
 AABB AABB::getIntersection ( AABB a , AABB b )
 {
-    return AABB( ( a.x >= b.x ) ? a.x : b.x,
-                 ( a.y >= b.y ) ? a.y : b.y,
-                 ( a.w <= b.w ) ? a.w : b.w,
-                 ( a.h <= b.h ) ? a.h : b.h );
+    return AABB ( ( a.x >= b.x ) ? a.x : b.x,
+                  ( a.y >= b.y ) ? a.y : b.y,
+                  ( a.w <= b.w ) ? a.w : b.w,
+                  ( a.h <= b.h ) ? a.h : b.h );
 }
 
 bool AABB::checkIntersection ( AABB a , AABB b )
@@ -83,8 +83,8 @@ namespace collision
 
                     positionHash = Entity::getPositionHash ( x , y );
 
-                    iterate ( (*entity) , entities::statics[ positionHash ] );
-                    iterate ( (*entity) , entities::kinematics[ positionHash ] );
+                    iterate ( *entity , entities::statics[ positionHash ] );
+                    iterate ( *entity , entities::kinematics[ positionHash ] );
                 }
             }
         }
@@ -96,48 +96,50 @@ namespace collision
     {
         for ( auto &platform : entities )
         {
-            if ( entity.config & ACTIVE )
+            if ( entity.config & ACTIVE && &entity != platform )
+            {
                 detect ( entity , (*platform));
+            }
         }
     }
 
-    void detect ( Entity &entity , Entity &platform )
+    void detect ( Entity &entityA , Entity &entityB )
     {
-        AABB a ( floor(entity.position.x), floor(entity.position.y),
-                 floor(entity.position.x) + entity.screen.w,
-                 floor(entity.position.y) + entity.screen.h );
+        AABB a ( floor ( entityA.position.x ), floor ( entityA.position.y ),
+                 floor ( entityA.position.x ) + entityA.screen.w,
+                 floor ( entityA.position.y ) + entityA.screen.h );
 
-        AABB b ( floor(platform.position.x) , floor(platform.position.y),
-                 floor(platform.position.x) + platform.screen.w,
-                 floor(platform.position.y) + platform.screen.h );
+        AABB b ( floor ( entityB.position.x ) , floor ( entityB.position.y ),
+                 floor ( entityB.position.x ) + entityB.screen.w,
+                 floor ( entityB.position.y ) + entityB.screen.h );
 
         if ( AABB::checkIntersection ( a , b ) )
         {
-            if ( entity.config & BULLET )
+            AABB c = AABB::getIntersection ( a , b );
+
+            if ( entityA.config & BULLET )
             {
-                entity.config &= ~ACTIVE;
+                entityA.config &= ~ACTIVE;
                 return;
             }
 
-            AABB c = AABB::getIntersection ( a , b );
-
             if ( a.top ( c ) &&
-                 ( entity.velocity.y < 0 || entity.config & DIRECTIONAL ) )
+                 ( entityA.velocity.y < 0 || entityA.config & DIRECTIONAL ) )
             {
-                top ( entity , c.h - c.y );
+                top ( entityA , c.h - c.y );
             }
             else if ( a.bot ( c ) &&
-                      ( entity.velocity.y >= 0 || entity.config & DIRECTIONAL ) )
+                      ( entityA.velocity.y >= 0 || entityA.config & DIRECTIONAL ) )
             { 
-                bot ( entity , c.h - c.y );
+                bot ( entityA , c.h - c.y );
             }
             else if ( a.left ( c ) )
             { 
-                left ( entity , c.w - c.x );               
+                left ( entityA , c.w - c.x );
             }
             else if ( a.right ( c ) )
             { 
-                right ( entity , c.w - c.x );               
+                right ( entityA , c.w - c.x );
             }
             else if ( a.x == c.x && a.y == c.y &&
                       a.w == c.w && a.h == c.h )
@@ -148,14 +150,71 @@ namespace collision
             else
             {
                 // FAIL: Check coordinates in which the resolution failed
-                SDL_Log ( "Kinematic => x: %.2f y: %.2f w: %.2f h: %.2f \n",
+                SDL_Log ( "EntityA => x: %.2f y: %.2f w: %.2f h: %.2f \n",
                           a.x , a.y , a.w , a.h );
-                SDL_Log ( "Platform  => x: %.2f y: %.2f w: %.2f h: %.2f \n",
+                SDL_Log ( "EntityB  => x: %.2f y: %.2f w: %.2f h: %.2f \n",
                           b.x , b.y , b.w , b.h );
                 SDL_Log ( "Intersect => x: %.2f y: %.2f w: %.2f h: %.2f \n",
                           c.x , c.y , c.w , c.h );
                 SDL_Log ( "Collision detection failed\n\n" );
             }
+        }
+    }
+
+    namespace statics
+    {
+        void solve ( AABB a , AABB b , AABB c )
+        {
+            
+        }
+
+        void top ()
+        {
+            
+        }
+
+        void bot ()
+        {
+            
+        }
+
+        void left ()
+        {
+            
+        }
+
+        void right ()
+        {
+            
+        }
+
+    }
+
+    namespace kinematics
+    {
+        void solve ( AABB a , AABB b , AABB c )
+        {
+            
+        }
+
+        void top ()
+        {
+            
+        }
+
+        void bot ()
+        {
+            
+        }
+
+        void left ()
+        {
+            
+        }
+
+        void right ()
+        {
+            
         }
     }
 
