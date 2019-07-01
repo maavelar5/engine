@@ -16,7 +16,7 @@
 #include <SDL2/SDL.h>
 #endif
 
-int main( int argc, char* argv[] )
+int main ( int argc, char* argv[] )
 {
     game::init ();
     font::init ();
@@ -60,7 +60,7 @@ int main( int argc, char* argv[] )
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
         info::draw ( "Projectiles: " , std::to_string (
-                         player.projectile.entities.size() ) );
+                         player.projectiles.entities.size() ) );
         info::draw ( "X: " , std::to_string ( player.position.x ) );
         info::draw ( "Y: " , std::to_string ( player.position.y ) );
 

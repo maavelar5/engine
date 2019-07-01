@@ -117,6 +117,11 @@ namespace collision
         {
             AABB c = AABB::getIntersection ( a , b );
 
+            if ( entityB.config & BULLET )
+            {
+                entityB.config &= ~ACTIVE;
+            }
+
             if ( entityA.config & BULLET )
             {
                 entityA.config &= ~ACTIVE;

@@ -36,9 +36,9 @@ struct Entity
     ~Entity ();
 
     void adjust () , render ( SDL_Texture * ) , setLocator (),
-        deleteLocator (), updateLocator () , positionLimits ();
+        deleteLocator (), updateLocator ();
 
-    virtual void move (),
+    virtual void move () , positionLimits (),
         move ( Vector , uint16 speed , uint8 minDistance = 0 );
         
     static std::string getPositionHash ( int , int );
@@ -62,9 +62,7 @@ struct Entities : public Texture
 
     virtual void render ()
     {
-        for ( auto entity = entities.begin();
-              entity != entities.end();
-              entity++ )
+        for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
         {
             if ( (*entity)->config & ACTIVE )
             {
@@ -72,6 +70,7 @@ struct Entities : public Texture
             }
             else
             {
+                (*entity)->deleteLocator ();
                 entities.erase ( entity-- );                
             }
         }

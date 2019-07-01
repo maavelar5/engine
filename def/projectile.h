@@ -8,13 +8,21 @@
 
 #include <memory>
 
-struct Projectile : public Entities < Entity > , Timer
+struct Projectile : public Entity
+{
+    Projectile ( float , float , float , float );
+    ~Projectile ();
+
+    void positionLimits ();
+};
+
+struct Projectiles : public Entities < Projectile > , Timer
 {
     Entity * entity;
     bool isActive;
 
-    Projectile ( uint16 speed , Entity * entity );
-    ~Projectile ();
+    Projectiles ( uint16 speed , Entity * entity );
+    ~Projectiles ();
 
     void add ( float , float ) ,  update ();
 };

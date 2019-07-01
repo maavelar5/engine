@@ -2,7 +2,7 @@
 
 Enemy::Enemy ( float x , float y , float w , float h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC | DIRECTIONAL ),
-    projectiles ( 200 , this )
+    projectiles ( 50 , this )
 {
 
     moves [ ENEMY_MOVE ] = Timer ( 3000 );

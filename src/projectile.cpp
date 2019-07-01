@@ -1,6 +1,28 @@
 #include "projectile.h"
 
-Projectile::Projectile ( uint16 speed , Entity * entity ) :
+Projectile::Projectile ( float x , float y , float w , float h ) :
+    Entity ( x , y , w , h , ACTIVE | KINEMATIC | BULLET )
+{
+    
+}
+
+Projectile::~Projectile () { }
+
+void Projectile::positionLimits ()
+{
+    if ( position.y <= -100 )
+        config &= ~ACTIVE;
+    else if ( position.y >= SCENARIO_HEIGHT )
+        config &= ~ACTIVE;
+
+    if ( position.x <= -100 )
+        config &= ~ACTIVE;
+    else if ( position.x >= SCENARIO_WIDTH )
+        config &= ~ACTIVE;
+}
+
+
+Projectiles::Projectiles ( uint16 speed , Entity * entity ) :
     Entities ( ACTIVE | KINEMATIC | BULLET , GENERIC_PROJECTILE_FILE_PATH ),
     Timer ( 1000 )
 {
@@ -9,11 +31,11 @@ Projectile::Projectile ( uint16 speed , Entity * entity ) :
     isActive = false;
 }
 
-Projectile::~Projectile () { }
+Projectiles::~Projectiles () { }
 
-void Projectile::add ( float x , float y )
+void Projectiles::add ( float x , float y )
 {
-    std::shared_ptr < Entity > entity ( new Entity ( x , y , 4 , 4 , config ) );
+    std::shared_ptr < Projectile > entity ( new Projectile ( x , y , 4 , 4 ) );
 
     entity->velocity.x = ( this->entity->flip == SDL_FLIP_HORIZONTAL )
         ? -speed
@@ -22,7 +44,7 @@ void Projectile::add ( float x , float y )
     entities.push_back ( entity );
 }
 
-void Projectile::update ()
+void Projectiles::update ()
 {
     if ( isActive )
     {
