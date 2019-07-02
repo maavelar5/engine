@@ -27,7 +27,7 @@ int main ( int argc, char* argv[] )
 
     Enemies enemies ( &player );
 
-    //enemies.add ( 100 , 50 , 32 , 32  );
+    enemies.add ( 100 , 50 , 32 , 32  );
 
     while ( !game::quit )
     {
@@ -63,6 +63,7 @@ int main ( int argc, char* argv[] )
                          player.projectiles.entities.size() ) );
         info::draw ( "X: " , std::to_string ( player.position.x ) );
         info::draw ( "Y: " , std::to_string ( player.position.y ) );
+        info::draw ( "velY: " , std::to_string ( player.velocity.y ) );
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );

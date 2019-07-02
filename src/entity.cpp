@@ -70,13 +70,11 @@ void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
             : velocity.y;
     }
 
-    Vector direction = position - a;
+    direction = position - a;
 
     if ( direction.length() > minDistance )
     {
         direction.normalize();
-
-        float value = speed * timer::timeStep;
 
         position += direction * ( speed * timer::timeStep );
 
@@ -220,6 +218,27 @@ void Entity::positionLimits ()
         position.x = 0;
     else if ( position.x >= SCENARIO_WIDTH )
         position.x = SCENARIO_WIDTH;
+}
+
+
+void Entity::topSensorCallback ( Entity & entity )
+{
+    //TODO: Base case scenarion
+}
+
+void Entity::botSensorCallback ( Entity & entity )
+{
+    //TODO: Base case scenarion
+}
+
+void Entity::leftSensorCallback ( Entity & entity )
+{
+    //TODO: Base case scenarion
+}
+
+void Entity::rightSensorCallback ( Entity & entity )
+{
+    //TODO: Base case scenarion
 }
 
 std::string Entity::getPositionHash ( int x , int y )

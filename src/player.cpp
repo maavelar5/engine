@@ -6,6 +6,7 @@ Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
 {
     speed = 200;
     projectiles.delay = 100;
+    canDoubleJump = false;
 }
 
 Player::~Player () { }
@@ -14,7 +15,9 @@ void Player::event( SDL_Event event )
 {
     previousVelocity = velocity;
 
-    if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
+    if ( event.type == SDL_KEYDOWN &&
+         event.key.state == SDL_PRESSED &&
+         event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
         {
@@ -22,9 +25,21 @@ void Player::event( SDL_Event event )
             case SDLK_d: velocity.x += speed; break;
             case SDLK_w: velocity.y -= speed; break;
             case SDLK_s: velocity.y += speed; break;
-            case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
-                ? -400
-                : velocity.y; break;
+            case SDLK_SPACE:
+                if ( sensor & BOT_SENSOR )
+                {
+                    velocity.y = -400;
+                    sensor &= ~BOT_SENSOR;
+                }
+                else
+                {
+                    if ( canDoubleJump )
+                    {
+                        canDoubleJump = false;
+                        velocity.y = -400;
+                    }
+                }
+                break;
             case SDLK_q:
                 projectiles.isActive = true;
                 break;
@@ -34,7 +49,9 @@ void Player::event( SDL_Event event )
                 break;
         }
     }
-    else if( event.type == SDL_KEYUP && event.key.repeat == 0 )
+    else if( event.type == SDL_KEYUP &&
+             event.key.state == SDL_RELEASED &&
+             event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
         {
@@ -42,9 +59,10 @@ void Player::event( SDL_Event event )
             case SDLK_d: velocity.x -= speed; break;
             case SDLK_w: velocity.y += speed; break;
             case SDLK_s: velocity.y -= speed; break;
-            case SDLK_SPACE: velocity.y = (velocity.y < 0)
-                ? 0
-                : velocity.y;
+            case SDLK_SPACE:
+                velocity.y = ( velocity.y < 0 )
+                    ? 0
+                    : velocity.y;
                 break;
             case SDLK_q: projectiles.isActive = false; break;
         }
@@ -105,4 +123,9 @@ void Player::move ()
     Entity::move();
     projectiles.update();
     projectiles.move();
+}
+
+void Player::botSensorCallback ( Entity & entity )
+{
+    canDoubleJump = true;
 }

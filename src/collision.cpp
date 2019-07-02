@@ -137,6 +137,7 @@ namespace collision
                       ( entityA.velocity.y >= 0 || entityA.config & DIRECTIONAL ) )
             { 
                 bot ( entityA , c.h - c.y );
+                entityA.botSensorCallback ( entityB );
             }
             else if ( a.left ( c ) )
             { 

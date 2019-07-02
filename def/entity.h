@@ -22,7 +22,7 @@
 struct Entity
 {
     Vector position , velocity, previousPosition,
-        previousVelocity , renderPosition;
+        previousVelocity , renderPosition , direction;
 
     SDL_Rect screen , locator;
 
@@ -38,7 +38,9 @@ struct Entity
     void adjust () , render ( SDL_Texture * ) , setLocator (),
         deleteLocator (), updateLocator ();
 
-    virtual void move () , positionLimits (),
+    virtual void move () , positionLimits () , topSensorCallback ( Entity & ),
+        botSensorCallback ( Entity & ) , leftSensorCallback ( Entity & ),
+        rightSensorCallback ( Entity & ),
         move ( Vector , uint16 speed , uint8 minDistance = 0 );
         
     static std::string getPositionHash ( int , int );
