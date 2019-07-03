@@ -27,4 +27,15 @@ struct Projectiles : public Entities < Projectile > , Timer
     void add ( float , float ) ,  update ();
 };
 
+struct DirectedProjectiles : public Entities < Projectile > , Timer
+{
+    Entity * entity;
+    bool isActive;
+
+    DirectedProjectiles ( uint16 speed , Entity * entity );
+    ~DirectedProjectiles ();
+
+    void add ( float , float ) ,  update ();
+};
+
 #endif

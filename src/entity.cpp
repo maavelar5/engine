@@ -62,7 +62,7 @@ void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
 {
     previousPosition = position;
 
-    if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) )
+    if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) && !( config & DIRECTIONAL ) )
     {
         velocity.y += GRAVITY.y * timer::timeStep;
         velocity.y = ( velocity.y > MAX_GRAVITY )
@@ -80,7 +80,6 @@ void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
 
         position.getAngle ( a );
         positionLimits ();
-
         entities::queue.push_back ( this );
         updateLocator ();        
     }
@@ -89,7 +88,6 @@ void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
 void Entity::render ( SDL_Texture *texture )
 {
     adjust ();
-
 
     SDL_RenderCopyEx( game::renderer,
                       texture,

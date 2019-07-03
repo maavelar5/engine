@@ -11,7 +11,7 @@
 
 struct Enemy : public Entity , AutomatedMovement
 {
-    Projectiles projectiles;
+    DirectedProjectiles projectiles;
 
     Enemy ( float , float , float , float );
     ~Enemy ();

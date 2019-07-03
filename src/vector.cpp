@@ -16,8 +16,7 @@ Vector::~Vector () { }
 
 void Vector::getAngle ( Vector a )
 {
-    angle = -90 + atan2 ( y - a.y , x - a.x ) * 180.0 / 3.1416;
-
+    angle = -90 + atan2 ( y - a.y , x - a.x ) * 180.0 / 3.141592;
     angle = ( angle >= 0 ) ? angle : 360 + angle;
 }
 

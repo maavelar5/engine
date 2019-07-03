@@ -2,12 +2,11 @@
 #define VECTOR
 
 #include <math.h>
+#include <SDL2/SDL.h>
 
 struct Vector
 {
-    float x , y;
-
-    float angle;
+    float x , y , angle;
 
     Vector ( float , float );
     Vector ();
@@ -28,9 +27,6 @@ struct Vector
 
     bool operator!= ( Vector ),
         operator== ( Vector );
-    
-    
-
 };
 
 #endif

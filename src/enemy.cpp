@@ -2,7 +2,7 @@
 
 Enemy::Enemy ( float x , float y , float w , float h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC | DIRECTIONAL ),
-    projectiles ( 100 , this )
+    projectiles ( 200 , this )
 {
 
     moves [ ENEMY_MOVE ] = Timer ( 3000 );
@@ -12,6 +12,9 @@ Enemy::Enemy ( float x , float y , float w , float h ) :
     current = ENEMY_MOVE;
 
     moves[ current ].start();
+
+    projectiles.delay = 200;
+    
 }
 
 Enemy::~Enemy () { }
@@ -34,11 +37,12 @@ void Enemy::update ( Vector a , uint16 speed )
     switch ( current )
     {
         case ENEMY_MOVE:
-            projectiles.isActive = false;
-            move ( a , speed , 50 );
+            projectiles.isActive = true;
+            move ( a , 0 , 50 );
+            search ( a );
             break;
         case ENEMY_SEARCH:
-            projectiles.isActive = false;
+            projectiles.isActive = true;
             search ( a );
             break;
         case ENEMY_ATTACK:
@@ -51,7 +55,7 @@ void Enemy::update ( Vector a , uint16 speed )
 }
 
 Enemies::Enemies ( Entity * entity ) :
-    Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
+    Entities ( ACTIVE | KINEMATIC , GENERIC_ENEMY_FILE_PATH )
 {
     speed = 100;
     this->entity = entity;
