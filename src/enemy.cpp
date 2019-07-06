@@ -55,7 +55,7 @@ void Enemy::update ( Vector a , uint16 speed )
 }
 
 Enemies::Enemies ( Entity * entity ) :
-    Entities ( ACTIVE | KINEMATIC , GENERIC_ENEMY_FILE_PATH )
+    Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
 {
     speed = 100;
     this->entity = entity;

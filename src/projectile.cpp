@@ -86,9 +86,11 @@ void DirectedProjectiles::update ()
     {
         if ( check() == 2 )
         {
+            // TODO: Resarch position max value based on direction vector
+
             Vector position = entity->position;
 
-            position += ( entity->direction * speed * timer::timeStep );
+            position += ( entity->direction * ( speed * timer::timeStep ) );
 
             add ( position.x , position.y );
             start();
