@@ -69,6 +69,9 @@ constants.o : constants.cpp
 collision.o : collision.cpp
 	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
 
+directed_projectile.o : directed_projectile.cpp
+	$(CC) -c -w $(CPPFLAGS) src/directed_projectile.cpp -o obj/directed_projectile.o
+
 enemy.o : enemy.cpp
 	$(CC) -c -w $(CPPFLAGS) src/enemy.cpp -o obj/enemy.o
 
