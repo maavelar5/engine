@@ -74,6 +74,7 @@ int main ( int argc, char* argv[] )
         info::draw ( "X: " , std::to_string ( player.position.x ) );
         info::draw ( "Y: " , std::to_string ( player.position.y ) );
         info::draw ( "velY: " , std::to_string ( player.velocity.y ) );
+        info::draw ( "sensor: " , std::to_string ( player.sensor ) );
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( game::debugRenderer );

@@ -1,24 +1,12 @@
 #ifndef COLLISION
 #define COLLISION
 
+#include "aabb.h"
 #include "constants.h"
 #include "entity.h"
 #include "vector.h"
 
 #include <algorithm>
-
-struct AABB
-{
-    float x , y , w , h;
-
-    AABB ( float , float , float , float );
-    ~AABB ();
-
-    bool top ( AABB ) , right ( AABB ) , bot ( AABB ) , left ( AABB );
-
-    static AABB getIntersection  ( AABB , AABB );
-    static bool checkIntersection ( AABB , AABB );
-};
 
 namespace collision
 {

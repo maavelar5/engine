@@ -29,12 +29,10 @@ void Enemy::update ()
     switch ( current )
     {
         case ENEMY_MOVE:
-            if ( sensor & BOT_SENSOR )
+            if ( sensor & BOT_SENSOR && !( sensor & TOP_SENSOR ) )
                 velocity.y -= 400;
-
             if ( !velocity.x )
                 velocity.x = 100;
-
             break;
         default:
             velocity.x = 0;
@@ -46,11 +44,13 @@ void Enemy::update ()
 
 void Enemy::leftSensorCallback ( Entity & entity )
 {
+    Entity::leftSensorCallback ( entity );
     velocity.x = 100;
 }
 
 void Enemy::rightSensorCallback ( Entity & entity )
 {
+    Entity::rightSensorCallback ( entity );
     velocity.x = -100;
 }
 

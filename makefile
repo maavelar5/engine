@@ -57,6 +57,9 @@ all : $(OBJS)
 release : $(OBJS)
 	$(CC) $(OBJS_DIR) $(CFLAGS) $(CPPFLAGS) $(LINKER_FLAGS) -o $(RELEASE)
 
+aabb.o : aabb.cpp
+	$(CC) -c -w $(CPPFLAGS) src/aabb.cpp -o obj/aabb.o
+
 automated_movement.o : automated_movement.cpp
 	$(CC) -c -w $(CPPFLAGS) src/automated_movement.cpp -o obj/automated_movement.o
 

@@ -54,35 +54,29 @@ void Entity::move ()
 
     positionLimits ();
 
+    if ( previousPosition != position )
+        updateLocator ();
+
     entities::queue.push_back ( this );
-    updateLocator ();
 }
 
 void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
 {
     previousPosition = position;
-
-    if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) && !( config & DIRECTIONAL ) )
-    {
-        velocity.y += GRAVITY.y * timer::timeStep;
-        velocity.y = ( velocity.y > MAX_GRAVITY )
-            ? MAX_GRAVITY
-            : velocity.y;
-    }
-
     direction = position - a;
 
     if ( direction.length() > minDistance )
     {
         direction.normalize();
-
         position += direction * ( speed * timer::timeStep );
-
-        position.getAngle ( a );
         positionLimits ();
-        entities::queue.push_back ( this );
-        updateLocator ();        
     }
+
+    if ( previousPosition != position )
+        updateLocator ();
+
+    entities::queue.push_back ( this );
+    position.getAngle ( a );
 }
 
 void Entity::render ( SDL_Texture *texture )
@@ -222,21 +216,25 @@ void Entity::positionLimits ()
 void Entity::topSensorCallback ( Entity & entity )
 {
     //TODO: Base case scenarion
+    sensor |= TOP_SENSOR;
 }
 
 void Entity::botSensorCallback ( Entity & entity )
 {
     //TODO: Base case scenarion
+    sensor |= BOT_SENSOR;
 }
 
 void Entity::leftSensorCallback ( Entity & entity )
 {
     //TODO: Base case scenarion
+    sensor |= LEFT_SENSOR;
 }
 
 void Entity::rightSensorCallback ( Entity & entity )
 {
     //TODO: Base case scenarion
+    sensor |= RIGHT_SENSOR;
 }
 
 std::string Entity::getPositionHash ( int x , int y )

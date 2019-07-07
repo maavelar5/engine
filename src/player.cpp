@@ -127,5 +127,6 @@ void Player::move ()
 
 void Player::botSensorCallback ( Entity & entity )
 {
+    Entity::botSensorCallback ( entity );
     canDoubleJump = true;
 }
