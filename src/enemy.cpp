@@ -29,11 +29,19 @@ void Enemy::update ()
     switch ( current )
     {
         case ENEMY_MOVE:
-            move ();
+            if ( sensor & BOT_SENSOR )
+                velocity.y -= 400;
+
+            if ( !velocity.x )
+                velocity.x = 100;
+
             break;
         default:
+            velocity.x = 0;
             break;
     }
+
+    move ();
 }
 
 void Enemy::leftSensorCallback ( Entity & entity )
