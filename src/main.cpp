@@ -32,6 +32,9 @@ int main ( int argc, char* argv[] )
     enemies.add ( 100 , 50 , 32 , 32  );
 
     regularEnemies.add ( 500 , 50 , 32 , 32 );
+    regularEnemies.add ( 550 , 50 , 32 , 32 );
+    regularEnemies.add ( 600 , 50 , 32 , 32 );
+    regularEnemies.add ( 650 , 50 , 32 , 32 );
 
     while ( !game::quit )
     {
@@ -50,6 +53,7 @@ int main ( int argc, char* argv[] )
             regularEnemies.update ();
             collision::collide();
             timer::acumulator -= timer::timeStep;
+            //TODO: mapper.update() => add for enemies
         }
 
         timer::interpolation = timer::acumulator / timer::timeStep;
