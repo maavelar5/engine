@@ -9,6 +9,7 @@
 #include "info.h"
 #include "font.h"
 #include "enemy.h"
+#include "floating_enemy.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -25,9 +26,12 @@ int main ( int argc, char* argv[] )
     Mapper mapper;
     SDL_Event event;
 
-    Enemies enemies ( &player );
+    FloatingEnemies enemies ( &player );
+    Enemies regularEnemies;
 
     enemies.add ( 100 , 50 , 32 , 32  );
+
+    regularEnemies.add ( 500 , 50 , 32 , 32 );
 
     while ( !game::quit )
     {
@@ -43,6 +47,7 @@ int main ( int argc, char* argv[] )
         {
             player.move();
             enemies.update ();
+            regularEnemies.update ();
             collision::collide();
             timer::acumulator -= timer::timeStep;
         }
@@ -55,6 +60,7 @@ int main ( int argc, char* argv[] )
         mapper.render();
         player.render();
         enemies.render();
+        regularEnemies.render();
 
         timer::updateFPS ();
 

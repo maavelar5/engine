@@ -78,6 +78,9 @@ enemy.o : enemy.cpp
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
 
+floating_enemy.o : floating_enemy.cpp
+	$(CC) -c -w $(CPPFLAGS) src/floating_enemy.cpp -o obj/floating_enemy.o
+
 font.o : font.cpp
 	$(CC) -c -w $(CPPFLAGS) src/font.cpp -o obj/font.o
 

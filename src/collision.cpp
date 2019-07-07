@@ -12,36 +12,30 @@ AABB::~AABB () { }
 
 bool AABB::left ( AABB a )
 {
-    float value = ( ( w - x ) / 10 ) * 9;
+    float value = ( ( w - x ) / 10 ) * 2;
 
-    return ( a.x >= x && a.y >= y && a.w <= x + value && a.h <= h )
+    return ( a.x == x )
         ? true
         : false;
 }
 
 bool AABB::right ( AABB a )
 {
-    float value = ( w - x ) / 10;
-
-    return ( a.x >= x + value && a.y >= y && a.w <= w && a.h <= h )
+    return ( a.w == w )
         ? true
         : false;
 }
 
 bool AABB::top ( AABB a )
 {
-    float value = ( h - y ) / 10 * 9;
-
-    return ( a.x >= x && a.y >= y && a.w <= w && a.h <= y + value )
+    return ( a.y == y && a.h < h )
         ? true
         : false;
 }
 
 bool AABB::bot ( AABB a )
 {
-    float value = ( h - y ) / 10;
-
-    return ( a.x >= x && a.y >= y + value && a.w <= w && a.h <= h )
+    return ( a.h == h && a.y > y )
         ? true
         : false;
 }
@@ -138,14 +132,19 @@ namespace collision
             { 
                 bot ( entityA , c.h - c.y );
                 entityA.botSensorCallback ( entityB );
+                entityB.topSensorCallback ( entityA );
             }
             else if ( a.left ( c ) )
             { 
                 left ( entityA , c.w - c.x );
+                entityA.leftSensorCallback ( entityB );
+                entityB.rightSensorCallback ( entityA );
             }
             else if ( a.right ( c ) )
             { 
                 right ( entityA , c.w - c.x );
+                entityA.rightSensorCallback ( entityB );
+                entityB.leftSensorCallback ( entityA );
             }
             else if ( a.x == c.x && a.y == c.y &&
                       a.w == c.w && a.h == c.h )
@@ -167,85 +166,28 @@ namespace collision
         }
     }
 
-    namespace statics
-    {
-        void solve ( AABB a , AABB b , AABB c )
-        {
-            
-        }
-
-        void top ()
-        {
-            
-        }
-
-        void bot ()
-        {
-            
-        }
-
-        void left ()
-        {
-            
-        }
-
-        void right ()
-        {
-            
-        }
-
-    }
-
-    namespace kinematics
-    {
-        void solve ( AABB a , AABB b , AABB c )
-        {
-            
-        }
-
-        void top ()
-        {
-            
-        }
-
-        void bot ()
-        {
-            
-        }
-
-        void left ()
-        {
-            
-        }
-
-        void right ()
-        {
-            
-        }
-    }
-
     void bot ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y -= h - 1;
+        entity.position.y -= h;
         entity.sensor |= BOT_SENSOR;
     }
 
     void top ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y += h + 1;
+        entity.position.y += h;
         entity.sensor |= TOP_SENSOR;
     }
 
     void left ( Entity &entity , int w )
     {
-        entity.position.x += w - 1;
+        entity.position.x += w;
         entity.sensor |= LEFT_SENSOR;
     }
     void right ( Entity &entity , int w )
     {
-        entity.position.x -= w - 1;
+        entity.position.x -= w;
         entity.sensor |= RIGHT_SENSOR;
     }
 }
