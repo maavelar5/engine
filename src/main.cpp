@@ -23,18 +23,8 @@ int main ( int argc, char* argv[] )
     font::init ();
 
     Player player;
-    Mapper mapper;
+    Mapper mapper ( &player );
     SDL_Event event;
-
-    FloatingEnemies enemies ( &player );
-    Enemies regularEnemies;
-
-    enemies.add ( 100 , 50 , 32 , 32  );
-
-    regularEnemies.add ( 500 , 50 , 32 , 32 );
-    regularEnemies.add ( 550 , 50 , 32 , 32 );
-    regularEnemies.add ( 600 , 50 , 32 , 32 );
-    regularEnemies.add ( 650 , 50 , 32 , 32 );
 
     while ( !game::quit )
     {
@@ -48,12 +38,10 @@ int main ( int argc, char* argv[] )
 
         while ( timer::acumulator >= timer::timeStep )
         {
-            player.move();
-            enemies.update ();
-            regularEnemies.update ();
+            player.move ();
+            mapper.update ();
             collision::collide();
             timer::acumulator -= timer::timeStep;
-            //TODO: mapper.update() => add for enemies
         }
 
         timer::interpolation = timer::acumulator / timer::timeStep;
@@ -63,8 +51,6 @@ int main ( int argc, char* argv[] )
 
         mapper.render();
         player.render();
-        enemies.render();
-        regularEnemies.render();
 
         timer::updateFPS ();
 

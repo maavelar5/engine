@@ -1,6 +1,6 @@
 #include "floating_enemy.h"
 
-FloatingEnemy::FloatingEnemy ( float x , float y , float w , float h ) :
+FloatingEnemy::FloatingEnemy ( float x , float y , int w , int h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC | DIRECTIONAL ),
     projectiles ( 200 , this )
 {
@@ -55,7 +55,7 @@ void FloatingEnemy::update ( Vector a , uint16 speed )
 }
 
 FloatingEnemies::FloatingEnemies ( Entity * entity ) :
-    Entities ( ACTIVE | KINEMATIC , ARROW_FILE_PATH )
+    Entities ( ARROW_FILE_PATH )
 {
     speed = 100;
     this->entity = entity;
@@ -81,4 +81,18 @@ void FloatingEnemies::render ()
         entity->render ( texture );
         entity->projectiles.render ();
     }
+}
+
+void FloatingEnemies::move ()
+{
+    for ( auto &entity : entities )
+    {
+        entity->move ();
+    }
+}
+
+void FloatingEnemies::add ( float x , float y , int w , int h )
+{
+    entities.push_back ( std::shared_ptr < FloatingEnemy >
+                         ( new FloatingEnemy ( x , y , w , h ) ) );
 }

@@ -1,21 +1,19 @@
 #include "directed_projectile.h"
 
 DirectedProjectiles::DirectedProjectiles ( uint16 speed , Entity * entity ) :
-    Entities ( ACTIVE | KINEMATIC | BULLET , GENERIC_PROJECTILE_FILE_PATH ),
-    Timer ( 1000 )
+    Projectiles ( speed , entity )
 {
-    this->speed = speed;
-    this->entity = entity;
-    isActive = false;
+
 }
 
 DirectedProjectiles::~DirectedProjectiles () { }
 
-void DirectedProjectiles::add ( float x , float y )
+void DirectedProjectiles::move ( Vector a )
 {
-    std::shared_ptr < Projectile > entity ( new Projectile ( x , y , 4 , 4 ) );
-
-    entities.push_back ( entity );
+    for ( auto & entity : entities )
+    {
+        entity->move ( a , speed );
+    }
 }
 
 void DirectedProjectiles::update ()

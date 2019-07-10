@@ -3,6 +3,7 @@
 
 #include "constants.h"
 #include "entity.h"
+#include "entities.h"
 #include "texture.h"
 #include "automated_movement.h"
 
@@ -10,21 +11,25 @@
 
 struct Projectile : public Entity
 {
-    Projectile ( float , float , float , float );
+    Projectile ( float , float , int , int );
     ~Projectile ();
 
     void positionLimits ();
 };
 
-struct Projectiles : public Entities < Projectile > , Timer
+struct Projectiles : public Entities , Timer
 {
     Entity * entity;
     bool isActive;
+    int speed;
 
-    Projectiles ( uint16 speed , Entity * entity );
+    std::vector < std::shared_ptr < Projectile > > entities;
+
+    Projectiles ( int speed , Entity * entity );
     ~Projectiles ();
 
-    void add ( float , float ) ,  update ();
+    virtual void update () ,  move () , render (),
+        add ( float , float , int w = 4 , int h = 4 );
 };
 
 #endif

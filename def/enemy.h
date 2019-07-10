@@ -9,19 +9,24 @@
 
 struct Enemy : public Entity , AutomatedMovement
 {
-    Enemy ( float , float , float , float );
+    Enemy ( float , float , int , int );
     ~Enemy ();
 
     void update () , leftSensorCallback ( Entity & ),
         rightSensorCallback ( Entity & );
 };
 
-struct Enemies : public Entities < Enemy >
+struct Enemies : public Entities
 {
+    int speed;
+
+    std::vector < std::shared_ptr < Enemy > > entities;
+
     Enemies ();
     ~Enemies ();
 
-    void update ();
+    void move () , update () , render (),
+        add ( float , float , int , int );
 };
 
 #endif

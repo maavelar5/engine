@@ -5,15 +5,12 @@
 #include "entity.h"
 #include "projectile.h"
 
-struct DirectedProjectiles : public Entities < Projectile > , Timer
+struct DirectedProjectiles : public Projectiles
 {
-    Entity * entity;
-    bool isActive;
-
     DirectedProjectiles ( uint16 speed , Entity * entity );
     ~DirectedProjectiles ();
 
-    void add ( float , float ) ,  update ();
+    void update () , move ( Vector );
 };
 
 #endif

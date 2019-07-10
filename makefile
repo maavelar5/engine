@@ -78,6 +78,9 @@ directed_projectile.o : directed_projectile.cpp
 enemy.o : enemy.cpp
 	$(CC) -c -w $(CPPFLAGS) src/enemy.cpp -o obj/enemy.o
 
+entities.o : entities.cpp
+	$(CC) -c -w $(CPPFLAGS) src/entities.cpp -o obj/entities.o
+
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
 

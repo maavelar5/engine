@@ -13,6 +13,11 @@ namespace entities
             ( *collection )[ positionHash ] = std::vector < Entity * > ();
         }
     }
+
+    std::string getPositionHash ( int x , int y )
+    {
+        return std::to_string ( y ) + "," + std::to_string ( x );
+    }
 }
 Entity::Entity ( float x , float y , int w , int h , uint8 config )
 {
@@ -145,7 +150,7 @@ void Entity::setLocator ()
               x++
             )
         {
-            positionHash = getPositionHash ( x , y );
+            positionHash = entities::getPositionHash ( x , y );
 
             entities::addHashIfNotExists ( positionHash , collection );
             (*collection) [ positionHash ].push_back ( this );
@@ -169,7 +174,7 @@ void Entity::deleteLocator ()
               x++
             )
         {
-            positionHash = getPositionHash ( x , y );
+            positionHash = entities::getPositionHash ( x , y );
             
             ( *collection )[ positionHash ].erase (
                 std::remove (
@@ -237,7 +242,7 @@ void Entity::rightSensorCallback ( Entity & entity )
     sensor |= RIGHT_SENSOR;
 }
 
-std::string Entity::getPositionHash ( int x , int y )
+void Entity::update ()
 {
-    return std::to_string ( y ) + "," + std::to_string ( x );
+    
 }

@@ -1,6 +1,6 @@
 #include "enemy.h"
 
-Enemy::Enemy ( float x , float y , float w , float h ) :
+Enemy::Enemy ( float x , float y , int w , int h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC )
 {
 
@@ -54,13 +54,36 @@ void Enemy::rightSensorCallback ( Entity & entity )
     velocity.x = -100;
 }
 
-Enemies::Enemies () :
-    Entities ( ACTIVE | KINEMATIC , GENERIC_ENEMY_FILE_PATH )
+Enemies::Enemies () : Entities ( GENERIC_ENEMY_FILE_PATH )
 {
     speed = 100;
 }
 
 Enemies::~Enemies () { }
+
+void Enemies::render ()
+{
+    for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
+    {
+        if ( (*entity)->config & ACTIVE )
+        {
+            (*entity)->render ( texture );     
+        }
+        else
+        {
+            (*entity)->deleteLocator ();
+            entities.erase ( entity-- );                
+        }
+    }
+}
+
+void Enemies::move ()
+{
+    for ( auto &entity : entities )
+    {
+        entity->move ();
+    }
+}
 
 void Enemies::update ()
 {
@@ -68,4 +91,10 @@ void Enemies::update ()
     {
         entity->update ();
     }
+}
+
+void Enemies::add ( float x , float y , int w , int h )
+{
+    entities.push_back ( std::shared_ptr < Enemy >
+                         ( new Enemy ( x , y , w , h ) ) );
 }

@@ -1,6 +1,6 @@
 #include "projectile.h"
 
-Projectile::Projectile ( float x , float y , float w , float h ) :
+Projectile::Projectile ( float x , float y , int w , int h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC | BULLET )
 {
     
@@ -22,8 +22,8 @@ void Projectile::positionLimits ()
 }
 
 
-Projectiles::Projectiles ( uint16 speed , Entity * entity ) :
-    Entities ( ACTIVE | KINEMATIC | BULLET , GENERIC_PROJECTILE_FILE_PATH ),
+Projectiles::Projectiles ( int speed , Entity * entity ) :
+    Entities ( GENERIC_PROJECTILE_FILE_PATH ),
     Timer ( 1000 )
 {
     this->speed = speed;
@@ -33,9 +33,33 @@ Projectiles::Projectiles ( uint16 speed , Entity * entity ) :
 
 Projectiles::~Projectiles () { }
 
-void Projectiles::add ( float x , float y )
+void Projectiles::render ()
 {
-    std::shared_ptr < Projectile > entity ( new Projectile ( x , y , 4 , 4 ) );
+    for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
+    {
+        if ( (*entity)->config & ACTIVE )
+        {
+            (*entity)->render ( texture );     
+        }
+        else
+        {
+            (*entity)->deleteLocator ();
+            entities.erase ( entity-- );                
+        }
+    }
+}
+
+void Projectiles::move ()
+{
+    for ( auto &entity : entities )
+    {
+        entity->move ();
+    }
+}
+
+void Projectiles::add ( float x , float y , int w , int h )
+{
+    std::shared_ptr < Projectile > entity ( new Projectile ( x , y , w , h ) );
 
     entity->velocity.x = ( this->entity->flip == SDL_FLIP_HORIZONTAL )
         ? -speed

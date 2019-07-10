@@ -20,7 +20,7 @@ namespace collision
                 {
                     entity->sensor = NONE_SENSOR;
 
-                    positionHash = Entity::getPositionHash ( x , y );
+                    positionHash = entities::getPositionHash ( x , y );
 
                     iterate ( *entity , entities::statics[ positionHash ] );
                     iterate ( *entity , entities::kinematics[ positionHash ] );

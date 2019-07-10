@@ -1,9 +1,11 @@
 #include "mapper.h"
 
-Mapper::Mapper ()
+Mapper::Mapper ( Entity * entity )
 {
-    entities [ "gp" ] = std::shared_ptr < Entities < Entity > >
-        ( new Entities < Entity > () );
+    entities [ "gp" ] = std::shared_ptr < Platforms > ( new Platforms () );
+    entities [ "se" ] = std::shared_ptr < Enemies > ( new Enemies () );
+    entities [ "fe" ] = std::shared_ptr
+        < FloatingEnemies > ( new FloatingEnemies ( entity ) );
 
     load();
 }
@@ -12,7 +14,7 @@ Mapper::~Mapper () { }
 
 void Mapper::add ( float x , float y , int w , int h , std::string type )
 {
-    entities[ type ]->add ( x , y , w , h );
+    entities [ type ]->add ( x , y , w , h );
 }
 
 void Mapper::load ()
@@ -45,5 +47,13 @@ void Mapper::render ()
     for ( auto entity : entities )
     {
         entity.second->render();
+    }
+}
+
+void Mapper::update ()
+{
+    for ( auto entity : entities )
+    {
+        entity.second->update();
     }
 }

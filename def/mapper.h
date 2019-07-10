@@ -1,8 +1,11 @@
 #ifndef MAPPER
 #define MAPPER
 
-#include "entity.h"
+#include "enemy.h"
+#include "platform.h"
+#include "floating_enemy.h"
 
+#include <any>
 #include <fstream>
 #include <map>
 #include <regex>
@@ -11,13 +14,13 @@
 
 struct Mapper
 {
-    std::map < std::string , std::shared_ptr < Entities < Entity > > > entities;
+    std::map < std::string , std::shared_ptr < Entities > > entities;
 
-    Mapper ();
+    Mapper ( Entity * entity = nullptr );
     ~Mapper ();
 
     void add ( float , float , int , int , std::string ),
-        render () , load ();
+        render () , load () , update ();
 };
 
 #endif
