@@ -13,8 +13,6 @@ AABB::~AABB () { }
 
 bool AABB::left ( AABB a )
 {
-    float value = ( ( w - x ) / 10 ) * 2;
-
     return ( a.x == x )
         ? true
         : false;

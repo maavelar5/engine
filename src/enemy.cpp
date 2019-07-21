@@ -3,7 +3,6 @@
 Enemy::Enemy ( float x , float y , int w , int h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC )
 {
-
     moves [ ENEMY_NONE ] = Timer ( 1000 );
     moves [ ENEMY_MOVE ] = Timer ( 3000 );
 
@@ -30,12 +29,9 @@ void Enemy::update ()
     {
         case ENEMY_MOVE:
             if ( sensor & BOT_SENSOR && !( sensor & TOP_SENSOR ) )
-                velocity.y -= 400;
-            if ( !velocity.x )
-                velocity.x = 100;
+                velocity.y = -400;              
             break;
         default:
-            velocity.x = 0;
             break;
     }
 

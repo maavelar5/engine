@@ -177,11 +177,9 @@ void Entity::deleteLocator ()
             positionHash = entities::getPositionHash ( x , y );
             
             ( *collection )[ positionHash ].erase (
-                std::remove (
-                    ( *collection )[ positionHash ].begin(),
-                    ( *collection )[ positionHash ].end(),
-                    this
-                    ),
+                std::remove ( ( *collection )[ positionHash ].begin(),
+                              ( *collection )[ positionHash ].end(),
+                              this ),
                 ( *collection )[ positionHash ].end());
         }
     }

@@ -64,18 +64,18 @@ namespace collision
             if ( entityA.config & BULLET )
                 entityA.config &= ~ACTIVE;
 
-            if ( a.top ( c ) &&
-                 ( entityA.velocity.y < 0 || entityA.config & DIRECTIONAL ) )
+            if ( a.top ( c ) )
             {
-                top ( entityA , c.h - c.y );
+                if ( entityA.velocity.y <= 0 )
+                    top ( entityA , c.h - c.y );
 
                 entityA.topSensorCallback( entityB );
                 entityB.botSensorCallback( entityA );
             }
-            else if ( a.bot ( c ) &&
-                      ( entityA.velocity.y >= 0 || entityA.config & DIRECTIONAL ) )
+            else if ( a.bot ( c ) )
             { 
-                bot ( entityA , c.h - c.y );
+                if ( entityA.velocity.y >= 0 )
+                    bot ( entityA , c.h - c.y );                    
 
                 entityA.botSensorCallback ( entityB );
                 entityB.topSensorCallback ( entityA );

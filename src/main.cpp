@@ -56,7 +56,7 @@ int main ( int argc, char* argv[] )
 
         info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
         info::draw ( "Projectiles: " , std::to_string (
-                         player.projectiles.entities.size() ) );
+                    player.projectiles.entities.size() ) );
         info::draw ( "X: " , std::to_string ( player.position.x ) );
         info::draw ( "Y: " , std::to_string ( player.position.y ) );
         info::draw ( "velY: " , std::to_string ( player.velocity.y ) );
