@@ -1,4 +1,3 @@
-
 #include "aabb.h"
 
 AABB::AABB ( float x , float y , float w , float h )
