@@ -19,12 +19,16 @@
 
 int main ( int argc, char* argv[] )
 {
+    initCWD ( std::string(argv[0]));
+
     game::init ();
     font::init ();
 
     Player player;
     Mapper mapper ( &player );
     SDL_Event event;
+
+    SDL_HideWindow(game::debugWindow);
 
     while ( !game::quit )
     {

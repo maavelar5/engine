@@ -61,34 +61,6 @@ const uint8 BULLET = 8;
 const uint8 DIRECTIONAL = 16;
 const uint8 CAMERA = 32;
 
-/* Player */
-const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH + 
-    "megamanSpriteSheet.png";
-
-/* Player */
-const std::string PLAYER_SPRITE_SHEET = SPRITES_PATH + 
-    "player_arrow.png";
-
-/* Generic platform */
-const std::string GENERIC_PLATFORM_FILE_PATH = SPRITES_PATH + 
-    "platform.png";
-
-/* Generic enemy */
-const std::string GENERIC_ENEMY_FILE_PATH = SPRITES_PATH + 
-    "enemy.png";
-
-/* Arrow enemy */
-const std::string ARROW_FILE_PATH = SPRITES_PATH + 
-    "arrow.png";
-
-/* Generic projectile */
-const std::string GENERIC_PROJECTILE_FILE_PATH = SPRITES_PATH + 
-    "projectile.png";
-
-/* Mapper file */
-const std::string MAPPER_FILE_PATH = SPRITES_PATH +
-    "platforms.org";
-
 /* Sensor values */
 const uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8,
     NONE_SENSOR = 0;
@@ -102,3 +74,38 @@ const SDL_Rect LT = {  10 , 10 , 50 , 50 } , T = { 100 , 10 , 50 , 50 },
 
 /* MAX GRAVITY */
 const float MAX_GRAVITY = 500.0;
+/* Player */
+std::string MEGAMAN_SPRITE_SHEET;
+/* Player */
+std::string PLAYER_SPRITE_SHEET;
+/* Generic platform */
+std::string GENERIC_PLATFORM_FILE_PATH;
+/* Generic enemy */
+std::string GENERIC_ENEMY_FILE_PATH;
+/* Arrow enemy */
+std::string ARROW_FILE_PATH;
+/* Generic projectile */
+std::string GENERIC_PROJECTILE_FILE_PATH;
+/* Mapper file */
+std::string MAPPER_FILE_PATH;
+/* Sans font file */
+std::string SANS_FONT_FILE_PATH;
+
+/* Relative to BIN instead of CWD */
+std::string BIN_PATH;
+std::string BIN_SPRITES_PATH;
+
+void initCWD ( std::string argv )
+{
+    BIN_PATH = argv.substr(0, argv.size() - 8 );
+    BIN_SPRITES_PATH = BIN_PATH + "sprites" + DS;
+
+    PLAYER_SPRITE_SHEET = BIN_SPRITES_PATH + "player.png";
+    GENERIC_ENEMY_FILE_PATH = BIN_SPRITES_PATH + "enemy.png";
+    GENERIC_PLATFORM_FILE_PATH = BIN_SPRITES_PATH + "platform.png";
+    GENERIC_PROJECTILE_FILE_PATH = BIN_SPRITES_PATH + "projectile.png";
+    MAPPER_FILE_PATH = BIN_SPRITES_PATH + "platforms.org";
+    ARROW_FILE_PATH = BIN_SPRITES_PATH + "arrow.png";
+    MEGAMAN_SPRITE_SHEET = BIN_SPRITES_PATH + "megamanSpriteSheet.png";
+    SANS_FONT_FILE_PATH = BIN_SPRITES_PATH + "OpenSans-Regular.ttf";
+}

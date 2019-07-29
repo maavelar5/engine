@@ -3,6 +3,7 @@
 namespace game
 {
     bool quit = false;
+    bool show = false;
 
     SDL_Window *window = nullptr , *debugWindow = nullptr;
     SDL_Renderer *renderer = nullptr , *debugRenderer = nullptr;
@@ -15,7 +16,7 @@ namespace game
                                    SDL_WINDOWPOS_UNDEFINED,
                                    SDL_WINDOWPOS_UNDEFINED,
                                    WINDOW_WIDTH , WINDOW_HEIGHT,
-                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALWAYS_ON_TOP );
 
 
 
@@ -49,8 +50,8 @@ namespace game
                         controller = SDL_GameControllerOpen( i );
                         if ( controller )
                             break;
-                        else
-                            fprintf( stderr, "Could not open gamecontroller %i: %s\n" , i, SDL_GetError() );
+
+                        fprintf( stderr, "Could not open gamecontroller %i: %s\n" , i, SDL_GetError() );
                     }
                 }
 
@@ -67,10 +68,9 @@ namespace game
     bool initDebugObjects ()
     {
         debugWindow = SDL_CreateWindow( "Debugging Window",
-                                        0 , 0,
-                                        512 , 1080,
-                                        SDL_WINDOW_SHOWN |
-                                        SDL_WINDOW_RESIZABLE );
+                                        512 , 0,
+                                        512 , 512,
+                                        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE | SDL_WINDOW_POPUP_MENU );
 
         if ( debugWindow )
         {
@@ -80,14 +80,17 @@ namespace game
 
             if ( debugRenderer )
             {
-                // make the scaled rendering look smoother.
-                SDL_SetRenderDrawColor( debugRenderer , 0 , 0 , 0 , 0 );
+                SDL_SetRenderDrawColor( debugRenderer , 50 , 50, 50 , 50 );
             }
         }
     }
 
     void event ( SDL_Event event )
     {
+        int x , y;
+
+        SDL_GetWindowPosition(game::debugWindow, &x, &y);
+
         if ( event.type == SDL_QUIT )
         {
             quit = SDL_TRUE;            
@@ -97,10 +100,29 @@ namespace game
             switch( event.key.keysym.sym )
             {
                 case SDLK_l: game::quit = SDL_TRUE; break;
-                case SDLK_o: SDL_ShowWindow ( game::debugWindow ); break;
+                case SDLK_o:
+                    show = (show)
+                        ? false
+                        : true;
+
+                    if (show) { SDL_ShowWindow ( game::debugWindow ); }
+                    else { SDL_HideWindow( game::debugWindow ); }
+
+                    break;
                 case SDLK_h: SDL_HideWindow ( game::debugWindow ); break;
             }
         }
+        else if( event.type == SDL_KEYDOWN )
+        {
+            switch( event.key.keysym.sym )
+            {
+                case SDLK_LEFT: x -= 10; break;
+                case SDLK_RIGHT: x += 10; break;
+                case SDLK_UP: y -= 10; break;
+                case SDLK_DOWN: y += 10; break;
+            }
+        }
     }
-    
+
+    SDL_SetWindowPosition( game::debugWindow , x , y );
 }

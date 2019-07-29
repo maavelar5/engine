@@ -43,7 +43,6 @@ extern const std::string DS;
 
 /* Current working directory */
 extern const std::string CWD;
-
 extern const std::string SPRITES_PATH;
 
 /* Physics */
@@ -61,24 +60,6 @@ extern const uint8 BULLET;
 extern const uint8 DIRECTIONAL;
 extern const uint8 CAMERA;
 
-/* Player */
-extern const std::string PLAYER_SPRITE_SHEET;
-
-/* Generic platform */
-extern const std::string GENERIC_PLATFORM_FILE_PATH;
-
-/* Generic enemy */
-extern const std::string GENERIC_ENEMY_FILE_PATH;
-
-/* Arrow enemy */
-extern const std::string ARROW_FILE_PATH;
-
-/* Generic projectile */
-extern const std::string GENERIC_PROJECTILE_FILE_PATH;
-
-/* Mapper file */
-extern const std::string MAPPER_FILE_PATH;
-
 /* Sensor valuess */
 extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR , NONE_SENSOR;
 
@@ -94,5 +75,25 @@ const uint8 ENEMY_NONE = 0;
 const uint8 ENEMY_MOVE = 1;
 const uint8 ENEMY_SEARCH = 2;
 const uint8 ENEMY_ATTACK = 3;
+
+
+/* Player */
+extern std::string PLAYER_SPRITE_SHEET;
+/* Generic platform */
+extern std::string GENERIC_PLATFORM_FILE_PATH;
+/* Generic enemy */
+extern std::string GENERIC_ENEMY_FILE_PATH;
+/* Arrow enemy */
+extern std::string ARROW_FILE_PATH;
+/* Generic projectile */
+extern std::string GENERIC_PROJECTILE_FILE_PATH;
+/* Mapper file */
+extern std::string MAPPER_FILE_PATH;
+/* Sans Font */
+extern std::string SANS_FONT_FILE_PATH;
+/* Path relative to binary */
+extern std::string BIN_PATH, BIN_SPRITES_PATH;
+
+void initCWD (std::string);
 
 #endif

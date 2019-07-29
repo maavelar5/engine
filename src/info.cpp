@@ -6,7 +6,6 @@ namespace info
 
     void draw ( std::string type , std::string message , SDL_Color color )
     {
-
         SDL_Texture *typeTexture = font::createTexture ( type , white , game::debugRenderer ),
             *messageTexture = font::createTexture ( message , white , game::debugRenderer );
 

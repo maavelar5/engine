@@ -11,7 +11,7 @@ namespace font
 {
     extern TTF_Font *Sans;
 
-    void init ( std::string fileName = "OpenSans-Regular.ttf" , Uint8 size = 128 );
+    void init ( std::string fileName = SANS_FONT_FILE_PATH , Uint8 size = 128 );
 
     SDL_Texture * createTexture ( std::string message,
                                   SDL_Color color = white,

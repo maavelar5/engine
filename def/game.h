@@ -15,6 +15,7 @@
 namespace game
 {
     extern bool quit;
+    extern bool show;
     extern SDL_Window *window , *debugWindow;
     extern SDL_Renderer *renderer , *debugRenderer;
 
