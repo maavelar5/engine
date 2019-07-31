@@ -16,6 +16,7 @@ struct Texture
     SDL_Texture *texture;
 
     Texture ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
+    Texture ( SDL_Texture * );
     ~Texture ();
 };
 

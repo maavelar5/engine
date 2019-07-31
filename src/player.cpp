@@ -1,7 +1,7 @@
 #include "player.h"
 
 Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
-                    Entity ( 32 , 32 , 8 , 8 , ACTIVE | KINEMATIC | CAMERA ),
+                    Entity ( 32 , 32 , 32, 64 , ACTIVE | KINEMATIC | CAMERA ),
                     projectiles ( 400 , this )
 {
     speed = 200;
@@ -42,6 +42,8 @@ void Player::event( SDL_Event event )
                 break;
             case SDLK_q:
                 projectiles.isActive = true;
+                break;
+            case SDLK_x:
                 break;
             case SDLK_e:
                 position.x = 100;

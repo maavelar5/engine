@@ -22,13 +22,13 @@ int main ( int argc, char* argv[] )
     initCWD ( std::string(argv[0]));
 
     game::init ();
+    debug::init ();
+    info::init ();
     font::init ();
 
     Player player;
     Mapper mapper ( &player );
     SDL_Event event;
-
-    SDL_HideWindow(game::debugWindow);
 
     while ( !game::quit )
     {
@@ -38,6 +38,7 @@ int main ( int argc, char* argv[] )
         {
             game::event( event );
             player.event ( event );
+            debug::event ( event );
         }
 
         while ( timer::acumulator >= timer::timeStep )
@@ -51,25 +52,26 @@ int main ( int argc, char* argv[] )
         timer::interpolation = timer::acumulator / timer::timeStep;
 
         SDL_RenderClear( game::renderer );
-        SDL_RenderClear ( game::debugRenderer );
+        SDL_RenderClear ( info::renderer );
 
         mapper.render();
         player.render();
 
         timer::updateFPS ();
 
-        info::draw ( "FPS: " , std::to_string ( timer::FPS ) );
-        info::draw ( "Projectiles: " , std::to_string (
+        info::draw ( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
+        info::draw ( "Projectiles: " + std::to_string (
                     player.projectiles.entities.size() ) );
-        info::draw ( "X: " , std::to_string ( player.position.x ) );
-        info::draw ( "Y: " , std::to_string ( player.position.y ) );
-        info::draw ( "velY: " , std::to_string ( player.velocity.y ) );
-        info::draw ( "sensor: " , std::to_string ( player.sensor ) );
+        info::draw ( "X: " + std::to_string ( player.position.x ).substr( 0 , 4 ) );
+        info::draw ( "Y: " + std::to_string ( player.position.y ).substr( 0 , 4 ) );
+        info::draw ( "velY: " + std::to_string ( player.velocity.y ).substr( 0 , 4 ) );
+        info::draw ( "sensor: " + std::to_string ( player.sensor ) );
 
         SDL_RenderPresent ( game::renderer );
-        SDL_RenderPresent ( game::debugRenderer );
+        SDL_RenderPresent ( info::renderer );
+        SDL_RenderPresent ( debug::renderer );
 
-        info::x = info::y = 1;
+        info::y = 0;
     }
 
     SDL_Quit();

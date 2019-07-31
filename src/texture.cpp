@@ -20,6 +20,11 @@ Texture::Texture ( std::string filePath )
     }
 }
 
+Texture::Texture ( SDL_Texture * texture )
+{
+    this->texture = texture;
+}
+
 Texture::~Texture ()
 {
     SDL_DestroyTexture ( texture );

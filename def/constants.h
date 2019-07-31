@@ -61,7 +61,8 @@ extern const uint8 DIRECTIONAL;
 extern const uint8 CAMERA;
 
 /* Sensor valuess */
-extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR , NONE_SENSOR;
+extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR,
+    NONE_SENSOR , A_TOP_SENSOR , A_RIGHT_SENSOR, A_BOT_SENSOR , A_LEFT_SENSOR;
 
 /* HUD colors and other shit */
 extern const SDL_Color white , black;

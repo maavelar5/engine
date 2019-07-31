@@ -2,22 +2,42 @@
 
 namespace info
 {
-    Uint8 x = 1 , y = 1;
+    uint8 y = 0;
 
-    void draw ( std::string type , std::string message , SDL_Color color )
+    SDL_Window * window = nullptr;
+    SDL_Renderer * renderer = nullptr;
+
+    void init ()
     {
-        SDL_Texture *typeTexture = font::createTexture ( type , white , game::debugRenderer ),
-            *messageTexture = font::createTexture ( message , white , game::debugRenderer );
+        window = SDL_CreateWindow( "Info", 512 , 0 , 512 , 512,
+                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
-        SDL_Rect typePosition = { 100 * x++, 100  * y , 100 , 100 },
-            messagePosition = { 100 * x++, 100  * y++ , 100 , 100 };
+        if ( window )
+        {
+            renderer = SDL_CreateRenderer( window , -1,
+                                          SDL_RENDERER_ACCELERATED |
+                                          SDL_RENDERER_PRESENTVSYNC );
 
-        x = 1;
+            if ( renderer )
+            {
+                SDL_SetRenderDrawColor( renderer , 50 , 50, 50 , 50 );
+            }
+        }
 
-        SDL_RenderCopy ( game::debugRenderer , typeTexture , NULL , &typePosition );
-        SDL_RenderCopy ( game::debugRenderer , messageTexture , NULL , &messagePosition );
-            
-        SDL_DestroyTexture ( typeTexture );
-        SDL_DestroyTexture ( messageTexture );
+    }
+
+    void draw ( std::string text , SDL_Color color )
+    {
+        SDL_Texture * texture =
+            font::createTexture( text , 32 , white , renderer );
+
+        SDL_Rect position = { 0 , y , text.size() * 32 , 48 };
+
+        y += 48;
+
+        SDL_RenderCopy(renderer, texture, NULL, &position );
+
+        SDL_DestroyTexture( texture );
     }
 }
+

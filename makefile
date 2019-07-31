@@ -72,6 +72,9 @@ constants.o : constants.cpp
 collision.o : collision.cpp
 	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
 
+debug.o : debug.cpp
+	$(CC) -c -w $(CPPFLAGS) src/debug.cpp -o obj/debug.o
+
 directed_projectile.o : directed_projectile.cpp
 	$(CC) -c -w $(CPPFLAGS) src/directed_projectile.cpp -o obj/directed_projectile.o
 
@@ -113,6 +116,9 @@ player.o : player.cpp
 
 projectile.o : projectile.cpp
 	$(CC) -c -w $(CPPFLAGS) src/projectile.cpp -o obj/projectile.o
+
+text.o : text.cpp
+	$(CC) -c -w $(CPPFLAGS) src/text.cpp -o obj/text.o
 
 texture.o : texture.cpp
 	$(CC) -c -w $(CPPFLAGS) src/texture.cpp -o obj/texture.o

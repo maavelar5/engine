@@ -14,12 +14,11 @@
 
 namespace game
 {
-    extern bool quit;
-    extern bool show;
-    extern SDL_Window *window , *debugWindow;
-    extern SDL_Renderer *renderer , *debugRenderer;
+    extern bool quit , show;
+    extern SDL_Window *window;
+    extern SDL_Renderer *renderer;
 
-    bool init () , initDebugObjects ();
+    bool init ();
     void event ( SDL_Event event );
 }
 

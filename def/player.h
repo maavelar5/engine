@@ -5,6 +5,7 @@
 #include "game.h"
 #include "projectile.h"
 #include "texture.h"
+#include "debug.h"
 
 struct Player : public Entity , Texture
 {

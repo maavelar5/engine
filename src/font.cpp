@@ -2,33 +2,31 @@
 
 namespace font
 {
-    TTF_Font *Sans = nullptr;
+    std::map < uint8 , TTF_Font * > fonts;
 
-    void init ( std::string filePath , Uint8 size )
+    void init ( std::string path , std::vector < uint8 > sizes )
     {
         TTF_Init ();
-        Sans = TTF_OpenFont( filePath.c_str() , 128 );
+
+        for ( auto & size : sizes )
+        {
+            fonts[ size ] = TTF_OpenFont( path.c_str() , size );
+        }
     }
 
-    SDL_Texture * createTexture ( std::string message,
+    SDL_Texture * createTexture ( std::string message, uint8 size,
                                   SDL_Color color , SDL_Renderer *renderer )
     {
-        SDL_Surface *surface = TTF_RenderText_Solid ( Sans,
-                                                      message.c_str(),
-                                                      color );
+        SDL_Surface *surface =
+            TTF_RenderText_Solid ( fonts[ size ], message.c_str(), color );
         SDL_Texture *texture = nullptr;
 
         if ( surface )
         {
-            SDL_Texture * texture = SDL_CreateTextureFromSurface ( renderer,
-                                                                   surface );
-
+            texture = SDL_CreateTextureFromSurface ( renderer, surface );
             SDL_FreeSurface ( surface );
 
-            if ( texture )
-            {
-                return texture;
-            }
+            if ( texture ) { return texture; }
         }
 
         return texture;

@@ -3,7 +3,9 @@
 
 #include "aabb.h"
 #include "constants.h"
+#include "debug.h"
 #include "entity.h"
+#include "info.h"
 #include "vector.h"
 
 #include <algorithm>

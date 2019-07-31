@@ -5,8 +5,8 @@ const int WINDOW_WIDTH = 512;
 const int WINDOW_HEIGHT = 480;
 
 /* Window logical size */
-const int GAME_LOGICAL_WIDTH = 256;
-const int GAME_LOGICAL_HEIGHT = 240;
+const int GAME_LOGICAL_WIDTH = 1280;
+const int GAME_LOGICAL_HEIGHT = 720;
 
 /* Game camera rect */
 const SDL_Rect CAMERA_OFFSET =
@@ -51,7 +51,7 @@ const Vector GRAVITY( 0 , 1000 );
 
 /* Scenario size */
 const int SCENARIO_WIDTH = 7168;
-const int SCENARIO_HEIGHT = 240;
+const int SCENARIO_HEIGHT = 720;
 
 /* Entity configuration */
 const uint8 ACTIVE = 1;
@@ -63,7 +63,8 @@ const uint8 CAMERA = 32;
 
 /* Sensor values */
 const uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8,
-    NONE_SENSOR = 0;
+    NONE_SENSOR = 0 , A_TOP_SENSOR = 16 , A_RIGHT_SENSOR = 32,
+    A_BOT_SENSOR = 64 , A_LEFT_SENSOR = 128;
 
 /* HUD colors and other shit */
 const SDL_Color white = { 255 , 255 , 255 },
