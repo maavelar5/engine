@@ -64,6 +64,8 @@ namespace collision
             if ( entityA.config & BULLET )
                 entityA.config &= ~ACTIVE;
 
+            std::ostringstream oss;
+
             if ( a.top ( c ) )
             {
                 if ( entityA.velocity.y <= 0 )
@@ -71,6 +73,7 @@ namespace collision
 
                 entityA.topSensorCallback( entityB );
                 entityB.botSensorCallback( entityA );
+
             }
             else if ( a.bot ( c ) )
             { 
@@ -93,12 +96,6 @@ namespace collision
 
                 entityA.rightSensorCallback ( entityB );
                 entityB.leftSensorCallback ( entityA );
-                // FAIL: Check coordinates in which the resolution failed
-                char buffer [ 100 ];
-
-                sprintf(buffer, "EntityA => x: %.2f y: %.2f w: %.2f h: %.2f" ,a.x , a.y , a.w , a.h  );
-
-                debug::draw ( buffer );
             }
             else if ( a.x == c.x && a.y == c.y &&
                       a.w == c.w && a.h == c.h )
@@ -109,19 +106,23 @@ namespace collision
             else
             {
                 // FAIL: Check coordinates in which the resolution failed
-                char buffer [ 100 ];
+                oss << "EntityA => a.x: " << a.x << " a.y: "
+                    << a.y << " a.w: " << a.w << " a.h: " << a.h;
+                debug::draw ( oss.str() );
+                oss.str("");
 
-                sprintf(buffer, "EntityA => x: %.2f y: %.2f w: %.2f h: %.2f" ,a.x , a.y , a.w , a.h  );
+                oss << "EntityB => b.x: " << b.x << " b.y: "
+                    << b.y << " b.w: " << b.w << " b.h: " << b.h;
+                debug::draw ( oss.str() );
+                oss.str("");
 
-                debug::draw ( buffer );
+                oss << "Intersect => x: " << c.x << " y: "
+                    << c.y << " w: " << c.w << " h: " << c.h;
+                debug::draw ( oss.str() );
+                oss.str("");
 
-                SDL_Log ( "EntityA => x: %.2f y: %.2f w: %.2f h: %.2f \n",
-                          a.x , a.y , a.w , a.h );
-                SDL_Log ( "EntityB  => x: %.2f y: %.2f w: %.2f h: %.2f \n",
-                          b.x , b.y , b.w , b.h );
-                SDL_Log ( "Intersect => x: %.2f y: %.2f w: %.2f h: %.2f \n",
-                          c.x , c.y , c.w , c.h );
-                SDL_Log ( "Collision detection failed\n\n" );
+                oss << "Collision detection failed";
+                debug::draw ( oss.str() );
             }
         }
     }

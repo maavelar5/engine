@@ -32,6 +32,12 @@ extern const int WINDOW_HEIGHT;
 extern const int GAME_LOGICAL_WIDTH;
 extern const int GAME_LOGICAL_HEIGHT;
 
+/* Debug & Info window size */
+extern const int DI_WINDOW_WIDTH;
+extern const int DI_WINDOW_HEIGHT;
+extern const int DI_LOGICAL_WIDTH;
+extern const int DI_LOGICAL_HEIGHT;
+
 /* Game camera rect */
 extern const SDL_Rect CAMERA_OFFSET;
 

@@ -10,7 +10,8 @@ namespace debug
 
     void init ()
     {
-        window = SDL_CreateWindow( "Debug", 0 , 0 , 1280 , 720,
+        window = SDL_CreateWindow( "Debug", 512 , 512,
+                                   DI_WINDOW_WIDTH , DI_WINDOW_HEIGHT,
                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
         if ( window )
@@ -21,7 +22,17 @@ namespace debug
 
             if ( renderer )
             {
-                SDL_SetRenderDrawColor( renderer , 0 , 0, 0 , 0 );
+                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY , "linear" );
+
+                SDL_RenderSetLogicalSize( renderer , DI_LOGICAL_WIDTH,
+                                          DI_LOGICAL_HEIGHT );
+
+                SDL_SetWindowMinimumSize( window, DI_LOGICAL_WIDTH,
+                                          DI_LOGICAL_HEIGHT );
+
+                SDL_SetRenderDrawColor( renderer , 25 , 25, 25 , 25 );
+
+                SDL_RenderClear( renderer );
             }
         }
 
@@ -30,16 +41,18 @@ namespace debug
     void draw ( std::string text , SDL_Color color )
     {
         std::shared_ptr < Text > storage
-            ( new Text ( font::createTexture ( text , 16 , white , renderer ) ) );
+            ( new Text ( font::createTexture ( text , 18 , white , renderer ) ) );
 
-        storage->position = {  debug::position.x , debug::position.y , text.size() * 16 , 24 };
+        storage->position = {  debug::position.x,
+                               debug::position.y,
+                               text.size() * 18 , 32 };
 
         storage->render ( renderer );
-
         debug::text.push_back ( storage );
+
         debug::position.y += 32;
 
-        if ( debug::position.y > 512 )
+        if ( debug::position.y > DI_WINDOW_HEIGHT )
         {
             SDL_RenderClear( renderer );
 
@@ -56,11 +69,12 @@ namespace debug
     {
         int x , y;
 
-        SDL_GetWindowPosition(window, &x, &y);
+        SDL_GetWindowPosition( window, &x, &y );
 
         if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
         {
             draw ( SDL_GetKeyName ( event.key.keysym.sym ) );
+
             switch( event.key.keysym.sym )
             {
                 case SDLK_o:

@@ -6,6 +6,7 @@ namespace info
 
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
+    bool show = false;
 
     void init ()
     {
@@ -20,7 +21,12 @@ namespace info
 
             if ( renderer )
             {
-                SDL_SetRenderDrawColor( renderer , 50 , 50, 50 , 50 );
+                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
+                SDL_RenderSetLogicalSize( renderer , DI_LOGICAL_WIDTH , DI_LOGICAL_HEIGHT );
+                SDL_SetWindowMinimumSize( window, DI_LOGICAL_WIDTH , DI_LOGICAL_HEIGHT );
+                SDL_SetRenderDrawColor( renderer , 50 , 50 , 50 , 50 );
+
+                SDL_RenderClear ( renderer );
             }
         }
 
@@ -29,15 +35,32 @@ namespace info
     void draw ( std::string text , SDL_Color color )
     {
         SDL_Texture * texture =
-            font::createTexture( text , 32 , white , renderer );
+            font::createTexture( text , 18 , white , renderer );
 
-        SDL_Rect position = { 0 , y , text.size() * 32 , 48 };
+        SDL_Rect position = { 0 , y , text.size() * 18 , 32 };
 
-        y += 48;
+        y += 32;
 
         SDL_RenderCopy(renderer, texture, NULL, &position );
 
         SDL_DestroyTexture( texture );
     }
-}
 
+    void event ( SDL_Event event )
+    {
+        if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
+        {
+            switch( event.key.keysym.sym )
+            {
+                case SDLK_i:
+                    show = (show) ? false : true;
+
+                    if ( show ) { SDL_ShowWindow ( window ); }
+                    else { SDL_HideWindow( window ); }
+
+                    break;
+                case SDLK_h: SDL_HideWindow ( window ); break;
+            }
+        }
+    }
+}

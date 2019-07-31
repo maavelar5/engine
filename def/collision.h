@@ -9,6 +9,7 @@
 #include "vector.h"
 
 #include <algorithm>
+#include <iomanip>
 
 namespace collision
 {

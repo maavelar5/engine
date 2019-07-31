@@ -60,11 +60,8 @@ int main ( int argc, char* argv[] )
         timer::updateFPS ();
 
         info::draw ( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
-        info::draw ( "Projectiles: " + std::to_string (
-                    player.projectiles.entities.size() ) );
         info::draw ( "X: " + std::to_string ( player.position.x ).substr( 0 , 4 ) );
         info::draw ( "Y: " + std::to_string ( player.position.y ).substr( 0 , 4 ) );
-        info::draw ( "velY: " + std::to_string ( player.velocity.y ).substr( 0 , 4 ) );
         info::draw ( "sensor: " + std::to_string ( player.sensor ) );
 
         SDL_RenderPresent ( game::renderer );

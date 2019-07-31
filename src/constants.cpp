@@ -8,6 +8,12 @@ const int WINDOW_HEIGHT = 480;
 const int GAME_LOGICAL_WIDTH = 1280;
 const int GAME_LOGICAL_HEIGHT = 720;
 
+/* Debug & Info window size */
+const int DI_WINDOW_WIDTH = 1024;
+const int DI_WINDOW_HEIGHT = 768;
+const int DI_LOGICAL_WIDTH = 1024;
+const int DI_LOGICAL_HEIGHT = 768;
+
 /* Game camera rect */
 const SDL_Rect CAMERA_OFFSET =
 {
