@@ -12,28 +12,36 @@ AABB::~AABB () { }
 
 bool AABB::left ( AABB a )
 {
-    return ( a.x == x )
+    float dw = x + ( ( ( w - x  ) / 10 ) * 3 );
+
+    return ( a.x >= x && a.w <= dw && a.y >= y && a.h <= h )
         ? true
         : false;
 }
 
 bool AABB::right ( AABB a )
 {
-    return ( a.w == w )
+    float dx = x + ( ( ( w - x  ) / 10 ) * 7 );
+
+    return ( a.x >= dx && a.w <= w && a.y >= y && a.h <= h )
         ? true
         : false;
 }
 
 bool AABB::top ( AABB a )
 {
-    return ( a.y == y && a.h < h )
+    float dh = y + ( ( ( h - y  ) / 10 ) * 3 );
+
+    return ( a.x >= x && a.w <= w && a.y >= y && a.h <= dh )
         ? true
         : false;
 }
 
 bool AABB::bot ( AABB a )
 {
-    return ( a.h == h && a.y > y )
+    float dy = y + ( ( ( h - y ) / 10 ) * 7 );
+
+    return ( a.x >= x && a.w <= w && a.y >= dy && a.h <= h )
         ? true
         : false;
 }
