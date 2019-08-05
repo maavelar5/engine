@@ -40,12 +40,12 @@ namespace collision
     void solve ( Entity & entityA , Entity & entityB )
     {
         AABB a ( floor ( entityA.position.x ), floor ( entityA.position.y ),
-                 floor ( entityA.position.x ) + entityA.screen.w,
-                 floor ( entityA.position.y ) + entityA.screen.h );
+                 ceil ( entityA.position.x ) + entityA.screen.w,
+                 ceil ( entityA.position.y ) + entityA.screen.h );
 
         AABB b ( floor ( entityB.position.x ) , floor ( entityB.position.y ),
-                 floor ( entityB.position.x ) + entityB.screen.w,
-                 floor ( entityB.position.y ) + entityB.screen.h );
+                 ceil ( entityB.position.x ) + entityB.screen.w,
+                 ceil ( entityB.position.y ) + entityB.screen.h );
 
         if ( AABB::checkIntersection( a , b ) )
         {
