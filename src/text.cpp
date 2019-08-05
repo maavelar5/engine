@@ -7,13 +7,12 @@ Text::Text ( SDL_Texture * texture ) : Texture ( texture )
 
 Text::~Text () { }
 
-void Text::render ( SDL_Renderer * renderer , bool adjust )
+void Text::render ( SDL_Renderer * renderer )
 {
-    if ( adjust )
-    {
-        position.y -= 32;
-    }
-
     SDL_RenderCopy ( renderer , texture , NULL , &position );
 }
 
+void Text::adjust ()
+{
+    position.y -= 32;
+}

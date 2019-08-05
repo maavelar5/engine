@@ -19,7 +19,7 @@
 
 int main ( int argc, char* argv[] )
 {
-    initCWD ( std::string(argv[0]));
+    initCWD ( std::string( argv[0] ) );
 
     game::init ();
     debug::init ();
@@ -52,6 +52,7 @@ int main ( int argc, char* argv[] )
         timer::interpolation = timer::acumulator / timer::timeStep;
 
         SDL_RenderClear( game::renderer );
+        SDL_RenderClear ( debug::renderer );
         SDL_RenderClear ( info::renderer );
 
         mapper.render();
@@ -62,7 +63,9 @@ int main ( int argc, char* argv[] )
         info::draw ( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
         info::draw ( "X: " + std::to_string ( player.position.x ).substr( 0 , 4 ) );
         info::draw ( "Y: " + std::to_string ( player.position.y ).substr( 0 , 4 ) );
-        info::draw ( "sensor: " + std::to_string ( player.sensor ) );
+        info::draw ( "sensor: " + std::to_string( player.sensor ) );
+
+        debug::render();
 
         SDL_RenderPresent ( game::renderer );
         SDL_RenderPresent ( info::renderer );

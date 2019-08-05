@@ -12,7 +12,7 @@ AABB::~AABB () { }
 
 bool AABB::left ( AABB a )
 {
-    float dw = x + ( ( ( w - x  ) / 10 ) * 3 );
+    float dw = x + ( ( ( w - x  ) / 10 ) * 4 );
 
     return ( a.x >= x && a.w <= dw && a.y >= y && a.h <= h )
         ? true
@@ -21,7 +21,7 @@ bool AABB::left ( AABB a )
 
 bool AABB::right ( AABB a )
 {
-    float dx = x + ( ( ( w - x  ) / 10 ) * 7 );
+    float dx = x + ( ( ( w - x  ) / 10 ) * 6 );
 
     return ( a.x >= dx && a.w <= w && a.y >= y && a.h <= h )
         ? true
@@ -30,7 +30,7 @@ bool AABB::right ( AABB a )
 
 bool AABB::top ( AABB a )
 {
-    float dh = y + ( ( ( h - y  ) / 10 ) * 3 );
+    float dh = y + ( ( ( h - y  ) / 10 ) * 1 );
 
     return ( a.x >= x && a.w <= w && a.y >= y && a.h <= dh )
         ? true
@@ -39,12 +39,41 @@ bool AABB::top ( AABB a )
 
 bool AABB::bot ( AABB a )
 {
-    float dy = y + ( ( ( h - y ) / 10 ) * 7 );
+    float dy = y + ( ( ( h - y ) / 10 ) * 9 );
 
     return ( a.x >= x && a.w <= w && a.y >= dy && a.h <= h )
         ? true
         : false;
 }
+
+bool AABB::fLeft ( AABB a )
+{
+    return ( x == a.x )
+        ? true
+        : false;
+}
+
+bool AABB::fRight ( AABB a )
+{
+    return ( w == a.w )
+        ? true
+        : false;
+}
+
+bool AABB::fTop ( AABB a )
+{
+    return ( y == a.y )
+        ? true
+        : false;
+}
+
+bool AABB::fBot ( AABB a )
+{
+    return ( h == a.h )
+        ? true
+        : false;
+}
+
 
 AABB AABB::getIntersection ( AABB a , AABB b )
 {

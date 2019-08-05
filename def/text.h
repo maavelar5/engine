@@ -12,8 +12,7 @@ struct Text : public Texture
     Text ( SDL_Texture * );
     ~Text ();
 
-    void render ( SDL_Renderer * renderer = game::renderer,
-                  bool adjust = false );
+    void render ( SDL_Renderer * renderer = game::renderer ) , adjust ();
 };
 
 #endif

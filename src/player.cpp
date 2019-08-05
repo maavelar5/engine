@@ -4,7 +4,7 @@ Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
                     Entity ( 32 , 32 , 32, 64 , ACTIVE | KINEMATIC | CAMERA ),
                     projectiles ( 400 , this )
 {
-    speed = 200;
+    speed = 400;
     projectiles.delay = 100;
     canDoubleJump = false;
 }
@@ -28,7 +28,7 @@ void Player::event( SDL_Event event )
             case SDLK_SPACE:
                 if ( sensor & BOT_SENSOR )
                 {
-                    velocity.y = -400;
+                    velocity.y = -600;
                     sensor &= ~BOT_SENSOR;
                 }
                 else
@@ -36,7 +36,7 @@ void Player::event( SDL_Event event )
                     if ( canDoubleJump )
                     {
                         canDoubleJump = false;
-                        velocity.y = -400;
+                        velocity.y = -600;
                     }
                 }
                 break;

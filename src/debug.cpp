@@ -47,21 +47,26 @@ namespace debug
                                debug::position.y,
                                text.size() * 18 , 32 };
 
-        storage->render ( renderer );
         debug::text.push_back ( storage );
 
         debug::position.y += 32;
 
         if ( debug::position.y > DI_WINDOW_HEIGHT )
         {
-            SDL_RenderClear( renderer );
-
             for ( auto & line : debug::text )
             {
-                line->render (renderer , true);
+                line->adjust ();
             }
 
             debug::position.y -= 32;
+        }
+    }
+
+    void render ()
+    {
+        for ( auto & line : debug::text )
+        {
+            line->render (renderer);
         }
     }
 
@@ -97,6 +102,10 @@ namespace debug
                 case SDLK_RIGHT: x += 10; break;
                 case SDLK_UP: y -= 10; break;
                 case SDLK_DOWN: y += 10; break;
+                case SDLK_c:
+                    text.clear();
+                    position = { 0 , 0 };
+                    break;
             }
         }
 

@@ -8,7 +8,7 @@ namespace entities
     void addHashIfNotExists ( std::string positionHash,
                               std::map < std::string , std::vector < Entity * > > * collection )
     {
-        if ( collection->find ( positionHash ) == collection->end () ) 
+        if ( collection->find ( positionHash ) == collection->end () )
         {
             ( *collection )[ positionHash ] = std::vector < Entity * > ();
         }
@@ -54,13 +54,15 @@ void Entity::move ()
             ? MAX_GRAVITY
             : velocity.y;
     }
-    
+
     position += velocity * timer::timeStep;
 
     positionLimits ();
 
     if ( previousPosition != position )
         updateLocator ();
+
+    sensor = NONE_SENSOR;
 
     entities::queue.push_back ( this );
 }
@@ -77,11 +79,14 @@ void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
         positionLimits ();
     }
 
-    if ( previousPosition != position )
-        updateLocator ();
+    if ( previousPosition != position ) { updateLocator (); }
+
+    position.getAngle ( a );
+
+    sensor = NONE_SENSOR;
 
     entities::queue.push_back ( this );
-    position.getAngle ( a );
+
 }
 
 void Entity::render ( SDL_Texture *texture )
@@ -138,7 +143,7 @@ void Entity::setLocator ()
                          floor ( ( position.y + screen.h ) / 100 ) };
 
     std::string positionHash = "";
- 
+
 
     for ( int y = locator.y;
           y <= locator.h;
@@ -175,7 +180,7 @@ void Entity::deleteLocator ()
             )
         {
             positionHash = entities::getPositionHash ( x , y );
-            
+
             ( *collection )[ positionHash ].erase (
                 std::remove ( ( *collection )[ positionHash ].begin(),
                               ( *collection )[ positionHash ].end(),
@@ -205,42 +210,55 @@ void Entity::updateLocator ()
 void Entity::positionLimits ()
 {
     if ( position.y <= 0 )
+    {
         position.y = 0;
+        topSensorCallback((*this));
+    }
+
     else if ( position.y >= SCENARIO_HEIGHT )
+    {
         position.y = SCENARIO_HEIGHT;
+        botSensorCallback((*this));
+    }
 
     if ( position.x <= 0 )
+    {
         position.x = 0;
+        leftSensorCallback((*this));
+    }
     else if ( position.x >= SCENARIO_WIDTH )
+    {
         position.x = SCENARIO_WIDTH;
+        rightSensorCallback((*this));
+    }
 }
 
 
 void Entity::topSensorCallback ( Entity & entity )
 {
-    //TODO: Base case scenarion
+    if ( entity.config & STATIC ) { sensor |= A_TOP_SENSOR; }
     sensor |= TOP_SENSOR;
 }
 
 void Entity::botSensorCallback ( Entity & entity )
 {
-    //TODO: Base case scenarion
+    if ( entity.config & STATIC ) { sensor |= A_BOT_SENSOR; }
     sensor |= BOT_SENSOR;
 }
 
 void Entity::leftSensorCallback ( Entity & entity )
 {
-    //TODO: Base case scenarion
+    if ( entity.config & STATIC ) { sensor |= A_LEFT_SENSOR; }
     sensor |= LEFT_SENSOR;
 }
 
 void Entity::rightSensorCallback ( Entity & entity )
 {
-    //TODO: Base case scenarion
+    if ( entity.config & STATIC ) { sensor |= A_RIGHT_SENSOR; }
     sensor |= RIGHT_SENSOR;
 }
 
 void Entity::update ()
 {
-    
+
 }

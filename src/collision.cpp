@@ -18,8 +18,6 @@ namespace collision
                       x++
                     )
                 {
-                    entity->sensor = NONE_SENSOR;
-
                     positionHash = entities::getPositionHash ( x , y );
 
                     iterate ( *entity , entities::statics[ positionHash ] );
@@ -31,20 +29,15 @@ namespace collision
         entities::queue.clear();
     }
 
-    void iterate ( Entity &entity , std::vector < Entity * > &entities )
+    void iterate ( Entity & a , std::vector < Entity * > &entities )
     {
-        for ( auto &platform : entities )
+        for ( auto &b : entities )
         {
-            if ( entity.config & ACTIVE &&
-                 &entity != platform &&
-                 platform->config & ACTIVE )
-            {
-                detect ( entity , (*platform));
-            }
+            solve ( a , ( *b ) );
         }
     }
 
-    void detect ( Entity &entityA , Entity &entityB )
+    void solve ( Entity & entityA , Entity & entityB )
     {
         AABB a ( floor ( entityA.position.x ), floor ( entityA.position.y ),
                  floor ( entityA.position.x ) + entityA.screen.w,
@@ -54,97 +47,181 @@ namespace collision
                  floor ( entityB.position.x ) + entityB.screen.w,
                  floor ( entityB.position.y ) + entityB.screen.h );
 
-        if ( AABB::checkIntersection ( a , b ) )
+        if ( AABB::checkIntersection( a , b ) )
         {
-            AABB c = AABB::getIntersection ( a , b );
+            AABB c = AABB::getIntersection( a , b );
 
-            if ( entityB.config & BULLET )
-                entityB.config &= ~ACTIVE;
+            if ( entityB.config & KINEMATIC )
+            {
+                kinematics::solve ( entityA , entityB , a , c );
+            }
+            else { statics::solve ( entityA , entityB , a , c ); }
+        }
 
-            if ( entityA.config & BULLET )
-                entityA.config &= ~ACTIVE;
-
+        if ( false )
+        {
             std::ostringstream oss;
 
-            if ( a.top ( c ) )
-            {
-                if ( entityA.velocity.y <= 0 )
-                    top ( entityA , c.h - c.y );
+            AABB c = AABB::getIntersection( a , b );
 
-                entityA.topSensorCallback( entityB );
-                entityB.botSensorCallback( entityA );
+            // FAIL: Check coordinates in which the resolution failed
+            oss << "EntityA => a.x: " << a.x << " a.y: "
+                << a.y << " a.w: " << a.w << " a.h: " << a.h;
+            debug::draw ( oss.str() );
+            oss.str("");
 
-            }
-            else if ( a.bot ( c ) )
-            { 
-                if ( entityA.velocity.y >= 0 )
-                    bot ( entityA , c.h - c.y );                    
+            oss << "EntityB => b.x: " << b.x << " b.y: "
+                << b.y << " b.w: " << b.w << " b.h: " << b.h;
+            debug::draw ( oss.str() );
+            oss.str("");
 
-                entityA.botSensorCallback ( entityB );
-                entityB.topSensorCallback ( entityA );
-            }
-            else if ( a.left ( c ) )
-            {
-                left ( entityA , c.w - c.x );
+            oss << "Intersect => x: " << c.x << " y: "
+                << c.y << " w: " << c.w << " h: " << c.h;
+            debug::draw ( oss.str() );
+            oss.str("");
 
-                entityA.leftSensorCallback ( entityB );
-                entityB.rightSensorCallback ( entityA );
-            }
-            else if ( a.right ( c ) )
-            { 
-                right ( entityA , c.w - c.x );
-
-                entityA.rightSensorCallback ( entityB );
-                entityB.leftSensorCallback ( entityA );
-            }
-            else if ( a.x == c.x && a.y == c.y &&
-                      a.w == c.w && a.h == c.h )
-            {
-                // This shouldn't happen
-                // TODO: Validate nearest wall and set proper collision
-            }
-            else
-            {
-                // FAIL: Check coordinates in which the resolution failed
-                oss << "EntityA => a.x: " << a.x << " a.y: "
-                    << a.y << " a.w: " << a.w << " a.h: " << a.h;
-                debug::draw ( oss.str() );
-                oss.str("");
-
-                oss << "EntityB => b.x: " << b.x << " b.y: "
-                    << b.y << " b.w: " << b.w << " b.h: " << b.h;
-                debug::draw ( oss.str() );
-                oss.str("");
-
-                oss << "Intersect => x: " << c.x << " y: "
-                    << c.y << " w: " << c.w << " h: " << c.h;
-                debug::draw ( oss.str() );
-                oss.str("");
-
-                oss << "Collision detection failed";
-                debug::draw ( oss.str() );
-            }
+            oss << "Collision detection failed";
+            debug::draw ( oss.str() );
         }
     }
 
     void bot ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y -= h - 1;
+        entity.position.y -= ( h - 1 );
     }
 
     void top ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y += h + 1;
+        entity.position.y += ( h - 1 );
     }
 
     void left ( Entity &entity , int w )
     {
-        entity.position.x += w;
+        entity.position.x += ( w - 1 );
     }
     void right ( Entity &entity , int w )
     {
-        entity.position.x -= w;
+        entity.position.x -= ( w - 1 );
+    }
+
+    namespace statics
+    {
+        void top ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y <= 0 ) { collision::top ( a , c.h - c.y ); }
+
+            a.topSensorCallback( b );
+        }
+
+        void bot ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y >= 0 ) { collision::bot ( a , c.h - c.y ); }
+
+            a.botSensorCallback ( b );
+        }
+
+        void left ( Entity & a , Entity & b , AABB c )
+        {
+            collision::left ( a , c.w - c.x );
+
+            a.leftSensorCallback ( b );
+        }
+
+        void right ( Entity & a , Entity & b , AABB c )
+        {
+            collision::right ( a , c.w - c.x );
+
+            a.rightSensorCallback ( b );
+        }
+
+        void fallback ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( a.fTop( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.fBot( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.fLeft( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.fRight( c ) ) { right ( entityA , entityB , c ); }
+        }
+
+        void solve ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( a.top ( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.bot ( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.left ( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.right ( c ) ) { right ( entityA , entityB , c ); }
+            else { fallback ( entityA , entityB , a , c ); }
+        }
+    }
+
+    namespace kinematics
+    {
+        void top ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y <= 0 && !( a.sensor & A_BOT_SENSOR ) )
+            {
+                collision::top ( a , c.h - c.y );
+            }
+
+            a.topSensorCallback( b );
+            b.botSensorCallback( a );
+        }
+
+        void bot ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y >= 0 && !( a.sensor & A_TOP_SENSOR ) )
+            {
+                collision::bot ( a , c.h - c.y );
+            }
+
+            if ( b.sensor & A_BOT_SENSOR ) { a.sensor |= A_BOT_SENSOR; }
+
+            a.botSensorCallback ( b );
+            b.topSensorCallback ( a );
+        }
+
+        void left ( Entity & a , Entity & b , AABB c )
+        {
+            if ( !( a.sensor & A_RIGHT_SENSOR ) )
+            {
+                collision::left ( a , c.w - c.x );
+            }
+
+            a.leftSensorCallback ( b );
+            b.rightSensorCallback ( a );
+        }
+
+        void right ( Entity & a , Entity & b , AABB c )
+        {
+            if ( !( a.sensor & A_LEFT_SENSOR ) )
+            {
+                collision::right ( a , c.w - c.x );
+            }
+
+            a.rightSensorCallback ( b );
+            b.leftSensorCallback ( a );
+        }
+
+        void fallback ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( a.fTop( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.fBot( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.fLeft( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.fRight( c ) ) { right ( entityA , entityB , c ); }
+        }
+
+        void solve ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( ( &entityA ) == ( &entityB ) ) { return; }
+
+            if ( entityA.config & BULLET ) { entityA.config &= ~ACTIVE; }
+            if ( entityB.config & BULLET ) { entityB.config &= ~ACTIVE; }
+
+            if ( a.top ( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.bot ( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.left ( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.right ( c ) ) { right ( entityA , entityB , c ); }
+            else { fallback ( entityA , entityB , a , c ); }
+        }
     }
 }

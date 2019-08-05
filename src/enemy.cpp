@@ -29,7 +29,10 @@ void Enemy::update ()
     {
         case ENEMY_MOVE:
             if ( sensor & BOT_SENSOR && !( sensor & TOP_SENSOR ) )
-                velocity.y = -400;              
+            {
+                velocity.y = -400;
+            }
+
             break;
         default:
             break;
@@ -52,7 +55,7 @@ void Enemy::rightSensorCallback ( Entity & entity )
 
 Enemies::Enemies () : Entities ( GENERIC_ENEMY_FILE_PATH )
 {
-    speed = 100;
+    speed = 200;
 }
 
 Enemies::~Enemies () { }
@@ -63,12 +66,12 @@ void Enemies::render ()
     {
         if ( (*entity)->config & ACTIVE )
         {
-            (*entity)->render ( texture );     
+            (*entity)->render ( texture );
         }
         else
         {
             (*entity)->deleteLocator ();
-            entities.erase ( entity-- );                
+            entities.erase ( entity-- );
         }
     }
 }

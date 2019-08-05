@@ -11,13 +11,33 @@
 #include <algorithm>
 #include <iomanip>
 
+
 namespace collision
 {
-    void collide () , iterate ( Entity & , std::vector < Entity * > & );
+    void collide () , iterate ( Entity & , std::vector < Entity * > & ),
+        ktos ( Entity & , Entity & ) , ktok ( Entity & , Entity & ),
+        solve ( Entity & , Entity & );
 
-    void detect ( Entity & , Entity & ) , top ( Entity & , int ),
-        bot ( Entity & , int ) , left ( Entity & , int ),
-        right ( Entity & , int );
+    void top ( Entity & , int ) , bot ( Entity & , int ),
+        left ( Entity & , int ) , right ( Entity & , int );
+
+    namespace statics
+    {
+        void solve ( Entity & , Entity & , AABB , AABB );
+        void top ( Entity & , Entity & , AABB ),
+            bot ( Entity & , Entity & , AABB ),
+            left ( Entity & , Entity & , AABB ),
+            right ( Entity & , Entity & , AABB );
+    }
+
+    namespace kinematics
+    {
+        void solve ( Entity & , Entity & , AABB , AABB );
+        void top ( Entity & , Entity & , AABB ) ,
+            bot ( Entity & , Entity & , AABB ),
+            left ( Entity & , Entity & , AABB ),
+            right ( Entity & , Entity & , AABB );
+    }
 }
 
 #endif

@@ -19,7 +19,7 @@ namespace debug
     extern bool show;
 
     void init () , draw ( std::string , SDL_Color color = white ),
-        event ( SDL_Event );
+        event ( SDL_Event ) , render ();
 }
 
 #endif
