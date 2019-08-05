@@ -32,6 +32,10 @@ int main ( int argc, char* argv[] )
 
     while ( !game::quit )
     {
+        SDL_RenderClear( game::renderer );
+        SDL_RenderClear ( debug::renderer );
+        SDL_RenderClear ( info::renderer );
+
         timer::update();
 
         while( SDL_PollEvent( &event ) )
@@ -50,10 +54,6 @@ int main ( int argc, char* argv[] )
         }
 
         timer::interpolation = timer::acumulator / timer::timeStep;
-
-        SDL_RenderClear( game::renderer );
-        SDL_RenderClear ( debug::renderer );
-        SDL_RenderClear ( info::renderer );
 
         mapper.render();
         player.render();

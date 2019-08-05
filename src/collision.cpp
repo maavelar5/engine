@@ -146,6 +146,8 @@ namespace collision
 
         void solve ( Entity & entityA , Entity & entityB , AABB a , AABB c )
         {
+            if ( entityA.config & BULLET ) { entityA.config &= ~ACTIVE; }
+
             if ( a.top ( c ) ) { top ( entityA , entityB , c ); }
             else if ( a.bot ( c ) ) { bot ( entityA , entityB , c ); }
             else if ( a.left ( c ) ) { left ( entityA , entityB , c ); }
