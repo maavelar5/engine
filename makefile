@@ -66,6 +66,9 @@ automated_movement.o : automated_movement.cpp
 camera.o : camera.cpp
 	$(CC) -c -w $(CPPFLAGS) src/camera.cpp -o obj/camera.o
 
+config.o : config.cpp
+	$(CC) -c -w $(CPPFLAGS) src/config.cpp -o obj/config.o
+
 constants.o : constants.cpp
 	$(CC) -c -w $(CPPFLAGS) src/constants.cpp -o obj/constants.o
 

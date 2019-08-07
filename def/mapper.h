@@ -5,7 +5,6 @@
 #include "platform.h"
 #include "floating_enemy.h"
 
-#include <any>
 #include <fstream>
 #include <map>
 #include <regex>

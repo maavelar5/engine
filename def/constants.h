@@ -101,6 +101,8 @@ extern std::string SANS_FONT_FILE_PATH;
 /* Path relative to binary */
 extern std::string BIN_PATH, BIN_SPRITES_PATH;
 
+extern std::string CONFIG_PATH;
+
 void initCWD (std::string);
 
 #endif

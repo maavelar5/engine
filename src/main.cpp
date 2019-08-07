@@ -10,6 +10,7 @@
 #include "font.h"
 #include "enemy.h"
 #include "floating_enemy.h"
+#include "config.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -25,6 +26,7 @@ int main ( int argc, char* argv[] )
     debug::init ();
     info::init ();
     font::init ();
+    config::load();
 
     Player player;
     Mapper mapper ( &player );

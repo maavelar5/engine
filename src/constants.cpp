@@ -102,6 +102,8 @@ std::string SANS_FONT_FILE_PATH;
 std::string BIN_PATH;
 std::string BIN_SPRITES_PATH;
 
+std::string CONFIG_PATH;
+
 void initCWD ( std::string argv )
 {
     BIN_PATH = argv.substr(0, argv.size() - 8 );
@@ -115,4 +117,5 @@ void initCWD ( std::string argv )
     ARROW_FILE_PATH = BIN_SPRITES_PATH + "arrow.png";
     MEGAMAN_SPRITE_SHEET = BIN_SPRITES_PATH + "megamanSpriteSheet.png";
     SANS_FONT_FILE_PATH = BIN_SPRITES_PATH + "OpenSans-Regular.ttf";
+    CONFIG_PATH = BIN_SPRITES_PATH + "config";
 }

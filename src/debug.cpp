@@ -6,7 +6,7 @@ namespace debug
     std::vector < std::shared_ptr < Text > > text;
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
-    bool show = true;
+    bool show = false;
 
     void init ()
     {
