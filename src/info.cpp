@@ -35,7 +35,7 @@ namespace info
     void draw ( std::string text , SDL_Color color )
     {
         SDL_Texture * texture =
-            font::createTexture( text , 18 , white , renderer );
+            font::createTexture( text , renderer );
 
         SDL_Rect position = { 0 , y , text.size() * 18 , 32 };
 

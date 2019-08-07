@@ -14,7 +14,7 @@ namespace config
 {
     extern std::map < std::string , bool > values;
 
-    void load ();
+    void init ();
 }
 
 #endif

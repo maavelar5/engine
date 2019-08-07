@@ -1,11 +1,14 @@
 #include "text.h"
 
-Text::Text ( SDL_Texture * texture ) : Texture ( texture )
+Text::Text ( SDL_Texture * texture )
 {
-
+    this->texture = texture;
 }
 
-Text::~Text () { }
+Text::~Text ()
+{
+    SDL_DestroyTexture( texture );
+}
 
 void Text::render ( SDL_Renderer * renderer )
 {

@@ -10,13 +10,17 @@ namespace debug
 
     void init ()
     {
-        window = SDL_CreateWindow( "Debug", 512 , 512,
-                                   DI_WINDOW_WIDTH , DI_WINDOW_HEIGHT,
+        window = SDL_CreateWindow( "Debug",
+                                   512,
+                                   512,
+                                   DI_WINDOW_WIDTH,
+                                   DI_WINDOW_HEIGHT,
                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
         if ( window )
         {
-            renderer = SDL_CreateRenderer( window , -1,
+            renderer = SDL_CreateRenderer( window,
+                                           -1,
                                            SDL_RENDERER_ACCELERATED |
                                            SDL_RENDERER_PRESENTVSYNC );
 
@@ -24,10 +28,12 @@ namespace debug
             {
                 SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY , "linear" );
 
-                SDL_RenderSetLogicalSize( renderer , DI_LOGICAL_WIDTH,
+                SDL_RenderSetLogicalSize( renderer,
+                                          DI_LOGICAL_WIDTH,
                                           DI_LOGICAL_HEIGHT );
 
-                SDL_SetWindowMinimumSize( window, DI_LOGICAL_WIDTH,
+                SDL_SetWindowMinimumSize( window,
+                                          DI_LOGICAL_WIDTH,
                                           DI_LOGICAL_HEIGHT );
 
                 SDL_SetRenderDrawColor( renderer , 25 , 25, 25 , 25 );
@@ -41,11 +47,12 @@ namespace debug
     void draw ( std::string text , SDL_Color color )
     {
         std::shared_ptr < Text > storage
-            ( new Text ( font::createTexture ( text , 18 , white , renderer ) ) );
+            ( new Text ( font::createTexture ( text , renderer ) ) );
 
-        storage->position = {  debug::position.x,
-                               debug::position.y,
-                               text.size() * 18 , 32 };
+        storage->position = { debug::position.x,
+                              debug::position.y,
+                              text.size() * 18,
+                              32 };
 
         debug::text.push_back ( storage );
 
@@ -55,7 +62,7 @@ namespace debug
         {
             for ( auto & line : debug::text )
             {
-                line->adjust ();
+                line->adjust();
             }
 
             debug::position.y -= 32;
@@ -66,7 +73,7 @@ namespace debug
     {
         for ( auto & line : debug::text )
         {
-            line->render (renderer);
+            line->render( renderer );
         }
     }
 
@@ -78,16 +85,14 @@ namespace debug
 
         if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
         {
-            draw ( SDL_GetKeyName ( event.key.keysym.sym ) );
+            draw ( SDL_GetKeyName( event.key.keysym.sym ) );
 
             switch( event.key.keysym.sym )
             {
                 case SDLK_o:
-                    show = (show)
-                        ? false
-                        : true;
+                    show = ( show ) ? false : true;
 
-                    if (show) { SDL_ShowWindow ( window ); }
+                    if ( show ) { SDL_ShowWindow ( window ); }
                     else { SDL_HideWindow( window ); }
 
                     break;

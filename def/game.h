@@ -2,6 +2,7 @@
 #define GAME
 
 #include "constants.h"
+#include "controller.h"
 #include "timer.h"
 
 #if __ANDROID__
@@ -14,7 +15,7 @@
 
 namespace game
 {
-    extern bool quit , show;
+    extern bool quit;
     extern SDL_Window *window;
     extern SDL_Renderer *renderer;
 

@@ -72,6 +72,9 @@ config.o : config.cpp
 constants.o : constants.cpp
 	$(CC) -c -w $(CPPFLAGS) src/constants.cpp -o obj/constants.o
 
+controller.o : controller.cpp
+	$(CC) -c -w $(CPPFLAGS) src/controller.cpp -o obj/controller.o
+
 collision.o : collision.cpp
 	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
 
@@ -107,6 +110,9 @@ info.o : info.cpp
 
 main.o : main.cpp
 	$(CC) -c -w $(CPPFLAGS) src/main.cpp -o obj/main.o
+
+manager.o : manager.cpp
+	$(CC) -c -w $(CPPFLAGS) src/manager.cpp -o obj/manager.o
 
 mapper.o : mapper.cpp
 	$(CC) -c -w $(CPPFLAGS) src/mapper.cpp -o obj/mapper.o

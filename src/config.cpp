@@ -4,7 +4,7 @@ namespace config
 {
     std::map < std::string , bool > values;
 
-    void load ()
+    void init ()
     {
         std::ifstream ifs ( CONFIG_PATH );
         std::string s ( ( std::istreambuf_iterator < char > ( ifs ) ),
@@ -19,11 +19,7 @@ namespace config
         {
             std::string key = m[ 1 ];
             bool value = std::stoi( m[ 2 ] );
-
-            std::cout << key << " <=> " << value << std::endl;
-
             values [ key ] = value;
-
             s = m.suffix().str();
         }
     }

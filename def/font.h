@@ -15,9 +15,11 @@ namespace font
     void init ( std::string path = SANS_FONT_FILE_PATH,
                 std::vector < uint8 > sizes = { 12 , 16 , 18 , 24 , 32 , 48 } );
 
-    SDL_Texture * createTexture ( std::string message , uint8 size = 12,
-                                  SDL_Color color = white,
-                                  SDL_Renderer *renderer = game::renderer );
+    SDL_Texture * createTexture ( std::string message,
+                                  SDL_Renderer *renderer,
+                                  uint8 size = 18,
+                                  SDL_Color color = white );
+
 }
 
 #endif

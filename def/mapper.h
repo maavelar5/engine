@@ -1,6 +1,7 @@
 #ifndef MAPPER
 #define MAPPER
 
+#include "player.h"
 #include "enemy.h"
 #include "platform.h"
 #include "floating_enemy.h"
@@ -11,15 +12,12 @@
 #include <SDL2/SDL.h>
 #include <string>
 
-struct Mapper
+namespace mapper
 {
-    std::map < std::string , std::shared_ptr < Entities > > entities;
+    extern std::map < std::string , std::shared_ptr < Entities > > entities;
 
-    Mapper ( Entity * entity = nullptr );
-    ~Mapper ();
-
-    void add ( float , float , int , int , std::string ),
-        render () , load () , update ();
+    void init () , add ( float , float , int , int , std::string ),
+        render () , load () , update () , event ( SDL_Event );
 };
 
 #endif

@@ -1,8 +1,8 @@
 #include "player.h"
 
-Player::Player () : Texture ( PLAYER_SPRITE_SHEET ),
-                    Entity ( 32 , 32 , 32, 64 , ACTIVE | KINEMATIC | CAMERA ),
-                    projectiles ( 800 , this )
+Player::Player ()
+    : Entity ( 32 , 32 , 32, 64 , ACTIVE | KINEMATIC | CAMERA )
+    , projectiles ( 800 , this )
 {
     speed = 400;
     projectiles.delay = 100;
@@ -114,7 +114,7 @@ void Player::event( SDL_Event event )
     #endif
 }
 
-void Player::render ()
+void Player::render ( SDL_Texture * texture )
 {
     Entity::render ( texture );
     projectiles.render();
@@ -131,4 +131,42 @@ void Player::botSensorCallback ( Entity & entity )
 {
     Entity::botSensorCallback ( entity );
     canDoubleJump = true;
+}
+
+Players::Players () : Entities ( PLAYER_SPRITE_SHEET )
+{
+
+}
+
+Players::~Players () { }
+
+void Players::render ()
+{
+    player.render( texture );
+}
+
+void Players::update ()
+{
+    player.move();
+}
+
+void Players::move ()
+{
+    player.move();
+}
+
+void Players::add ( float x , float y , int w , int h )
+{
+    player.position = { x , y };
+    player.screen = { x , y , w , h };
+}
+
+void Players::event ( SDL_Event event )
+{
+    player.event( event );
+}
+
+Entity * Players::single ()
+{
+    return &player;
 }

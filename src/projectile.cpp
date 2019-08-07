@@ -3,7 +3,7 @@
 Projectile::Projectile ( float x , float y , int w , int h ) :
     Entity ( x , y , w , h , ACTIVE | KINEMATIC | BULLET )
 {
-    
+
 }
 
 Projectile::~Projectile () { }
@@ -39,12 +39,12 @@ void Projectiles::render ()
     {
         if ( (*entity)->config & ACTIVE )
         {
-            (*entity)->render ( texture );     
+            (*entity)->render( texture );
         }
         else
         {
             (*entity)->deleteLocator ();
-            entities.erase ( entity-- );                
+            entities.erase( entity-- );
         }
     }
 }

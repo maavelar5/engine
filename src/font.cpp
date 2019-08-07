@@ -6,7 +6,7 @@ namespace font
 
     void init ( std::string path , std::vector < uint8 > sizes )
     {
-        TTF_Init ();
+        TTF_Init();
 
         for ( auto & size : sizes )
         {
@@ -14,17 +14,19 @@ namespace font
         }
     }
 
-    SDL_Texture * createTexture ( std::string message, uint8 size,
-                                  SDL_Color color , SDL_Renderer *renderer )
+    SDL_Texture * createTexture ( std::string message,
+                                  SDL_Renderer * renderer,
+                                  uint8 size,
+                                  SDL_Color color )
     {
-        SDL_Surface *surface =
-            TTF_RenderText_Solid ( fonts[ size ], message.c_str(), color );
-        SDL_Texture *texture = nullptr;
+        SDL_Surface * surface =
+            TTF_RenderText_Solid ( fonts[ size ] , message.c_str() , color );
+        SDL_Texture * texture = nullptr;
 
         if ( surface )
         {
-            texture = SDL_CreateTextureFromSurface ( renderer, surface );
-            SDL_FreeSurface ( surface );
+            texture = SDL_CreateTextureFromSurface( renderer, surface );
+            SDL_FreeSurface( surface );
 
             if ( texture ) { return texture; }
         }

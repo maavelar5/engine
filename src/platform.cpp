@@ -3,7 +3,7 @@
 Platforms::Platforms ( std::string filePath ) :
     Entities ( filePath )
 {
-    
+
 }
 
 Platforms::~Platforms () { }
