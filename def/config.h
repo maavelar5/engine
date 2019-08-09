@@ -2,7 +2,6 @@
 #define CONFIG
 
 #include "constants.h"
-#include "debug.h"
 
 #include <fstream>
 #include <regex>

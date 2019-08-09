@@ -10,6 +10,8 @@ namespace info
 
     void init ()
     {
+        if ( !config::values["info"] ) return;
+
         window = SDL_CreateWindow( "Info", 512 , 0 , 512 , 512,
                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
@@ -34,6 +36,8 @@ namespace info
 
     void draw ( std::string text , SDL_Color color )
     {
+        if ( !config::values["info"] ) return;
+
         SDL_Texture * texture =
             font::createTexture( text , renderer );
 
@@ -48,6 +52,8 @@ namespace info
 
     void event ( SDL_Event event )
     {
+        if ( !config::values["info"] ) return;
+
         if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
         {
             switch( event.key.keysym.sym )

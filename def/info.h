@@ -1,6 +1,7 @@
 #ifndef INFO
 #define INFO
 
+#include "config.h"
 #include "constants.h"
 #include "font.h"
 #include "game.h"

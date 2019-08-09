@@ -1,6 +1,7 @@
 #ifndef DEBUG
 #define DEBUG
 
+#include "config.h"
 #include "constants.h"
 #include "font.h"
 #include "text.h"

@@ -10,6 +10,8 @@ namespace debug
 
     void init ()
     {
+        if ( !config::values["debug"] ) return;
+
         window = SDL_CreateWindow( "Debug",
                                    512,
                                    512,
@@ -46,6 +48,8 @@ namespace debug
 
     void draw ( std::string text , SDL_Color color )
     {
+        if ( !config::values["debug"] ) return;
+
         std::shared_ptr < Text > storage
             ( new Text ( font::createTexture ( text , renderer ) ) );
 
@@ -71,6 +75,8 @@ namespace debug
 
     void render ()
     {
+        if ( !config::values["debug"] ) return;
+
         for ( auto & line : debug::text )
         {
             line->render( renderer );
@@ -79,6 +85,8 @@ namespace debug
 
     void event ( SDL_Event event )
     {
+        if ( !config::values["debug"] ) return;
+
         int x , y;
 
         SDL_GetWindowPosition( window, &x, &y );

@@ -10,9 +10,9 @@ namespace manager
         timer::init();
         controller::init();
         font::init();
+        config::init();
         debug::init();
         info::init();
-        config::init();
         mapper::init();
     }
 
@@ -25,11 +25,11 @@ namespace manager
 
     void event ()
     {
-        while( SDL_PollEvent( &_event ) )
+        while ( SDL_PollEvent( &_event ) )
         {
             game::event( _event );
-            mapper::event ( _event );
-            debug::event ( _event );
+            mapper::event( _event );
+            debug::event( _event );
         }
     }
 

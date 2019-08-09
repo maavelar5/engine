@@ -15,7 +15,8 @@ namespace game
         window = SDL_CreateWindow( WINDOW_TITLE.c_str(),
                                    SDL_WINDOWPOS_UNDEFINED,
                                    SDL_WINDOWPOS_UNDEFINED,
-                                   WINDOW_WIDTH , WINDOW_HEIGHT,
+                                   WINDOW_WIDTH,
+                                   WINDOW_HEIGHT,
                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
 
