@@ -3,7 +3,7 @@
 I'm working on a cross platform 2D game engine (I hope a 3D version is possible as well). The project uses features from *c++17* so if you decide to clone it, you'll need a compiler that 
 supports it. I've succesfully compiled the project on the following operating systems:
 
-** TODO Compiles on [4/4]
+** Compiles on [4/4]
   - [X] Linux
   - [X] Windows
   - [X] MacOS
@@ -11,7 +11,7 @@ supports it. I've succesfully compiled the project on the following operating sy
     
     I wish to eventually compile it for the Nintendo Switch but... just like Jon Snow... I know nothing...about consoles. I haven't compiled the code for MacOS or Android lately, do let me know if you try and fails.
 
-** Features / TODO list [12/20]
+** Feature list [12/20]
    - [X] Simple platfomer physics (AABB collision resolution)
    - [X] Constant delta update with variable frame time (@gafferongames)
    - [X] Naive automated movement (for enemies)
@@ -39,8 +39,16 @@ supports it. I've succesfully compiled the project on the following operating sy
    - [ ] Controllers (WIP)
    - [ ] Touch events (WIP)
    - [X] Release bundle binary
+     
+** Box2D
+   I've integrated Box2D in a separate branch but a full blown physics engine is not needed for what I have in mind.
    
-     I may have missed some stuff.
+** Dependencies
+   - I'm currently testing with *gcc*, I've tried *clang* but there are a few errors such as implicit int/float casting (in gcc that gets truncated by default) that I didn't want to focus on at the moment.
+   - SDL2 (image, mixer, ttf)
+  
+** Compilation 
+   There is a debug and release builds in place, run *make* or *make release* depending on what you want.
 
-Marco Avelar
-   
+*** Android
+    There is an android project which can be run with *Android studio*, from there that's being managed automatically.
