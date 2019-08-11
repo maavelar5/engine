@@ -1,16 +1,16 @@
 
 # Table of Contents
 
-1.  [2D C++ Engine](#orgd33905f)
-    1.  [Compiles on <code>[4/4]</code>](#org67fad4e)
-    2.  [Feature list <code>[12/20]</code>](#org1321ae8)
-    3.  [Box2D](#orgb494595)
-    4.  [Dependencies](#org25d2762)
-    5.  [Compilation](#orgefcde1f)
-        1.  [Android](#org157cadb)
+1.  [2D C++ Engine](#org18a5296)
+    1.  [Compiles on <code>[4/4]</code>](#orgbdf742d)
+    2.  [Feature list <code>[12/20]</code>](#org469483f)
+    3.  [Box2D](#org1bcdd43)
+    4.  [Dependencies](#orgfd1c9f7)
+    5.  [Compilation](#org9bf4d62)
+        1.  [Android](#org0f926f8)
 
 
-<a id="orgd33905f"></a>
+<a id="org18a5296"></a>
 
 # 2D C++ Engine
 
@@ -18,7 +18,7 @@ I'm working on a cross platform 2D game engine (I hope a 3D version is possible 
 supports it. I've succesfully compiled the project on the following operating systems:
 
 
-<a id="org67fad4e"></a>
+<a id="orgbdf742d"></a>
 
 ## Compiles on <code>[4/4]</code>
 
@@ -26,11 +26,11 @@ supports it. I've succesfully compiled the project on the following operating sy
 -   [X] Windows
 -   [X] MacOS
 -   [X] Android (**master-android** branch)
-    
-    I wish to eventually compile it for the Nintendo Switch but&#x2026; just like Jon Snow&#x2026; I know nothing&#x2026;about consoles. I haven't compiled the code for MacOS or Android lately, do let me know if you try and fails.
+
+I wish to eventually compile it for the Nintendo Switch but&#x2026; just like Jon Snow&#x2026; I know nothing&#x2026;about consoles. I haven't compiled the code for MacOS or Android lately, do let me know if you try and fails.
 
 
-<a id="org1321ae8"></a>
+<a id="org469483f"></a>
 
 ## Feature list <code>[12/20]</code>
 
@@ -63,14 +63,14 @@ supports it. I've succesfully compiled the project on the following operating sy
 -   [X] Release bundle binary
 
 
-<a id="orgb494595"></a>
+<a id="org1bcdd43"></a>
 
 ## Box2D
 
 I've integrated Box2D in a separate branch but a full blown physics engine is not needed for what I have in mind.
 
 
-<a id="org25d2762"></a>
+<a id="orgfd1c9f7"></a>
 
 ## Dependencies
 
@@ -78,14 +78,14 @@ I've integrated Box2D in a separate branch but a full blown physics engine is no
 -   SDL2 (image, mixer, ttf)
 
 
-<a id="orgefcde1f"></a>
+<a id="org9bf4d62"></a>
 
 ## Compilation
 
 There is a debug and release builds in place, run **make** or **make release** depending on what you want.
 
 
-<a id="org157cadb"></a>
+<a id="org0f926f8"></a>
 
 ### Android
 

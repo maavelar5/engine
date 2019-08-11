@@ -9,7 +9,7 @@ supports it. I've succesfully compiled the project on the following operating sy
   - [X] MacOS
   - [X] Android (*master-android* branch)
     
-    I wish to eventually compile it for the Nintendo Switch but... just like Jon Snow... I know nothing...about consoles. I haven't compiled the code for MacOS or Android lately, do let me know if you try and fails.
+I wish to eventually compile it for the Nintendo Switch but... just like Jon Snow... I know nothing...about consoles. I haven't compiled the code for MacOS or Android lately, do let me know if you try and fails.
 
 ** Feature list [12/20]
    - [X] Simple platfomer physics (AABB collision resolution)
