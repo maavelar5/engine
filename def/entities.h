@@ -14,7 +14,8 @@ struct Entities : public Texture
         move () = 0,
         update () = 0,
         add ( float , float , int , int ) = 0,
-        event ( SDL_Event );
+        event ( SDL_Event ),
+        clear ();
 
     virtual Entity * single ();
 };

@@ -14,7 +14,7 @@ struct Platforms : public Entities
     Platforms ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     ~Platforms ();
 
-    void render () , move () , update (),
+    void render () , move () , update () , clear (),
         add ( float , float , int , int );
 };
 

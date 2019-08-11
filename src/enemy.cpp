@@ -97,3 +97,8 @@ void Enemies::add ( float x , float y , int w , int h )
     entities.push_back ( std::shared_ptr < Enemy >
                          ( new Enemy ( x , y , w , h ) ) );
 }
+
+void Enemies::clear ()
+{
+    entities.clear();
+}

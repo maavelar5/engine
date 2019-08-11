@@ -13,11 +13,14 @@
 
 struct Texture
 {
-    SDL_Texture *texture;
+    SDL_Texture * texture;
+    std::string filePath;
 
     Texture ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
     Texture ( SDL_Texture * );
     ~Texture ();
+
+    SDL_Texture * copy ( SDL_Renderer * renderer );
 };
 
 #endif

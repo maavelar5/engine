@@ -24,3 +24,8 @@ void Platforms::add ( float x , float y , int w , int h )
     entities.push_back ( std::shared_ptr < Entity >
                          ( new Entity ( x , y , w , h , ACTIVE | STATIC ) ) );
 }
+
+void Platforms::clear ()
+{
+    entities.clear();
+}

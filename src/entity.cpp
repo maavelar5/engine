@@ -19,6 +19,7 @@ namespace entities
         return std::to_string ( y ) + "," + std::to_string ( x );
     }
 }
+
 Entity::Entity ( float x , float y , int w , int h , uint8 config )
 {
     locator = { 0 , 0 , 0 , 0 };
@@ -41,7 +42,10 @@ Entity::Entity ( float x , float y , int w , int h , uint8 config )
     setLocator ();
 }
 
-Entity::~Entity () { }
+Entity::~Entity ()
+{
+    deleteLocator();
+}
 
 void Entity::move ()
 {
@@ -144,7 +148,6 @@ void Entity::setLocator ()
 
     std::string positionHash = "";
 
-
     for ( int y = locator.y;
           y <= locator.h;
           y++
@@ -233,6 +236,15 @@ void Entity::positionLimits ()
     }
 }
 
+void Entity::update ()
+{
+
+}
+
+void Entity::sensorDelay ()
+{
+
+}
 
 void Entity::topSensorCallback ( Entity & entity )
 {
@@ -256,9 +268,4 @@ void Entity::rightSensorCallback ( Entity & entity )
 {
     if ( entity.config & STATIC ) { sensor |= A_RIGHT_SENSOR; }
     sensor |= RIGHT_SENSOR;
-}
-
-void Entity::update ()
-{
-
 }

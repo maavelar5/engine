@@ -28,7 +28,7 @@ struct FloatingEnemies : public Entities
     FloatingEnemies ( Entity * entity = nullptr );
     ~FloatingEnemies ();
 
-    void update () , render () , move (),
+    void update () , render () , move () , clear (),
         add ( float , float , int , int );
 };
 

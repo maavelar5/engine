@@ -24,7 +24,7 @@ void Timer::stop ()
 
 void Timer::pause ()
 {
-    
+
 }
 
 Uint8 Timer::check ()

@@ -26,11 +26,14 @@ struct Entity
 
     SDL_Rect screen , locator;
 
-    uint8 config , status , sensor;
+    uint8 config , status;
 
     SDL_RendererFlip flip;
 
     int speed;
+
+    uint8 sensor , previousSensor;
+    uint16 topTimer , botTimer , leftTimer , rightTimer;
 
     std::map < std::string , std::vector < Entity * > > * collection;
 
@@ -40,12 +43,13 @@ struct Entity
     void adjust () , render ( SDL_Texture * ) , setLocator (),
         deleteLocator (), updateLocator ();
 
-    virtual void move () , positionLimits () , 
+    virtual void move () , positionLimits (),
         move ( Vector , uint16 speed , uint8 minDistance = 0 ) , update ();
-        
-    virtual void topSensorCallback ( Entity & ), botSensorCallback ( Entity & ),
+
+    virtual void topSensorCallback ( Entity & ) , botSensorCallback ( Entity & ),
         leftSensorCallback ( Entity & ) , rightSensorCallback ( Entity & );
 
+    virtual void sensorDelay ();
 };
 
 namespace entities

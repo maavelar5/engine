@@ -26,7 +26,7 @@ struct Enemies : public Entities
     Enemies ();
     ~Enemies ();
 
-    void move () , update () , render (),
+    void move () , update () , render () , clear (),
         add ( float , float , int , int );
 };
 

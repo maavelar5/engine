@@ -17,3 +17,8 @@ Entity * Entities::single ()
 {
     return nullptr;
 }
+
+void Entities::clear ()
+{
+
+}

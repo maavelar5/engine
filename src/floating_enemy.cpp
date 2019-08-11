@@ -14,7 +14,7 @@ FloatingEnemy::FloatingEnemy ( float x , float y , int w , int h ) :
     moves[ current ].start();
 
     projectiles.delay = 200;
-    
+
 }
 
 FloatingEnemy::~FloatingEnemy () { }
@@ -95,4 +95,9 @@ void FloatingEnemies::add ( float x , float y , int w , int h )
 {
     entities.push_back ( std::shared_ptr < FloatingEnemy >
                          ( new FloatingEnemy ( x , y , w , h ) ) );
+}
+
+void FloatingEnemies::clear ()
+{
+    entities.clear();
 }
