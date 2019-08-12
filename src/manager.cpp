@@ -51,6 +51,7 @@ namespace manager
 
         mapper::render();
         info::draw( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
+        info::draw( "Scene: " + std::to_string( mapper::scene ) );
         debug::render();
 
         SDL_RenderPresent( game::renderer );

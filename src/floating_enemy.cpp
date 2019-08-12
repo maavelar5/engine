@@ -69,8 +69,8 @@ void FloatingEnemies::update ()
     for ( auto &entity : entities )
     {
         entity->update ( this->entity->position , speed );
-        entity->projectiles.update ();
-        entity->projectiles.move ( this->entity->position );
+        //entity->projectiles.update ();
+        //entity->projectiles.move ( this->entity->position );
     }
 }
 

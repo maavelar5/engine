@@ -16,6 +16,7 @@ namespace mapper
 {
     extern std::map < std::string , std::shared_ptr < Entities > > entities;
     extern std::map < uint8 , std::vector < std::string > > scenes;
+    extern uint8 scene;
 
     void init () , add ( float , float , int , int , std::string ), change (),
         render () , load () , update () , event ( SDL_Event ) , read ();

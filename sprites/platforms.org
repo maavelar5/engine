@@ -5,8 +5,7 @@
   200,450,200,300,gp
   500,250,200,200,gp
 
-
-** simple enemies
+** Simple enemies
   500,50,32,16,se
   550,100,32,32,se
   600,50,32,64,se
@@ -20,10 +19,16 @@
   100,50,32,64,se
   150,50,32,96,se
 
+** Floating enemies
+  200,200,100,100,fe
+   
 * Scene 2
+** Platforms
   0,620,2000,100,gp
   2000,0,20,720,gp
   200,450,200,300,gp
   500,250,200,200,gp
+  
+** Floating enemies
+  170,100,32,96,fe
 
-* _regexr.com/4bqbj_
