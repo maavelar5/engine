@@ -29,6 +29,7 @@ namespace manager
         {
             game::event( _event );
             mapper::event( _event );
+            info::event( _event );
             debug::event( _event );
         }
     }
@@ -47,6 +48,7 @@ namespace manager
 
     void render ()
     {
+
         mapper::render();
         info::draw( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
         debug::render();

@@ -1,6 +1,7 @@
 #ifndef VECTOR
 #define VECTOR
 
+#include <iostream>
 #include <math.h>
 #include <SDL2/SDL.h>
 
@@ -19,7 +20,7 @@ struct Vector
         operator+ ( Vector ),
         operator* ( float ),
         operator/ ( float );
-    
+
     void operator-= ( Vector ),
         operator+= ( Vector ),
         operator*= ( float ),

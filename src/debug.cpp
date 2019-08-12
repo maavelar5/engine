@@ -6,21 +6,25 @@ namespace debug
     std::vector < std::shared_ptr < Text > > text;
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
-    bool show = false;
+    bool show = true;
 
     void init ()
     {
         if ( !config::values["debug"] ) return;
 
         window = SDL_CreateWindow( "Debug",
-                                   512,
-                                   512,
+                                   513,
+                                   0,
                                    DI_WINDOW_WIDTH,
                                    DI_WINDOW_HEIGHT,
-                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+                                   SDL_WINDOW_SHOWN |
+                                   SDL_WINDOW_RESIZABLE |
+                                   SDL_WINDOW_TOOLTIP );
 
         if ( window )
         {
+            SDL_SetWindowOpacity(window , 0.0f);
+
             renderer = SDL_CreateRenderer( window,
                                            -1,
                                            SDL_RENDERER_ACCELERATED |
@@ -35,11 +39,11 @@ namespace debug
                                           DI_LOGICAL_HEIGHT );
 
                 SDL_SetWindowMinimumSize( window,
-                                          DI_LOGICAL_WIDTH,
-                                          DI_LOGICAL_HEIGHT );
+                                          DI_WINDOW_WIDTH,
+                                          DI_WINDOW_HEIGHT );
 
-                SDL_SetRenderDrawColor( renderer , 25 , 25, 25 , 25 );
-
+                SDL_SetRenderDrawBlendMode( renderer , SDL_BLENDMODE_BLEND );
+                SDL_SetRenderDrawColor ( renderer , 25 , 50, 100 , 255 );
                 SDL_RenderClear( renderer );
             }
         }
@@ -58,7 +62,8 @@ namespace debug
                               text.size() * 18,
                               32 };
 
-        debug::text.push_back ( storage );
+
+        debug::text.push_back( storage );
 
         debug::position.y += 32;
 
@@ -107,7 +112,7 @@ namespace debug
                 case SDLK_h: SDL_HideWindow ( window ); break;
             }
         }
-        else if( event.type == SDL_KEYDOWN )
+        if( event.type == SDL_KEYDOWN )
         {
             switch( event.key.keysym.sym )
             {

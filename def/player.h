@@ -7,6 +7,7 @@
 #include "projectile.h"
 #include "texture.h"
 #include "debug.h"
+#include "info.h"
 
 struct Player : public Entity
 {

@@ -6,14 +6,15 @@ namespace info
 
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
-    bool show = false;
+    bool show = true;
 
     void init ()
     {
         if ( !config::values["info"] ) return;
 
-        window = SDL_CreateWindow( "Info", 512 , 0 , 512 , 512,
-                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+        window = SDL_CreateWindow( "Info", 0 , 0 , DI_WINDOW_WIDTH , DI_WINDOW_HEIGHT,
+                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE |
+                                   SDL_WINDOW_TOOLTIP );
 
         if ( window )
         {
@@ -24,10 +25,16 @@ namespace info
             if ( renderer )
             {
                 SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
-                SDL_RenderSetLogicalSize( renderer , DI_LOGICAL_WIDTH , DI_LOGICAL_HEIGHT );
-                SDL_SetWindowMinimumSize( window, DI_LOGICAL_WIDTH , DI_LOGICAL_HEIGHT );
-                SDL_SetRenderDrawColor( renderer , 50 , 50 , 50 , 50 );
 
+                SDL_RenderSetLogicalSize( renderer,
+                                          DI_LOGICAL_WIDTH,
+                                          DI_LOGICAL_HEIGHT );
+
+                SDL_SetWindowMinimumSize( window,
+                                          DI_WINDOW_WIDTH,
+                                          DI_WINDOW_HEIGHT );
+
+                SDL_SetRenderDrawColor( renderer , 50 , 50 , 50 , 50 );
                 SDL_RenderClear ( renderer );
             }
         }

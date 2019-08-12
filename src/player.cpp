@@ -143,6 +143,8 @@ Players::~Players () { }
 void Players::render ()
 {
     player.render( texture );
+    info::draw ( "X: " + std::to_string( player.position.x ).substr( 0, 4 ) );
+    info::draw ( "Y: " + std::to_string( player.position.y ).substr( 0, 4 ) );
 }
 
 void Players::update ()
