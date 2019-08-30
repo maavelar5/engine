@@ -48,7 +48,6 @@ namespace manager
 
     void render ()
     {
-
         mapper::render();
         info::draw( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
         info::draw( "Scene: " + std::to_string( mapper::scene ) );

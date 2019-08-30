@@ -7,7 +7,6 @@ namespace hud
         SDL_Texture *texture = font::createTexture( message , game::renderer );
 
         SDL_RenderCopy( game::renderer , texture , nullptr , &position );
-
         SDL_DestroyTexture( texture );
     }
 }
