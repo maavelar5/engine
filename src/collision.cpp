@@ -4,7 +4,7 @@ namespace collision
 {
     void collide ()
     {
-        std::string positionHash = "";
+        std::string positionHash;
 
         for ( auto &entity : entities::queue )
         {
@@ -18,7 +18,7 @@ namespace collision
                       x++
                     )
                 {
-                    positionHash = entities::getPositionHash ( x , y );
+                    positionHash = entities::getPositionHash( x , y );
 
                     iterate ( *entity , entities::statics[ positionHash ] );
                     iterate ( *entity , entities::kinematics[ positionHash ] );
