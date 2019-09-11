@@ -12,6 +12,7 @@ struct Timer
 
     Timer ( Uint32 , Uint8 config = 1 );
     Timer ();
+
     ~Timer ();
 
     void start () , stop () , pause ();

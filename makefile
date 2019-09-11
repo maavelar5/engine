@@ -117,6 +117,9 @@ manager.o : manager.cpp
 mapper.o : mapper.cpp
 	$(CC) -c -w $(CPPFLAGS) src/mapper.cpp -o obj/mapper.o
 
+particle.o : particle.cpp
+	$(CC) -c -w $(CPPFLAGS) src/particle.cpp -o obj/particle.o
+
 platform.o : platform.cpp
 	$(CC) -c -w $(CPPFLAGS) src/platform.cpp -o obj/platform.o
 

@@ -66,6 +66,7 @@ const uint8 KINEMATIC = 4;
 const uint8 BULLET = 8;
 const uint8 DIRECTIONAL = 16;
 const uint8 CAMERA = 32;
+const uint8 PARTICLE = 64;
 
 /* Sensor values */
 const uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8,

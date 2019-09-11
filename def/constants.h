@@ -65,6 +65,7 @@ extern const uint8 KINEMATIC;
 extern const uint8 BULLET;
 extern const uint8 DIRECTIONAL;
 extern const uint8 CAMERA;
+extern const uint8 PARTICLE;
 
 /* Sensor valuess */
 extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR,

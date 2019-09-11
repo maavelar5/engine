@@ -1,6 +1,7 @@
 #ifndef ENTITY
 #define ENTITY
 
+#include "automated_movement.h"
 #include "camera.h"
 #include "game.h"
 #include "texture.h"
@@ -33,7 +34,7 @@ struct Entity
     int speed;
 
     uint8 sensor , previousSensor;
-    uint16 topTimer , botTimer , leftTimer , rightTimer;
+    Timer topTimer , botTimer , rightTimer , leftTimer;
 
     std::map < std::string , std::vector < Entity * > > * collection;
 
