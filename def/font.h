@@ -19,7 +19,6 @@ namespace font
                                   SDL_Renderer *renderer,
                                   uint8 size = 18,
                                   SDL_Color color = white );
-
 }
 
 #endif

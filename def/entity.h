@@ -45,7 +45,8 @@ struct Entity
         deleteLocator (), updateLocator ();
 
     virtual void move () , positionLimits (),
-        move ( Vector , uint16 speed , uint8 minDistance = 0 ) , update ();
+        move ( Vector , uint16 speed , uint8 minDistance = 0 ) , update (),
+        move ( bool );
 
     virtual void topSensorCallback ( Entity & ) , botSensorCallback ( Entity & ),
         leftSensorCallback ( Entity & ) , rightSensorCallback ( Entity & );

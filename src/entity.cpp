@@ -93,6 +93,15 @@ void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
 
 }
 
+void Entity::move (bool directional)
+{
+    previousPosition = position;
+
+    direction.normalize();
+    position += direction * ( speed * timer::timeStep );
+    positionLimits ();
+}
+
 void Entity::render ( SDL_Texture *texture )
 {
     adjust ();
