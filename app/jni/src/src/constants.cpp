@@ -5,8 +5,14 @@ const int WINDOW_WIDTH = 512;
 const int WINDOW_HEIGHT = 480;
 
 /* Window logical size */
-const int GAME_LOGICAL_WIDTH = 512;
-const int GAME_LOGICAL_HEIGHT = 240;
+const int GAME_LOGICAL_WIDTH = 1280;
+const int GAME_LOGICAL_HEIGHT = 720;
+
+/* Debug & Info window size */
+const int DI_WINDOW_WIDTH = 512;
+const int DI_WINDOW_HEIGHT = 128;
+const int DI_LOGICAL_WIDTH = 512;
+const int DI_LOGICAL_HEIGHT = 128;
 
 /* Game camera rect */
 const SDL_Rect CAMERA_OFFSET =
@@ -18,8 +24,6 @@ const SDL_Rect CAMERA_OFFSET =
 };
 
 const std::string WINDOW_TITLE = "Qntra!";
-const std::string SPRITES = "/home/marco/gamedev/MarcoMan/sprites/";
-
 
 /* Directory separator */
 const std::string DS = 
@@ -33,7 +37,7 @@ const std::string DS =
 const std::string CWD = 
 #if _WIN32
     _getcwd( NULL, 0 ) + DS;
-#else
+#elif __unix__ || __APPLE__
     #if 1
         getcwd( NULL, 0 ) + DS;
     #elif 0
@@ -41,167 +45,83 @@ const std::string CWD =
     #endif
 #endif
 
-const std::string SPRITES_PATH =
-#if __ANDROID__
-    "";
-#else
+const std::string SPRITES_PATH = 
+#if _WIN32 || __unix__ || __APPLE__
     CWD + "sprites" + DS;
+#elif __ANDROID__
+    "";
 #endif
 
 /* Physics */
-const Vector GRAVITY( 0 , 6 );
+const Vector GRAVITY( 0 , 1000 );
 
 /* Scenario size */
 const int SCENARIO_WIDTH = 7168;
-const int SCENARIO_HEIGHT = 240;
-const SDL_Color BLUE_SKY = { 92 , 148 , 252 , 0 };
-
-/* Brown block filepath */
-const std::string BROWN_BLOCK_FILE_PATH = SPRITES_PATH + "brownBlock.bmp";
-
-/* States */
-const Uint16 NONE = 0;
-
-const Uint16 ON_GROUND = 2;
-
-const Uint16 WALKING = 4;
-
-const Uint16 CROUCHING = 8;
-
-const Uint16 SHOOTING = 16;
-
-const Uint16 MID_AIR_ASCENDING = 32;
-const Uint16 MID_AIR_DESCENDING = 64;
-const Uint16 MID_AIR = 96;
-
-const Uint16 RUNNING = 128;
-
-const Uint16 RIGHT = 256;
-const Uint16 LEFT = 512;
+const int SCENARIO_HEIGHT = 720;
 
 /* Entity configuration */
-const Uint8 ACTIVE = 1;
-const Uint8 STATIC = 2;
-const Uint8 KINEMATIC = 4;
-const Uint8 BULLET = 8;
-const Uint8 CAMERA = 16;
-const Uint8 TEMPLATE = 32;
-
-/* Player */
-const std::string MEGAMAN_SPRITE_SHEET = SPRITES_PATH + 
-    "megamanSpriteSheet.png";
-
-/* Player spritesheet frames */
-std::map<Uint16 , std::vector < SDL_Rect > > MEGAMAN_SPRITES =
-{
-
-    {
-        ON_GROUND,
-        {
-            { 8 , 13 , 21 , 24  } ,
-            { 58 , 13 , 21 , 24 }
-        }
-    },
-    {
-        WALKING,
-        {
-            {
-                108 , 13 , 24 , 24
-            }
-        }
-    },
-    {
-        RUNNING,
-        {
-            {
-                156 , 15 , 24 , 22
-            },
-            {
-                209 , 13 , 16 , 24
-            },
-            {
-                255 , 15 , 21 , 22
-            }
-        }
-    },
-    {
-        MID_AIR,
-        {
-            {
-                306 , 13 , 26 , 30
-            }
-        }
-    },
-    {
-        MID_AIR | SHOOTING,
-        {
-            {
-                306 , 63 , 29 , 30
-            }
-        }
-    },
-    {
-        SHOOTING,
-        {
-            {
-                108 , 63 , 32 , 24
-            }
-        }
-    },
-    {
-        RUNNING | SHOOTING,
-        {
-            {
-                156 , 65 , 29 , 22
-            },
-            {
-                209 , 63 , 26 , 24
-            },
-            {
-                255 , 65 , 30 , 22
-            }
-        }
-    },
-};
-
-
-/* Player */
-const std::string PLAYER_SPRITE_SHEET = SPRITES_PATH + 
-    "player.png";
-
-/* Player spritesheet frames */
-std::map<Uint16 , std::vector < SDL_Rect > > PLAYER_SPRITES =
-{
-    {
-        ON_GROUND,
-        {
-            { 0 , 0 , 32 , 32  } ,
-        }
-    }
-};
-
-/* Generic platform */
-const std::string GENERIC_PLATFORM_FILE_PATH = SPRITES_PATH + 
-    "platform.png";
-
-/* Generic enemy */
-const std::string GENERIC_ENEMY_FILE_PATH = SPRITES_PATH + 
-    "enemy.png";
-
-/* Generic projectile */
-const std::string GENERIC_PROJECTILE_FILE_PATH = SPRITES_PATH + 
-    "projectile.png";
-
-/* Generic enemy spritesheet frames */
-std::map<Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES =
-{
-    {
-        ON_GROUND,
-        {
-            { 0 , 0 , 32 , 32  } ,
-        }
-    }
-};
+const uint8 ACTIVE = 1;
+const uint8 STATIC = 2;
+const uint8 KINEMATIC = 4;
+const uint8 BULLET = 8;
+const uint8 DIRECTIONAL = 16;
+const uint8 CAMERA = 32;
+const uint8 PARTICLE = 64;
 
 /* Sensor values */
-const Uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8;
+const uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8,
+    NONE_SENSOR = 0 , A_TOP_SENSOR = 16 , A_RIGHT_SENSOR = 32,
+    A_BOT_SENSOR = 64 , A_LEFT_SENSOR = 128;
+
+/* HUD colors and other shit */
+const SDL_Color white = { 255 , 255 , 255 },
+    black = { 0 , 0 , 0 };
+
+const SDL_Rect LT = {  10 , 10 , 50 , 50 } , T = { 100 , 10 , 50 , 50 },
+    RT = { 200 , 10 , 50 , 50 };
+
+/* MAX GRAVITY */
+const float MAX_GRAVITY = 500.0;
+/* Player */
+std::string MEGAMAN_SPRITE_SHEET;
+/* Player */
+std::string PLAYER_SPRITE_SHEET;
+/* Generic platform */
+std::string GENERIC_PLATFORM_FILE_PATH;
+/* Generic enemy */
+std::string GENERIC_ENEMY_FILE_PATH;
+/* Arrow enemy */
+std::string ARROW_FILE_PATH;
+/* Generic projectile */
+std::string GENERIC_PROJECTILE_FILE_PATH;
+/* Mapper file */
+std::string MAPPER_FILE_PATH;
+/* Sans font file */
+std::string SANS_FONT_FILE_PATH;
+
+/* Relative to BIN instead of CWD */
+std::string BIN_PATH;
+std::string BIN_SPRITES_PATH;
+
+std::string CONFIG_PATH;
+
+void initCWD ( std::string argv )
+{
+    BIN_PATH = argv.substr(0, argv.size() - 8 );
+    BIN_SPRITES_PATH = BIN_PATH + "sprites" + DS;
+
+#if __ANDROID__
+    BIN_PATH = "";
+    BIN_SPRITES_PATH = "";
+#endif
+
+    PLAYER_SPRITE_SHEET = BIN_SPRITES_PATH + "player.png";
+    GENERIC_ENEMY_FILE_PATH = BIN_SPRITES_PATH + "enemy.png";
+    GENERIC_PLATFORM_FILE_PATH = BIN_SPRITES_PATH + "platform.png";
+    GENERIC_PROJECTILE_FILE_PATH = BIN_SPRITES_PATH + "projectile.png";
+    MAPPER_FILE_PATH = BIN_SPRITES_PATH + "platforms.org";
+    ARROW_FILE_PATH = BIN_SPRITES_PATH + "arrow.png";
+    MEGAMAN_SPRITE_SHEET = BIN_SPRITES_PATH + "megamanSpriteSheet.png";
+    SANS_FONT_FILE_PATH = BIN_SPRITES_PATH + "OpenSans-Regular.ttf";
+    CONFIG_PATH = BIN_SPRITES_PATH + "config";
+}

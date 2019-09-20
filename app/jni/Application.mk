@@ -7,3 +7,4 @@ APP_ABI := x86
 
 # Min runtime API level
 APP_PLATFORM=android-22
+APP_CFLAGS += -DPNG_ARM_NEON_OPT=0

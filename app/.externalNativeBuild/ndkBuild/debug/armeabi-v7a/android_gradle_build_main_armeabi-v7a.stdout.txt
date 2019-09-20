@@ -1,2 +1,1 @@
-[armeabi-v7a] Compile++ thumb: main <= timer.cpp
-[armeabi-v7a] SharedLibrary  : libmain.so
+make: `/home/marco/gamedev/engine_android/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libmain.so' is up to date.

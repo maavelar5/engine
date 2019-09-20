@@ -4,9 +4,9 @@ namespace collision
 {
     void collide ()
     {
-        std::map < int , std::map < int , bool > > map;
+        std::string positionHash;
 
-        for ( auto entity : entities::toCollide )
+        for ( auto &entity : entities::queue )
         {
             for ( int y = entity->locator.y;
                   y <= entity->locator.h;
@@ -18,108 +18,212 @@ namespace collision
                       x++
                     )
                 {
-                    iterate ( entities::entities[ y ][ x ] );
+                    positionHash = entities::getPositionHash( x , y );
+
+                    iterate ( *entity , entities::statics[ positionHash ] );
+                    iterate ( *entity , entities::kinematics[ positionHash ] );
                 }
             }
         }
+
+        entities::queue.clear();
     }
 
-    void iterate ( std::vector < Entity * > entities )
+    void iterate ( Entity & a , std::vector < Entity * > &entities )
     {
-
-        Entity *a , *b;
-
-        for ( int z = 0;
-              z < entities.size() - 1;
-              z++
-            )
+        for ( auto &b : entities )
         {
-            a = entities[ z ];
-
-            for ( int w = z + 1;
-                  w < entities.size();
-                  w++
-                )
-            {
-                b = entities[ w ];
-
-                if ( a->config & STATIC && b->config & STATIC)
-                    continue;
-
-                detect ( *a , *b );
-            }
+            solve ( a , ( *b ) );
         }
     }
 
-    void detect ( Entity &a , Entity &b )
+    void solve ( Entity & entityA , Entity & entityB )
     {
-        SDL_Rect result = { 0 , 0 , 0 , 0 };
+        AABB a ( floor ( entityA.position.x ), floor ( entityA.position.y ),
+                 ceil ( entityA.position.x ) + entityA.screen.w,
+                 ceil ( entityA.position.y ) + entityA.screen.h );
 
-        if ( SDL_IntersectRect ( &a.screen , &b.screen , &result ) )
+        AABB b ( floor ( entityB.position.x ) , floor ( entityB.position.y ),
+                 ceil ( entityB.position.x ) + entityB.screen.w,
+                 ceil ( entityB.position.y ) + entityB.screen.h );
+
+        if ( AABB::checkIntersection( a , b ) )
         {
-            int collisionType = getCollisionType ( a.screen , result );
+            AABB c = AABB::getIntersection( a , b );
 
-            if ( a.config & BULLET ) a.config &= ~ACTIVE;
-            if ( b.config & BULLET ) b.config &= ~ACTIVE;
-
-            if ( collisionType == BOT_SENSOR )
+            if ( entityB.config & KINEMATIC )
             {
-                if ( a.config & KINEMATIC && a.velocity.y >= 0 ) { bot ( a , result.h ); }
-                if ( b.config & KINEMATIC && b.velocity.y <= 0 ) { top ( b , result.h ); }
+                kinematics::solve ( entityA , entityB , a , c );
             }
-
-            else if ( collisionType == TOP_SENSOR )
-            {
-                if ( a.config & KINEMATIC && a.velocity.y <= 0 ) { top ( a , result.h ); }
-                if ( b.config & KINEMATIC && b.velocity.y >= 0 ) { bot ( b , result.h ); }
-            }
-
-            else if ( collisionType == RIGHT_SENSOR )
-            {
-                if ( a.config & KINEMATIC ) { right( a , result.w ); }
-                if ( b.config & KINEMATIC ) { left( b , result.w ); }
-            }
-
-            else if ( collisionType == LEFT_SENSOR )
-            {
-                if ( a.config & KINEMATIC ) { left( a , result.w ); }
-                if ( b.config & KINEMATIC ) { right( b , result.w ); }
-            }
-        }
-    }
-
-    int getCollisionType ( SDL_Rect a , SDL_Rect b )
-    {
-        int collisionType = -1;
-
-        if ( b.w >= b.h )
-        {
-            if ( a.y == b.y ) { collisionType = TOP_SENSOR; }
-            else { collisionType = BOT_SENSOR; }
-        }
-        else
-        {
-            if ( a.x == b.x ) { collisionType = LEFT_SENSOR; }
-            else { collisionType = RIGHT_SENSOR; }
+            else { statics::solve ( entityA , entityB , a , c ); }
         }
 
-        return collisionType;        
+        if ( false )
+        {
+            std::ostringstream oss;
+
+            AABB c = AABB::getIntersection( a , b );
+
+            // FAIL: Check coordinates in which the resolution failed
+            oss << "EntityA => a.x: " << a.x << " a.y: "
+                << a.y << " a.w: " << a.w << " a.h: " << a.h;
+            debug::draw ( oss.str() );
+            oss.str("");
+
+            oss << "EntityB => b.x: " << b.x << " b.y: "
+                << b.y << " b.w: " << b.w << " b.h: " << b.h;
+            debug::draw ( oss.str() );
+            oss.str("");
+
+            oss << "Intersect => x: " << c.x << " y: "
+                << c.y << " w: " << c.w << " h: " << c.h;
+            debug::draw ( oss.str() );
+            oss.str("");
+
+            oss << "Collision detection failed";
+            debug::draw ( oss.str() );
+        }
     }
 
     void bot ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y -= h - 1;
-        entity.sensor |= BOT_SENSOR;
+        entity.position.y -= ( h - 1 );
     }
 
     void top ( Entity &entity , int h )
     {
         entity.velocity.y = 0;
-        entity.position.y += h;
-        entity.sensor |= TOP_SENSOR;
+        entity.position.y += ( h - 1 );
     }
 
-    void left ( Entity &entity , int w ) { entity.position.x += w; }
-    void right ( Entity &entity , int w ) { entity.position.x -= w; }
+    void left ( Entity &entity , int w )
+    {
+        entity.position.x += ( w - 1 );
+    }
+    void right ( Entity &entity , int w )
+    {
+        entity.position.x -= ( w - 1 );
+    }
+
+    namespace statics
+    {
+        void top ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y <= 0 ) { collision::top ( a , c.h - c.y ); }
+
+            a.topSensorCallback( b );
+        }
+
+        void bot ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y >= 0 ) { collision::bot ( a , c.h - c.y ); }
+
+            a.botSensorCallback ( b );
+        }
+
+        void left ( Entity & a , Entity & b , AABB c )
+        {
+            collision::left ( a , c.w - c.x );
+
+            a.leftSensorCallback ( b );
+        }
+
+        void right ( Entity & a , Entity & b , AABB c )
+        {
+            collision::right ( a , c.w - c.x );
+
+            a.rightSensorCallback ( b );
+        }
+
+        void fallback ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( a.fTop( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.fBot( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.fLeft( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.fRight( c ) ) { right ( entityA , entityB , c ); }
+        }
+
+        void solve ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( entityA.config & BULLET ) { entityA.config &= ~ACTIVE; }
+
+            if ( a.top ( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.bot ( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.left ( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.right ( c ) ) { right ( entityA , entityB , c ); }
+            else { fallback ( entityA , entityB , a , c ); }
+        }
+    }
+
+    namespace kinematics
+    {
+        void top ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y <= 0 && !( a.sensor & A_BOT_SENSOR ) )
+            {
+                collision::top ( a , c.h - c.y );
+            }
+
+            a.topSensorCallback( b );
+            b.botSensorCallback( a );
+        }
+
+        void bot ( Entity & a , Entity & b , AABB c )
+        {
+            if ( a.velocity.y >= 0 && !( a.sensor & A_TOP_SENSOR ) )
+            {
+                collision::bot ( a , c.h - c.y );
+            }
+
+            if ( b.sensor & A_BOT_SENSOR ) { a.sensor |= A_BOT_SENSOR; }
+
+            a.botSensorCallback ( b );
+            b.topSensorCallback ( a );
+        }
+
+        void left ( Entity & a , Entity & b , AABB c )
+        {
+            if ( !( a.sensor & A_RIGHT_SENSOR ) )
+            {
+                collision::left ( a , c.w - c.x );
+            }
+
+            a.leftSensorCallback ( b );
+            b.rightSensorCallback ( a );
+        }
+
+        void right ( Entity & a , Entity & b , AABB c )
+        {
+            if ( !( a.sensor & A_LEFT_SENSOR ) )
+            {
+                collision::right ( a , c.w - c.x );
+            }
+
+            a.rightSensorCallback ( b );
+            b.leftSensorCallback ( a );
+        }
+
+        void fallback ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( a.fTop( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.fBot( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.fLeft( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.fRight( c ) ) { right ( entityA , entityB , c ); }
+        }
+
+        void solve ( Entity & entityA , Entity & entityB , AABB a , AABB c )
+        {
+            if ( ( &entityA ) == ( &entityB ) ) { return; }
+
+            if ( entityA.config & BULLET ) { entityA.config &= ~ACTIVE; }
+            if ( entityB.config & BULLET ) { entityB.config &= ~ACTIVE; }
+
+            if ( a.top ( c ) ) { top ( entityA , entityB , c ); }
+            else if ( a.bot ( c ) ) { bot ( entityA , entityB , c ); }
+            else if ( a.left ( c ) ) { left ( entityA , entityB , c ); }
+            else if ( a.right ( c ) ) { right ( entityA , entityB , c ); }
+            else { fallback ( entityA , entityB , a , c ); }
+        }
+    }
 }

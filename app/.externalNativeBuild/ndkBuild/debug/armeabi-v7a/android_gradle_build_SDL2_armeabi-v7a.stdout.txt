@@ -1,1 +1,1 @@
-make: `/home/marco/gamedev/engine/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libSDL2.so' is up to date.
+make: `/home/marco/gamedev/engine_android/app/build/intermediates/ndkBuild/debug/obj/local/armeabi-v7a/libSDL2.so' is up to date.

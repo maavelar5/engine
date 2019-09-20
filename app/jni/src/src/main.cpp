@@ -1,10 +1,4 @@
-#include "game.h"
-#include "timer.h"
-#include "constants.h"
-#include "camera.h"
-#include "collision.h"
-#include "player.h"
-#include "platform.h"
+#include "manager.h"
 
 #if __ANDROID__
 #include <SDL.h>
@@ -12,40 +6,21 @@
 #include <SDL2/SDL.h>
 #endif
 
-int main( int argc, char* argv[] )
+int main ( int argc, char* argv[] )
 {
-    game::init();
-    entities::init();
+    initCWD( std::string( argv[ 0 ] ) );
 
-    Player player;
-    Platform platform;
-    SDL_Event event;
+    manager::init();
 
-    while( !game::quit )
+    while ( !game::quit )
     {
-        timer::update();
-
-        while( SDL_PollEvent( &event ) )
-        {
-            game::event( event );
-            player.event ( event );
-        }
-
-        while ( timer::acumulator >= timer::timeStep )
-        {
-            SDL_Log ( "acumulator: %f \n" , timer::acumulator );
-            player.move();
-            collision::collide();
-            timer::acumulator -= timer::timeStep;
-        }
-
-        SDL_RenderClear( game::renderer );
-
-        platform.render();
-        player.render();
-
-        SDL_RenderPresent( game::renderer );
+        manager::clear();
+        manager::event();
+        manager::update();
+        manager::render();
     }
+
+    SDL_Quit();
 
     return 0;
 }

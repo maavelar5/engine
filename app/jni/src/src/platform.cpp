@@ -1,33 +1,31 @@
 #include "platform.h"
 
-Platform::Platform () : Entities ( GENERIC_PLATFORM_FILE_PATH )
+Platforms::Platforms ( std::string filePath ) :
+    Entities ( filePath )
 {
-    for ( int x = 0;
-          x < 1000;
-          x += 32
-        )
-    {
-        add ( x , 224 );
-    }
 
-    for ( int x = 200;
-          x < 350;
-          x += 32
-        )
+}
+
+Platforms::~Platforms () { }
+
+void Platforms::render ()
+{
+    for ( auto & entity : entities )
     {
-        add ( x , 150 );
+        entity->render ( texture );
     }
 }
 
-Platform::~Platform () { }
+void Platforms::move () { }
+void Platforms::update () { }
 
-void Platform::add ( float x , float y )
+void Platforms::add ( float x , float y , int w , int h )
 {
-    std::shared_ptr < Entity >  entity (new Entity ());
+    entities.push_back ( std::shared_ptr < Entity >
+                         ( new Entity ( x , y , w , h , ACTIVE | STATIC ) ) );
+}
 
-    entity->position = { x , y };
-    entity->screen = { 0 , 0 , 32, 32 };
-    entity->adjust();
-
-    entities.push_back ( entity );
+void Platforms::clear ()
+{
+    entities.clear();
 }

@@ -1,6 +1,7 @@
-#ifndef ENTITY_H_INCLUDED
-#define ENTITY_H_INCLUDED
+#ifndef ENTITY
+#define ENTITY
 
+#include "automated_movement.h"
 #include "camera.h"
 #include "game.h"
 #include "texture.h"
@@ -17,39 +18,53 @@
 #include <algorithm>
 #include <memory>
 #include <vector>
+#include <map>
 
 struct Entity
 {
-    Vector position , velocity;
-    SDL_Rect screen , locator;
-    Uint8 config , sensor;
+    Vector position , velocity, previousPosition,
+        previousVelocity , renderPosition , direction;
 
-    Entity ();
+    SDL_Rect screen , locator;
+
+    uint8 config , status;
+
+    SDL_RendererFlip flip;
+
+    int speed;
+
+    uint8 sensor , previousSensor;
+    Timer topTimer , botTimer , rightTimer , leftTimer;
+
+    std::map < std::string , std::vector < Entity * > > * collection;
+
+    Entity ( float , float , int , int , uint8 config = STATIC | ACTIVE );
     ~Entity ();
 
-    void add (), adjust() , move () , render ( SDL_Texture * ),
-        setLocator (), deleteLocator ();
-};
+    void adjust () , render ( SDL_Texture * ) , setLocator (),
+        deleteLocator (), updateLocator ();
 
-struct Entities : public Texture
-{
-    std::vector < std::shared_ptr < Entity > > entities;
+    virtual void move () , positionLimits (),
+        move ( Vector , uint16 speed , uint8 minDistance = 0 ) , update (),
+        move ( bool );
 
-    Entities ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
-    ~Entities ();
+    virtual void topSensorCallback ( Entity & ) , botSensorCallback ( Entity & ),
+        leftSensorCallback ( Entity & ) , rightSensorCallback ( Entity & );
 
-    void render ();
+    virtual void sensorDelay ();
 };
 
 namespace entities
 {
-    extern std::vector
-    < std::vector < std::vector
-                    < Entity * > > > entities;
+    extern std::map < std::string ,
+                      std::vector < Entity * > > kinematics , statics;
+    extern std::vector < Entity * > queue;
 
-    extern std::vector < Entity * > toCollide;
+    void addHashIfNotExists ( std::string,
+                              std::map < std::string , std::vector
+                              < Entity * > > * collection );
 
-    void init ();
+    std::string getPositionHash ( int , int );
 }
 
 #endif

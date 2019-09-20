@@ -1,0 +1,133 @@
+In file included from /home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:1:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/mapper.h:5:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/enemy.h:8:
+/home/marco/gamedev/engine_android/app/jni/src/def/directed_projectile.h:13:22: warning: 'DirectedProjectiles::move' hides overloaded virtual function [-Woverloaded-virtual]
+    void update () , move ( Vector );
+                     ^
+/home/marco/gamedev/engine_android/app/jni/src/def/projectile.h:31:31: note: hidden overloaded virtual function 'Projectiles::move' declared here: different number of parameters (0 vs 1)
+    virtual void update () ,  move () , render (),
+                              ^
+In file included from /home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:1:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/mapper.h:7:
+/home/marco/gamedev/engine_android/app/jni/src/def/floating_enemy.h:17:30: warning: 'FloatingEnemy::update' hides overloaded virtual function [-Woverloaded-virtual]
+    void search ( Vector ) , update ( Vector , uint16 );
+                             ^
+/home/marco/gamedev/engine_android/app/jni/src/def/entity.h:48:66: note: hidden overloaded virtual function 'Entity::update' declared here: different number of parameters (0 vs 2)
+        move ( Vector , uint16 speed , uint8 minDistance = 0 ) , update (),
+                                                                 ^
+/home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:172:32: warning: relational comparison result unused [-Wunused-comparison]
+                    position.y >= 48;
+                    ~~~~~~~~~~~^~~~~
+In file included from /home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:1:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/mapper.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/player.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/entities.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/constants.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/vector.h:4:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/iostream:38:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/ios:216:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__locale:15:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string:505:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string_view:176:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__string:57:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/algorithm:644:
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2339:5: warning: delete called on non-final 'Players' that has virtual functions but non-virtual destructor [-Wdelete-non-virtual-dtor]
+    delete __ptr;
+    ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2652:7: note: in instantiation of member function 'std::__ndk1::default_delete<Players>::operator()' requested here
+      __ptr_.second()(__tmp);
+      ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2606:19: note: in instantiation of member function 'std::__ndk1::unique_ptr<Players, std::__ndk1::default_delete<Players> >::reset' requested here
+  ~unique_ptr() { reset(); }
+                  ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:4067:21: note: in instantiation of member function 'std::__ndk1::unique_ptr<Players, std::__ndk1::default_delete<Players> >::~unique_ptr' requested here
+    unique_ptr<_Yp> __hold(__p);
+                    ^
+/home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:12:28: note: in instantiation of function template specialization 'std::__ndk1::shared_ptr<Players>::shared_ptr<Players>' requested here
+        entities [ "pl"] = std::shared_ptr < Players > ( new Players () );
+                           ^
+In file included from /home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:1:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/mapper.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/player.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/entities.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/constants.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/vector.h:4:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/iostream:38:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/ios:216:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__locale:15:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string:505:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string_view:176:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__string:57:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/algorithm:644:
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2339:5: warning: delete called on non-final 'Platforms' that has virtual functions but non-virtual destructor [-Wdelete-non-virtual-dtor]
+    delete __ptr;
+    ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2652:7: note: in instantiation of member function 'std::__ndk1::default_delete<Platforms>::operator()' requested here
+      __ptr_.second()(__tmp);
+      ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2606:19: note: in instantiation of member function 'std::__ndk1::unique_ptr<Platforms, std::__ndk1::default_delete<Platforms> >::reset' requested here
+  ~unique_ptr() { reset(); }
+                  ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:4067:21: note: in instantiation of member function 'std::__ndk1::unique_ptr<Platforms, std::__ndk1::default_delete<Platforms> >::~unique_ptr' requested here
+    unique_ptr<_Yp> __hold(__p);
+                    ^
+/home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:13:29: note: in instantiation of function template specialization 'std::__ndk1::shared_ptr<Platforms>::shared_ptr<Platforms>' requested here
+        entities [ "gp" ] = std::shared_ptr < Platforms > ( new Platforms () );
+                            ^
+In file included from /home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:1:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/mapper.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/player.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/entities.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/constants.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/vector.h:4:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/iostream:38:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/ios:216:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__locale:15:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string:505:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string_view:176:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__string:57:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/algorithm:644:
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2339:5: warning: delete called on non-final 'Enemies' that has virtual functions but non-virtual destructor [-Wdelete-non-virtual-dtor]
+    delete __ptr;
+    ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2652:7: note: in instantiation of member function 'std::__ndk1::default_delete<Enemies>::operator()' requested here
+      __ptr_.second()(__tmp);
+      ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2606:19: note: in instantiation of member function 'std::__ndk1::unique_ptr<Enemies, std::__ndk1::default_delete<Enemies> >::reset' requested here
+  ~unique_ptr() { reset(); }
+                  ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:4067:21: note: in instantiation of member function 'std::__ndk1::unique_ptr<Enemies, std::__ndk1::default_delete<Enemies> >::~unique_ptr' requested here
+    unique_ptr<_Yp> __hold(__p);
+                    ^
+/home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:14:29: note: in instantiation of function template specialization 'std::__ndk1::shared_ptr<Enemies>::shared_ptr<Enemies>' requested here
+        entities [ "se" ] = std::shared_ptr < Enemies > ( new Enemies () );
+                            ^
+In file included from /home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:1:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/mapper.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/player.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/entities.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/constants.h:4:
+In file included from /home/marco/gamedev/engine_android/app/jni/src/def/vector.h:4:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/iostream:38:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/ios:216:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__locale:15:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string:505:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/string_view:176:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/__string:57:
+In file included from /home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/algorithm:644:
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2339:5: warning: delete called on non-final 'FloatingEnemies' that has virtual functions but non-virtual destructor [-Wdelete-non-virtual-dtor]
+    delete __ptr;
+    ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2652:7: note: in instantiation of member function 'std::__ndk1::default_delete<FloatingEnemies>::operator()' requested here
+      __ptr_.second()(__tmp);
+      ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:2606:19: note: in instantiation of member function 'std::__ndk1::unique_ptr<FloatingEnemies, std::__ndk1::default_delete<FloatingEnemies> >::reset' requested here
+  ~unique_ptr() { reset(); }
+                  ^
+/home/marco/Android/Sdk/ndk-bundle/sources/cxx-stl/llvm-libc++/include/memory:4067:21: note: in instantiation of member function 'std::__ndk1::unique_ptr<FloatingEnemies, std::__ndk1::default_delete<FloatingEnemies> >::~unique_ptr' requested here
+    unique_ptr<_Yp> __hold(__p);
+                    ^
+/home/marco/gamedev/engine_android/app/jni/src/src/mapper.cpp:15:29: note: in instantiation of function template specialization 'std::__ndk1::shared_ptr<FloatingEnemies>::shared_ptr<FloatingEnemies>' requested here
+        entities [ "fe" ] = std::shared_ptr
+                            ^
+7 warnings generated.

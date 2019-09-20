@@ -1,22 +1,87 @@
 #include "projectile.h"
 
-Projectile::Projectile () : Entities ( GENERIC_PROJECTILE_FILE_PATH )
+Projectile::Projectile ( float x , float y , int w , int h ) :
+    Entity ( x , y , w , h , ACTIVE | KINEMATIC | BULLET )
 {
-    speed = 400;
+
 }
 
 Projectile::~Projectile () { }
 
-void Projectile::add ( float x , float y )
+void Projectile::positionLimits ()
 {
-    std::shared_ptr < Entity > entity ( new Entity ());
+    if ( position.y <= -100 )
+        config &= ~ACTIVE;
+    else if ( position.y >= SCENARIO_HEIGHT )
+        config &= ~ACTIVE;
 
-    entity->config = STATIC | BULLET;
-    entity->position = { x , y };
-    entity->screen = { 0 , 0 , 4 , 4 };
-    entity->velocity.x = speed;
+    if ( position.x <= -100 )
+        config &= ~ACTIVE;
+    else if ( position.x >= SCENARIO_WIDTH )
+        config &= ~ACTIVE;
+}
 
-    entity->adjust();
+
+Projectiles::Projectiles ( int speed , Entity * entity ) :
+    Entities ( GENERIC_PROJECTILE_FILE_PATH ),
+    Timer ( 1000 )
+{
+    this->speed = speed;
+    this->entity = entity;
+    isActive = false;
+}
+
+Projectiles::~Projectiles () { }
+
+void Projectiles::render ()
+{
+    for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
+    {
+        if ( (*entity)->config & ACTIVE )
+        {
+            (*entity)->render( texture );
+        }
+        else
+        {
+            (*entity)->deleteLocator ();
+            entities.erase( entity-- );
+        }
+    }
+}
+
+void Projectiles::move ()
+{
+    for ( auto &entity : entities )
+    {
+        entity->move ();
+    }
+}
+
+void Projectiles::add ( float x , float y , int w , int h )
+{
+    std::shared_ptr < Projectile > entity ( new Projectile ( x , y , w , h ) );
+
+    entity->velocity.x = ( this->entity->flip == SDL_FLIP_HORIZONTAL )
+        ? -speed
+        : speed;
 
     entities.push_back ( entity );
+}
+
+void Projectiles::update ()
+{
+    if ( isActive )
+    {
+        if ( check() == 2 )
+        {
+            float x = ( entity->flip == SDL_FLIP_NONE )
+                ? entity->position.x + entity->screen.w + 4
+                : entity->position.x - 4;
+
+            float y = entity->position.y + entity->screen.h / 3;
+
+            add ( x , y );
+            start();
+        }
+    }
 }

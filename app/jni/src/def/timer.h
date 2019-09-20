@@ -1,5 +1,5 @@
-#ifndef TIMER_H_INCLUDED
-#define TIMER_H_INCLUDED
+#ifndef TIMER
+#define TIMER
 
 #if __ANDROID__
 #include <SDL.h>
@@ -9,9 +9,11 @@
 
 namespace timer
 {
-    extern float acumulator, timeStep , currentTime , previousTime , frameTime;
-    
-    void init () , update ();
+    extern float acumulator, timeStep , currentTime , previousTime , frameTime,
+        FPS , interpolation;
+    extern Uint32 frames;
+
+    void init () , update () , updateFPS ();
 }
 
 #endif // TIMER_H_INCLUDED

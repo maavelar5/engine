@@ -2,119 +2,161 @@
 
 namespace entities
 {
-    std::vector
-    < std::vector < std::vector
-                    < Entity * > > > entities;
+    std::map < std::string , std::vector < Entity * > > kinematics , statics;
+    std::vector < Entity * > queue;
 
-    std::vector < Entity * > toCollide;
-
-    void init ()
+    void addHashIfNotExists ( std::string positionHash,
+                              std::map < std::string , std::vector < Entity * > > * collection )
     {
-        int width = SCENARIO_WIDTH / 100 + 1,   //GAME_LOGICAL_WIDTH + 1,
-            height = SCENARIO_HEIGHT / 100 + 1; //GAME_LOGICAL_HEIGHT + 1;
-        
-        for ( int y = 0;
-              y < height;
-              y++
-            )
+        if ( collection->find ( positionHash ) == collection->end () )
         {
-            entities.push_back(std::vector < std::vector < Entity * > > ());
-
-            for ( int x = 0;
-                  x < width;
-                  x++
-                )
-            {
-                entities[ y ].push_back(std::vector <  Entity * > ());
-            }
+            ( *collection )[ positionHash ] = std::vector < Entity * > ();
         }
     }
 
+    std::string getPositionHash ( int x , int y )
+    {
+        return std::to_string ( y ) + "," + std::to_string ( x );
+    }
 }
 
-Entity::Entity ()
+Entity::Entity ( float x , float y , int w , int h , uint8 config )
 {
-    screen = locator = { 0 , 0 , 0 , 0 };
-    config = ACTIVE | STATIC;
+    locator = { 0 , 0 , 0 , 0 };
 
-    entities::entities[ 0 ][ 0 ].push_back( this );
+    screen = { static_cast<int>(floor ( x - camera::position.x )),
+               static_cast<int>(floor ( y - camera::position.y )),
+               w , h };
+
+    renderPosition = previousPosition = position = { x , y };
+
+    this->config = config;
+
+    collection = ( config & STATIC )
+        ? &entities::statics
+        : &entities::kinematics;
+
+    sensor = 1;
+    flip = SDL_FLIP_NONE;
+
+    setLocator ();
 }
 
-Entity::~Entity () { }
+Entity::~Entity ()
+{
+    deleteLocator();
+}
 
 void Entity::move ()
 {
-    position.x += velocity.x * timer::acumulator;
+    previousPosition = position;
 
-    if ( config & BULLET )
-        return;
+    if ( !( sensor & BOT_SENSOR ) && !( config & BULLET ) )
+    {
+        velocity.y += GRAVITY.y * timer::timeStep;
+        velocity.y = ( velocity.y > MAX_GRAVITY )
+            ? MAX_GRAVITY
+            : velocity.y;
+    }
 
-    if ( config & CAMERA )
-        camera::move ( velocity , screen );
+    position += velocity * timer::timeStep;
 
-    if ( position.x <= 0 )
-        position.x = 0;
-    else if ( position.x >= SCENARIO_WIDTH )
-        position.x = SCENARIO_WIDTH;
+    positionLimits ();
 
-    if ( !( sensor & BOT_SENSOR ) )
-        velocity.y += GRAVITY.y;
+    if ( previousPosition != position )
+        updateLocator ();
 
-    position.y += velocity.y * timer::acumulator;
-    sensor &= ~BOT_SENSOR;
+    sensor = NONE_SENSOR;
 
-    adjust();
+    entities::queue.push_back ( this );
+}
 
-    if ( std::find ( entities::toCollide.begin() , entities::toCollide.end(), this ) == entities::toCollide.end() )
-        entities::toCollide.push_back ( this );
+void Entity::move ( Vector a , uint16 speed , uint8 minDistance )
+{
+    previousPosition = position;
+    direction = position - a;
+
+    if ( direction.length() > minDistance )
+    {
+        direction.normalize();
+        position += direction * ( speed * timer::timeStep );
+        positionLimits ();
+    }
+
+    if ( previousPosition != position ) { updateLocator (); }
+
+    position.getAngle ( a );
+
+    sensor = NONE_SENSOR;
+
+    entities::queue.push_back ( this );
+
+}
+
+void Entity::move (bool directional)
+{
+    previousPosition = position;
+
+    direction.normalize();
+    position += direction * ( speed * timer::timeStep );
+    positionLimits ();
 }
 
 void Entity::render ( SDL_Texture *texture )
 {
     adjust ();
 
-    SDL_RenderCopy( game::renderer,
-                    texture,
-                    nullptr,
-                    &screen );
+    SDL_RenderCopyEx( game::renderer,
+                      texture,
+                      nullptr,
+                      &screen,
+                      position.angle,
+                      nullptr,
+                      flip );
 }
 
 void Entity::adjust ()
 {
-    deleteLocator();
+    Vector position = this->position;
+
+    if ( config & KINEMATIC )
+    {
+        Vector renderPosition = ( position * timer::interpolation ) +
+            ( previousPosition * ( 1.0 - timer::interpolation ) );
+
+        if ( abs( renderPosition.x - this->renderPosition.x ) >= 1 ||
+             abs( renderPosition.y - this->renderPosition.y ) >= 1 )
+        {
+            if ( config & CAMERA )
+                camera::move ( renderPosition.x - this->renderPosition.x,
+                               screen );
+
+            position = this->renderPosition = renderPosition;
+        }
+
+        if ( velocity.x < 0 )
+        {
+            flip = SDL_FLIP_HORIZONTAL;
+        }
+        else if ( velocity.x > 0 )
+        {
+            flip = SDL_FLIP_NONE;
+        }
+    }
 
     screen.x = floor( position.x - camera::position.x );
     screen.y = floor( position.y - camera::position.y );
-
-    setLocator();
 }
 
 void Entity::setLocator ()
 {
-    int xId = position.x / 100,
-        yId = position.y / 100,
-        wId = ( position.x + screen.w ) / 100,
-        hId = ( position.y + screen.h ) / 100;
+    SDL_Rect locator = { static_cast<int>(floor ( position.x / 100 )),
+                         static_cast<int>(floor ( position.y / 100 )),
+                         static_cast<int>(floor ( ( position.x + screen.w ) / 100 )),
+                         static_cast<int>(floor ( ( position.y + screen.h ) / 100 )) };
 
-    for ( int y = yId;
-          y <= hId;
-          y++
-        )
-    {
-        for ( int x = xId;
-              x <= wId;
-              x++
-            )
-        {
-            entities::entities[ y ][ x ].push_back( this );
-        }
-    }
+    std::string positionHash = "";
 
-    locator = { xId , yId , wId , hId };
-}
-
-void Entity::deleteLocator ()
-{
     for ( int y = locator.y;
           y <= locator.h;
           y++
@@ -125,29 +167,114 @@ void Entity::deleteLocator ()
               x++
             )
         {
+            positionHash = entities::getPositionHash ( x , y );
 
-            entities::entities[ y ][ x ]
-                .erase(std::remove(
-                           entities::entities[ y ][ x ].begin(),
-                           entities::entities[ y ][ x ].end(),
-                           this),
-                       entities::entities[ y ][ x ].end());
+            entities::addHashIfNotExists ( positionHash , collection );
+            (*collection) [ positionHash ].push_back ( this );
+        }
+    }
+
+    this->locator = locator;
+}
+
+void Entity::deleteLocator ()
+{
+    std::string positionHash = "";
+
+    for ( int y = locator.y;
+          y <= locator.h;
+          y++
+        )
+    {
+        for ( int x = locator.x;
+              x <= locator.w;
+              x++
+            )
+        {
+            positionHash = entities::getPositionHash ( x , y );
+
+            ( *collection )[ positionHash ].erase (
+                std::remove ( ( *collection )[ positionHash ].begin(),
+                              ( *collection )[ positionHash ].end(),
+                              this ),
+                ( *collection )[ positionHash ].end());
         }
     }
 }
 
-Entities::Entities ( std::string filePath ) : Texture ( filePath )
+void Entity::updateLocator ()
 {
-    
-}
+    SDL_Rect locator = { static_cast<int>(floor ( position.x / 100 )),
+                         static_cast<int>(floor ( position.y / 100 )),
+                         static_cast<int>(floor ( ( position.x + screen.w ) / 100 )),
+                         static_cast<int>(floor ( ( position.y + screen.h ) / 100 )) };
 
-Entities::~Entities () { }
-
-void Entities::render ()
-{
-    for ( auto entity : entities )
+    if ( this->locator.x != locator.x ||
+         this->locator.y != locator.y ||
+         this->locator.w != locator.w ||
+         this->locator.h != locator.h )
     {
-        entity->render ( texture );
+        deleteLocator ();
+        setLocator ();
     }
 }
 
+void Entity::positionLimits ()
+{
+    if ( position.y <= 0 )
+    {
+        position.y = 0;
+        topSensorCallback((*this));
+    }
+
+    else if ( position.y >= SCENARIO_HEIGHT )
+    {
+        position.y = SCENARIO_HEIGHT;
+        botSensorCallback((*this));
+    }
+
+    if ( position.x <= 0 )
+    {
+        position.x = 0;
+        leftSensorCallback((*this));
+    }
+    else if ( position.x >= SCENARIO_WIDTH )
+    {
+        position.x = SCENARIO_WIDTH;
+        rightSensorCallback((*this));
+    }
+}
+
+void Entity::update ()
+{
+
+}
+
+void Entity::sensorDelay ()
+{
+
+}
+
+void Entity::topSensorCallback ( Entity & entity )
+{
+    if ( entity.config & STATIC ) { sensor |= A_TOP_SENSOR; }
+    sensor |= TOP_SENSOR;
+}
+
+void Entity::botSensorCallback ( Entity & entity )
+{
+    if ( entity.config & STATIC ) { sensor |= A_BOT_SENSOR; }
+    sensor |= BOT_SENSOR;
+}
+
+void Entity::leftSensorCallback ( Entity & entity )
+{
+    if ( entity.config & STATIC ) { sensor |= A_LEFT_SENSOR; }
+    sensor |= LEFT_SENSOR;
+}
+
+void Entity::rightSensorCallback ( Entity & entity )
+{
+    if ( entity.config & STATIC ) { sensor |= A_RIGHT_SENSOR; }
+    sensor |= RIGHT_SENSOR;
+}

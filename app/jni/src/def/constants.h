@@ -1,5 +1,5 @@
-#ifndef CONSTANTS_H_INCLUDED
-#define CONSTANTS_H_INCLUDED
+#ifndef CONSTANTS
+#define CONSTANTS
 
 #include "vector.h"
 
@@ -17,12 +17,14 @@
 #if _WIN32
     #include <direct.h>
 #elif __unix__ || __APPLE__
-    #if 1
-        #include <unistd.h>
-    #elif 0
-        #include <experimental/filesystem>
-    #endif
+    #include <unistd.h>
 #endif
+
+#include <filesystem>
+
+typedef unsigned char uint8;
+typedef unsigned short int uint16;
+typedef unsigned int uint32;
 
 /* Window size */
 extern const int WINDOW_WIDTH;
@@ -32,19 +34,23 @@ extern const int WINDOW_HEIGHT;
 extern const int GAME_LOGICAL_WIDTH;
 extern const int GAME_LOGICAL_HEIGHT;
 
+/* Debug & Info window size */
+extern const int DI_WINDOW_WIDTH;
+extern const int DI_WINDOW_HEIGHT;
+extern const int DI_LOGICAL_WIDTH;
+extern const int DI_LOGICAL_HEIGHT;
+
 /* Game camera rect */
 extern const SDL_Rect CAMERA_OFFSET;
 
-
+/* Window title */
 extern const std::string WINDOW_TITLE;
-extern const std::string SPRITES;
 
 /* Directory separator */
 extern const std::string DS;
 
 /* Current working directory */
 extern const std::string CWD;
-
 extern const std::string SPRITES_PATH;
 
 /* Physics */
@@ -53,63 +59,53 @@ extern const Vector GRAVITY;
 /* Scenario size */
 extern const int SCENARIO_WIDTH;
 extern const int SCENARIO_HEIGHT;
-extern const SDL_Color BLUE_SKY;
-
-/* Brown block filepath */
-extern const std::string BROWN_BLOCK_FILE_PATH;
-
-/* States */
-extern const Uint16 NONE;
-
-extern const Uint16 WALKING;
-
-extern const Uint16 CROUCHING;
-
-extern const Uint16 SHOOTING;
-
-extern const Uint16 MID_AIR_ASCENDING;
-extern const Uint16 MID_AIR_DESCENDING;
-extern const Uint16 MID_AIR;
-
-extern const Uint16 RUNNING;
-
-extern const Uint16 RIGHT;
-extern const Uint16 LEFT;
-
-extern const Uint16 ON_GROUND;
 
 /* Entity configuration */
-extern const Uint8 ACTIVE;
-extern const Uint8 STATIC;
-extern const Uint8 KINEMATIC;
-extern const Uint8 BULLET;
-extern const Uint8 CAMERA;
-
-/* Megaman */
-extern const std::string MEGAMAN_SPRITE_SHEET;
-
-/* Megaman spritesheet frames */
-extern std::map<Uint16 , std::vector<SDL_Rect> > MEGAMAN_SPRITES;
-
-/* Player */
-extern const std::string PLAYER_SPRITE_SHEET;
-
-/* Player spritesheet frames */
-extern std::map < Uint16 , std::vector<SDL_Rect> > PLAYER_SPRITES;
-
-/* Generic platform */
-extern const std::string GENERIC_PLATFORM_FILE_PATH;
-
-/* Generic enemy */
-extern const std::string GENERIC_ENEMY_FILE_PATH;
-
-/* Generic projectile */
-extern const std::string GENERIC_PROJECTILE_FILE_PATH;
-
-/* Generic enemy sprites */
-extern std::map <Uint16 , std::vector < SDL_Rect > > GENERIC_ENEMY_SPRITES;
+extern const uint8 ACTIVE;
+extern const uint8 STATIC;
+extern const uint8 KINEMATIC;
+extern const uint8 BULLET;
+extern const uint8 DIRECTIONAL;
+extern const uint8 CAMERA;
+extern const uint8 PARTICLE;
 
 /* Sensor valuess */
-extern const Uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR;
+extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR,
+    NONE_SENSOR , A_TOP_SENSOR , A_RIGHT_SENSOR, A_BOT_SENSOR , A_LEFT_SENSOR;
+
+/* HUD colors and other shit */
+extern const SDL_Color white , black;
+extern const SDL_Rect LT , T , RT;
+
+/* MAX GRAVITY */
+extern const float MAX_GRAVITY;
+
+/* ENEMY MOVES */
+const uint8 ENEMY_NONE = 0;
+const uint8 ENEMY_MOVE = 1;
+const uint8 ENEMY_SEARCH = 2;
+const uint8 ENEMY_ATTACK = 3;
+
+
+/* Player */
+extern std::string PLAYER_SPRITE_SHEET;
+/* Generic platform */
+extern std::string GENERIC_PLATFORM_FILE_PATH;
+/* Generic enemy */
+extern std::string GENERIC_ENEMY_FILE_PATH;
+/* Arrow enemy */
+extern std::string ARROW_FILE_PATH;
+/* Generic projectile */
+extern std::string GENERIC_PROJECTILE_FILE_PATH;
+/* Mapper file */
+extern std::string MAPPER_FILE_PATH;
+/* Sans Font */
+extern std::string SANS_FONT_FILE_PATH;
+/* Path relative to binary */
+extern std::string BIN_PATH, BIN_SPRITES_PATH;
+
+extern std::string CONFIG_PATH;
+
+void initCWD (std::string);
 
 #endif

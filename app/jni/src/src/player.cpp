@@ -1,45 +1,75 @@
 #include "player.h"
 
-Player::Player () : Texture ( PLAYER_SPRITE_SHEET )
+Player::Player ()
+    : Entity ( 32 , 32 , 32, 64 , ACTIVE | KINEMATIC | CAMERA )
+    , projectiles ( 800 , this )
 {
-    screen = { 0 , 0 , 8 , 8 };
-    position = { 32 , 32 };
-    config = KINEMATIC | CAMERA;
-    speed = 100;
+    speed = 400;
+    projectiles.delay = 100;
+    canDoubleJump = false;
 }
 
 Player::~Player () { }
 
 void Player::event( SDL_Event event )
 {
-    if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
+    previousVelocity = velocity;
+
+    if ( event.type == SDL_KEYDOWN &&
+         event.key.state == SDL_PRESSED &&
+         event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
         {
             case SDLK_a: velocity.x -= speed; break;
             case SDLK_d: velocity.x += speed; break;
-            case SDLK_SPACE: velocity.y = ( sensor & BOT_SENSOR )
-                ? -300
-                : velocity.y; break;
-            case SDLK_q:
-                projectile.add ( position.x + 10 , position.y );
+            case SDLK_w: velocity.y -= speed; break;
+            case SDLK_s: velocity.y += speed; break;
+            case SDLK_SPACE:
+                if ( sensor & BOT_SENSOR )
+                {
+                    velocity.y = -600;
+                    sensor &= ~BOT_SENSOR;
+                }
+                else
+                {
+                    if ( canDoubleJump )
+                    {
+                        canDoubleJump = false;
+                        velocity.y = -600;
+                    }
+                }
                 break;
-        case SDLK_l: game::quit = SDL_TRUE; break;
+            case SDLK_q:
+                projectiles.isActive = true;
+                break;
+            case SDLK_x:
+                break;
+            case SDLK_e:
+                position.x = 100;
+                position.y = 100;
+                break;
         }
     }
-    else if( event.type == SDL_KEYUP && event.key.repeat == 0 )
+    else if( event.type == SDL_KEYUP &&
+             event.key.state == SDL_RELEASED &&
+             event.key.repeat == 0 )
     {
         switch( event.key.keysym.sym )
         {
             case SDLK_a: velocity.x += speed; break;
             case SDLK_d: velocity.x -= speed; break;
-            case SDLK_SPACE: velocity.y = (velocity.y < 0)
-                ? 0
-                : velocity.y;
+            case SDLK_w: velocity.y += speed; break;
+            case SDLK_s: velocity.y -= speed; break;
+            case SDLK_SPACE:
+                velocity.y = ( velocity.y < 0 )
+                    ? 0
+                    : velocity.y;
                 break;
-            case SDLK_q: break;
+            case SDLK_q: projectiles.isActive = false; break;
         }
     }
+    #if __ANDROID__
     else if ( event.type == SDL_FINGERDOWN || event.type == SDL_FINGERMOTION )
     {
         float wx = ( event.tfinger.x ) * ( WINDOW_WIDTH );
@@ -63,7 +93,7 @@ void Player::event( SDL_Event event )
 
         else if ( event.tfinger.x > 0.9 &&
                   event.tfinger.y > 0.80 )
-            projectile.add ( position.x + 10 , position.y );
+            projectiles.add ( position.x + 10 , position.y );
     }
     else if ( event.type == SDL_FINGERUP )
     {
@@ -81,10 +111,67 @@ void Player::event( SDL_Event event )
                 ? 0
                 : velocity.y;
     }
+    #endif
 }
 
-void Player::render ()
+void Player::render ( SDL_Texture * texture )
 {
     Entity::render ( texture );
-    projectile.render();
+    projectiles.render();
+}
+
+void Player::move ()
+{
+    Entity::move();
+    projectiles.update();
+    projectiles.move();
+}
+
+void Player::botSensorCallback ( Entity & entity )
+{
+    Entity::botSensorCallback ( entity );
+    canDoubleJump = true;
+}
+
+Players::Players () : Entities ( PLAYER_SPRITE_SHEET )
+{
+
+}
+
+Players::~Players () { }
+
+void Players::render ()
+{
+    player.render( texture );
+    info::draw ( "X: " + std::to_string( player.position.x ).substr( 0, 4 ) );
+    info::draw ( "Y: " + std::to_string( player.position.y ).substr( 0, 4 ) );
+}
+
+void Players::update ()
+{
+    player.move();
+}
+
+void Players::move ()
+{
+    player.move();
+}
+
+void Players::add ( float x , float y , int w , int h )
+{
+    int _x = static_cast<int>(x),
+        _y = static_cast<int>(y);
+
+    player.position = { x , y };
+    player.screen = { _x , _y , w , h };
+}
+
+void Players::event ( SDL_Event event )
+{
+    player.event( event );
+}
+
+Entity * Players::single ()
+{
+    return &player;
 }

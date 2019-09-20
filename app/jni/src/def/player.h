@@ -1,20 +1,38 @@
-#ifndef PLAYER_H_INCLUDED
-#define PLAYER_H_INCLUDED
+#ifndef PLAYER
+#define PLAYER
 
+#include "entities.h"
 #include "entity.h"
 #include "game.h"
 #include "projectile.h"
 #include "texture.h"
+#include "debug.h"
+#include "info.h"
 
-struct Player : public Entity , Texture
+struct Player : public Entity
 {
-    int speed;
-    Projectile projectile;
+    uint16 speed;
+    Projectiles projectiles;
+    bool canDoubleJump;
 
     Player ();
     ~Player ();
 
-    void event( SDL_Event ) , render ();
+    void botSensorCallback ( Entity & ) , move () , render ( SDL_Texture * ),
+        event ( SDL_Event );
+};
+
+struct Players : public Entities
+{
+    Player player;
+
+    Players ();
+    ~Players ();
+
+    void move () , update () , render () , event ( SDL_Event ),
+        add ( float , float , int , int );
+
+    Entity * single ();
 };
 
 #endif

@@ -1,5 +1,5 @@
-#ifndef CAMERA_H_INCLUDED
-#define CAMERA_H_INCLUDED
+#ifndef CAMERA_
+#define CAMERA_
 
 #include "constants.h"
 #include "timer.h"
@@ -15,7 +15,7 @@ namespace camera
 {
     extern Vector position;
 
-    void move ( Vector & , SDL_Rect & );
+    void move ( float , SDL_Rect & );
 }
 
 #endif // CAMERA_H_INCLUDED

@@ -1,16 +1,21 @@
-#ifndef PLATFORM_H_INCLUDED
-#define PLATFORM_H_INCLUDED
+#ifndef PLATFORMS
+#define PLATFORMS
 
 #include "entity.h"
+#include "entities.h"
+#include "constants.h"
 
 #include <vector>
 
-struct Platform : public Entities
+struct Platforms : public Entities
 {
-    Platform ();
-    ~Platform ();
+    std::vector < std::shared_ptr < Entity > > entities;
 
-    void add ( float , float );
+    Platforms ( std::string filePath = GENERIC_PLATFORM_FILE_PATH );
+    ~Platforms ();
+
+    void render () , move () , update () , clear (),
+        add ( float , float , int , int );
 };
 
 #endif
