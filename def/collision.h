@@ -10,7 +10,7 @@
 
 #include <algorithm>
 #include <iomanip>
-
+#include <sstream>
 
 namespace collision
 {

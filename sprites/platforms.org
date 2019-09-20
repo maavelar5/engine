@@ -31,5 +31,3 @@
    
 ** Floating enemies
    170,100,32,96,fe
-  
-  

@@ -1,6 +1,7 @@
 #ifndef CAMERA_
 #define CAMERA_
 
+#include "config.h"
 #include "constants.h"
 #include "timer.h"
 #include "vector.h"

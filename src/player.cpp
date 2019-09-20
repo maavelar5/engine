@@ -159,8 +159,11 @@ void Players::move ()
 
 void Players::add ( float x , float y , int w , int h )
 {
+    int _x = static_cast<int>(x),
+        _y = static_cast<int>(y);
+
     player.position = { x , y };
-    player.screen = { x , y , w , h };
+    player.screen = { _x , _y , w , h };
 }
 
 void Players::event ( SDL_Event event )

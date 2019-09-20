@@ -1,9 +1,5 @@
 #include "constants.h"
 
-/* Window size */
-const int WINDOW_WIDTH = 1280;
-const int WINDOW_HEIGHT = 720;
-
 /* Window logical size */
 const int GAME_LOGICAL_WIDTH = 1280;
 const int GAME_LOGICAL_HEIGHT = 720;
@@ -109,6 +105,11 @@ void initCWD ( std::string argv )
 {
     BIN_PATH = argv.substr(0, argv.size() - 8 );
     BIN_SPRITES_PATH = BIN_PATH + "sprites" + DS;
+
+#if __ANDROID__
+    BIN_PATH = "";
+    BIN_SPRITES_PATH = "";
+#endif
 
     PLAYER_SPRITE_SHEET = BIN_SPRITES_PATH + "player.png";
     GENERIC_ENEMY_FILE_PATH = BIN_SPRITES_PATH + "enemy.png";

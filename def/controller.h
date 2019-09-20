@@ -1,7 +1,11 @@
 #ifndef CONTROLLER
 #define CONTROLLER
 
-#include <SDL2/SDL.h>
+#if __ANDROID__
+#include <SDL_image.h>
+#else
+#include <SDL2/SDL_image.h>
+#endif
 
 namespace controller
 {

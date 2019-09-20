@@ -6,11 +6,13 @@ namespace info
 
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
-    bool show = true;
+    bool show = false , loaded = false;
 
     void init ()
     {
-        if ( !config::values["info"] ) return;
+        loaded = std::stoi ( config::values["debug"] );
+
+        if ( !loaded ) { return; }
 
         window = SDL_CreateWindow( "Info", 0 , 0 , DI_WINDOW_WIDTH , DI_WINDOW_HEIGHT,
                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE |
@@ -43,12 +45,12 @@ namespace info
 
     void draw ( std::string text , SDL_Color color )
     {
-        if ( !config::values["info"] ) return;
+        if ( !loaded ) { return; }
 
         SDL_Texture * texture =
             font::createTexture( text , renderer );
 
-        SDL_Rect position = { 0 , y , text.size() * 18 , 32 };
+        SDL_Rect position = { 0 , y , static_cast<int>(text.size()) * 18 , 32 };
 
         y += 32;
 
@@ -59,7 +61,7 @@ namespace info
 
     void event ( SDL_Event event )
     {
-        if ( !config::values["info"] ) return;
+        if ( !loaded ) { return; }
 
         if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
         {

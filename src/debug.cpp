@@ -6,11 +6,13 @@ namespace debug
     std::vector < std::shared_ptr < Text > > text;
     SDL_Window * window = nullptr;
     SDL_Renderer * renderer = nullptr;
-    bool show = true;
+    bool show = false , loaded = false;
 
     void init ()
     {
-        if ( !config::values["debug"] ) return;
+        loaded = std::stoi ( config::values["debug"]);
+
+        if ( !loaded ) { return; }
 
         window = SDL_CreateWindow( "Debug",
                                    513,
@@ -52,14 +54,14 @@ namespace debug
 
     void draw ( std::string text , SDL_Color color )
     {
-        if ( !config::values["debug"] ) return;
+        if ( !loaded ) { return; }
 
         std::shared_ptr < Text > storage
             ( new Text ( font::createTexture ( text , renderer ) ) );
 
-        storage->position = { debug::position.x,
-                              debug::position.y,
-                              text.size() * 18,
+        storage->position = { static_cast<int>(debug::position.x),
+                              static_cast<int>(debug::position.y),
+                              static_cast<int>(text.size() * 18),
                               32 };
 
 
@@ -80,7 +82,7 @@ namespace debug
 
     void render ()
     {
-        if ( !config::values["debug"] ) return;
+        if ( !loaded ) { return; }
 
         for ( auto & line : debug::text )
         {
@@ -90,7 +92,7 @@ namespace debug
 
     void event ( SDL_Event event )
     {
-        if ( !config::values["debug"] ) return;
+        if ( !loaded ) { return; }
 
         int x , y;
 

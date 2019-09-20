@@ -138,6 +138,9 @@ texture.o : texture.cpp
 timer.o : timer.cpp
 	$(CC) -c -w $(CPPFLAGS) src/timer.cpp -o obj/timer.o
 
+utils.o : utils.cpp
+	$(CC) -c -w $(CPPFLAGS) src/utils.cpp -o obj/utils.o
+
 vector.o : vector.cpp
 	$(CC) -c -w $(CPPFLAGS) src/vector.cpp -o obj/vector.o
 

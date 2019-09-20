@@ -5,12 +5,21 @@
 #include "enemy.h"
 #include "platform.h"
 #include "floating_enemy.h"
+#include "utils.h"
 
+#include <any>
 #include <fstream>
 #include <map>
 #include <regex>
+
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
+
 #include <string>
+#include <sstream>
 
 namespace mapper
 {
@@ -25,6 +34,7 @@ namespace mapper
     {
         extern SDL_Window * window;
         extern SDL_Renderer * renderer;
+        extern bool show , loaded;
 
         void init () , render ();
     }

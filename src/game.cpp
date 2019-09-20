@@ -3,59 +3,60 @@
 namespace game
 {
     bool quit = false;
-    bool show = false;
 
-    SDL_Window *window = nullptr;
-    SDL_Renderer *renderer = nullptr;
+    SDL_Window * window = nullptr;
+    SDL_Renderer * renderer = nullptr;
 
     bool init ()
     {
         SDL_Init( SDL_INIT_EVERYTHING );
 
-        window = SDL_CreateWindow( WINDOW_TITLE.c_str(),
-                                   SDL_WINDOWPOS_UNDEFINED,
-                                   SDL_WINDOWPOS_UNDEFINED,
-                                   WINDOW_WIDTH,
-                                   WINDOW_HEIGHT,
-                                   SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
+        window = SDL_CreateWindow ( config::values["WINDOW_TITLE"].c_str(),
+                                    SDL_WINDOWPOS_UNDEFINED,
+                                    SDL_WINDOWPOS_UNDEFINED,
+                                    std::stoi ( config::values
+                                                ["WINDOW_WIDTH"] ),
+                                    std::stoi ( config::values
+                                                ["WINDOW_HEIGHT"] ),
+                                    SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
 
+        if ( !window ) { return false; }
 
-        if( window )
-        {
-            renderer = SDL_CreateRenderer( window,
-                                           -1,
-                                           SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
-            if ( renderer )
-            {
-                // make the scaled rendering look smoother.
-                SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
-                SDL_RenderSetLogicalSize( renderer,
-                                          GAME_LOGICAL_WIDTH,
-                                          GAME_LOGICAL_HEIGHT );
-                SDL_SetWindowMinimumSize( window,
-                                          GAME_LOGICAL_WIDTH,
-                                          GAME_LOGICAL_HEIGHT );
-                SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
+        renderer = SDL_CreateRenderer( window, -1,
+                                       SDL_RENDERER_ACCELERATED |
+                                       SDL_RENDERER_PRESENTVSYNC );
 
-                return SDL_TRUE;
-            }
-        }
+        if ( !renderer ) { return false; }
 
-        return SDL_FALSE;
+        // make the scaled rendering look smoother.
+        SDL_SetHint ( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
+        SDL_RenderSetLogicalSize ( renderer,
+                                   std::stoi ( config::values
+                                               ["GAME_LOGICAL_WIDTH"] ),
+                                   std::stoi ( config::values
+                                               ["GAME_LOGICAL_HEIGHT"] ) );
+        SDL_SetWindowMinimumSize ( window,
+                                   std::stoi ( config::values
+                                               ["GAME_LOGICAL_WIDTH"] ),
+                                   std::stoi ( config::values
+                                               ["GAME_LOGICAL_HEIGHT"] ) );
+        SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
+
+        return true;
     }
 
     void event ( SDL_Event event )
     {
         if ( event.type == SDL_QUIT )
         {
-            quit = SDL_TRUE;
+            quit = true;
         }
         else if( event.type == SDL_KEYDOWN && event.key.repeat == 0 )
         {
             switch( event.key.keysym.sym )
             {
-                case SDLK_l: game::quit = SDL_TRUE; break;
+                case SDLK_l: game::quit = true; break;
             }
         }
     }

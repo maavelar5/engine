@@ -20,13 +20,11 @@
     #include <unistd.h>
 #endif
 
+#include <filesystem>
+
 typedef unsigned char uint8;
 typedef unsigned short int uint16;
 typedef unsigned int uint32;
-
-/* Window size */
-extern const int WINDOW_WIDTH;
-extern const int WINDOW_HEIGHT;
 
 /* Window logical size */
 extern const int GAME_LOGICAL_WIDTH;
@@ -83,7 +81,6 @@ const uint8 ENEMY_NONE = 0;
 const uint8 ENEMY_MOVE = 1;
 const uint8 ENEMY_SEARCH = 2;
 const uint8 ENEMY_ATTACK = 3;
-
 
 /* Player */
 extern std::string PLAYER_SPRITE_SHEET;

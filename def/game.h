@@ -2,16 +2,17 @@
 #define GAME
 
 #include "constants.h"
+#include "config.h"
 #include "controller.h"
 #include "timer.h"
 
 #if __ANDROID__
 #include <SDL.h>
+#include <SDL_ttf.h>
 #else
 #include <SDL2/SDL.h>
-#endif
-
 #include <SDL2/SDL_ttf.h>
+#endif
 
 namespace game
 {

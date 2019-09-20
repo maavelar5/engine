@@ -5,7 +5,11 @@
 #include "font.h"
 #include "game.h"
 
+#if __ANDROID__
+#include <SDL.h>
+#else
 #include <SDL2/SDL.h>
+#endif
 
 namespace hud
 {

@@ -7,6 +7,7 @@ namespace mapper
 
     uint8 scene = 1;
 
+
     void init ()
     {
         entities [ "pl"] = std::shared_ptr < Players > ( new Players () );
@@ -19,6 +20,7 @@ namespace mapper
 
         read();
         load();
+
     }
 
     void add ( float x , float y , int w , int h , std::string type )
@@ -52,8 +54,6 @@ namespace mapper
         {
             entity.second->render();
         }
-
-        editor::render();
     }
 
     void update ()
@@ -82,10 +82,7 @@ namespace mapper
 
     void read ()
     {
-        std::ifstream ifs( MAPPER_FILE_PATH );
-        std::string s( ( std::istreambuf_iterator < char > ( ifs ) ),
-                       ( std::istreambuf_iterator < char > () ) );
-        ifs.close();
+        std::string s = utils::readFile ( MAPPER_FILE_PATH );
 
         const std::regex e("(\\* Scene ([0-9]+))*[**\\sA-Za-z]*([0-9]+,[0-9]+,[0-9]+,[0-9]+,[\\S]+)");
         std::smatch m;
@@ -123,32 +120,34 @@ namespace mapper
         SDL_Renderer * renderer = nullptr;
         std::vector < std::shared_ptr < Texture > > textures;
         int x , y;
+        bool show = false , loaded = false;
 
         void init ()
         {
-            if ( config::values["editor"] )
+            loaded = std::stoi ( config::values["editor"] );
+
+            if ( !loaded ) { return; }
+
+            window = SDL_CreateWindow( "editor",
+                                       SDL_WINDOWPOS_CENTERED,
+                                       SDL_WINDOWPOS_CENTERED,
+                                       256,
+                                       512,
+                                       SDL_WINDOW_SHOWN |
+                                       SDL_WINDOW_RESIZABLE |
+                                       SDL_WINDOW_TOOLTIP );
+
+            if ( window )
             {
-                window = SDL_CreateWindow( "editor",
-                                           SDL_WINDOWPOS_CENTERED,
-                                           SDL_WINDOWPOS_CENTERED,
-                                           256,
-                                           512,
-                                           SDL_WINDOW_SHOWN |
-                                           SDL_WINDOW_RESIZABLE |
-                                           SDL_WINDOW_TOOLTIP );
+                renderer = SDL_CreateRenderer( window,
+                                               -1,
+                                               SDL_RENDERER_ACCELERATED |
+                                               SDL_RENDERER_PRESENTVSYNC );
 
-                if ( window )
+                if ( renderer )
                 {
-                    renderer = SDL_CreateRenderer( window,
-                                                   -1,
-                                                   SDL_RENDERER_ACCELERATED |
-                                                   SDL_RENDERER_PRESENTVSYNC );
-
-                    if ( renderer )
-                    {
-                        SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
-                        SDL_RenderClear( renderer );
-                    }
+                    SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
+                    SDL_RenderClear( renderer );
                 }
             }
 
@@ -161,7 +160,7 @@ namespace mapper
 
         void render ()
         {
-            if ( !config::values["editor"]) { return; }
+            if ( !loaded ) { return; }
 
             SDL_Rect position = { 0 , 0 , 32 , 32 };
 

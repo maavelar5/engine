@@ -9,7 +9,7 @@ namespace camera
         if ( distance > 0 )
         {
             if( screen.x >= CAMERA_OFFSET.w  &&
-                position.x <= ( SCENARIO_WIDTH - WINDOW_WIDTH ) )
+                position.x <= ( SCENARIO_WIDTH - std::stoi( config::values["WINDOW_WIDTH"] ) ) )
             {
                 position.x += distance;
             }

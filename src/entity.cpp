@@ -24,8 +24,8 @@ Entity::Entity ( float x , float y , int w , int h , uint8 config )
 {
     locator = { 0 , 0 , 0 , 0 };
 
-    screen = { floor ( x - camera::position.x ),
-               floor ( y - camera::position.y ),
+    screen = { static_cast<int>(floor ( x - camera::position.x )),
+               static_cast<int>(floor ( y - camera::position.y )),
                w , h };
 
     renderPosition = previousPosition = position = { x , y };
@@ -150,10 +150,10 @@ void Entity::adjust ()
 
 void Entity::setLocator ()
 {
-    SDL_Rect locator = { floor ( position.x / 100 ),
-                         floor ( position.y / 100 ),
-                         floor ( ( position.x + screen.w ) / 100 ),
-                         floor ( ( position.y + screen.h ) / 100 ) };
+    SDL_Rect locator = { static_cast<int>(floor ( position.x / 100 )),
+                         static_cast<int>(floor ( position.y / 100 )),
+                         static_cast<int>(floor ( ( position.x + screen.w ) / 100 )),
+                         static_cast<int>(floor ( ( position.y + screen.h ) / 100 )) };
 
     std::string positionHash = "";
 
@@ -204,10 +204,10 @@ void Entity::deleteLocator ()
 
 void Entity::updateLocator ()
 {
-    SDL_Rect locator = { floor ( position.x / 100 ),
-                         floor ( position.y / 100 ),
-                         floor ( ( position.x + screen.w ) / 100 ),
-                         floor ( ( position.y + screen.h ) / 100 ) };
+    SDL_Rect locator = { static_cast<int>(floor ( position.x / 100 )),
+                         static_cast<int>(floor ( position.y / 100 )),
+                         static_cast<int>(floor ( ( position.x + screen.w ) / 100 )),
+                         static_cast<int>(floor ( ( position.y + screen.h ) / 100 )) };
 
     if ( this->locator.x != locator.x ||
          this->locator.y != locator.y ||

@@ -6,6 +6,7 @@ namespace manager
 
     void init ()
     {
+        config::init();
         game::init();
         timer::init();
         controller::init();
@@ -21,6 +22,7 @@ namespace manager
         SDL_RenderClear( game::renderer );
         SDL_RenderClear( debug::renderer );
         SDL_RenderClear( info::renderer );
+        SDL_RenderClear( mapper::editor::renderer );
     }
 
     void event ()
@@ -53,9 +55,11 @@ namespace manager
         info::draw( "Scene: " + std::to_string( mapper::scene ) );
         debug::render();
 
+
         SDL_RenderPresent( game::renderer );
         SDL_RenderPresent( info::renderer );
         SDL_RenderPresent( debug::renderer );
+        mapper::editor::render();
 
         info::y = 0;
         timer::update();
