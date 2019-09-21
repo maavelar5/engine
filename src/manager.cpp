@@ -6,12 +6,11 @@ namespace manager
 
     void init ()
     {
-        config::init();
+        init_config ();
         game::init();
         timer::init();
         controller::init();
         font::init();
-        config::init();
         debug::init();
         info::init();
         mapper::init();
@@ -22,7 +21,6 @@ namespace manager
         SDL_RenderClear( game::renderer );
         SDL_RenderClear( debug::renderer );
         SDL_RenderClear( info::renderer );
-        SDL_RenderClear( mapper::editor::renderer );
     }
 
     void event ()

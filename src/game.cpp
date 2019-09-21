@@ -11,13 +11,11 @@ namespace game
     {
         SDL_Init( SDL_INIT_EVERYTHING );
 
-        window = SDL_CreateWindow ( config::values["WINDOW_TITLE"].c_str(),
+        window = SDL_CreateWindow ( WINDOW_TITLE.c_str(),
                                     SDL_WINDOWPOS_UNDEFINED,
                                     SDL_WINDOWPOS_UNDEFINED,
-                                    std::stoi ( config::values
-                                                ["WINDOW_WIDTH"] ),
-                                    std::stoi ( config::values
-                                                ["WINDOW_HEIGHT"] ),
+                                    WINDOW_WIDTH,
+                                    WINDOW_HEIGHT,
                                     SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 
 
@@ -32,16 +30,12 @@ namespace game
         // make the scaled rendering look smoother.
         SDL_SetHint ( SDL_HINT_RENDER_SCALE_QUALITY  , "linear" );
         SDL_RenderSetLogicalSize ( renderer,
-                                   std::stoi ( config::values
-                                               ["GAME_LOGICAL_WIDTH"] ),
-                                   std::stoi ( config::values
-                                               ["GAME_LOGICAL_HEIGHT"] ) );
+                                   GAME_LOGICAL_WIDTH,
+                                   GAME_LOGICAL_HEIGHT );
         SDL_SetWindowMinimumSize ( window,
-                                   std::stoi ( config::values
-                                               ["GAME_LOGICAL_WIDTH"] ),
-                                   std::stoi ( config::values
-                                               ["GAME_LOGICAL_HEIGHT"] ) );
-        SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
+                                   GAME_LOGICAL_WIDTH,
+                                   GAME_LOGICAL_HEIGHT );
+        SDL_SetRenderDrawColor ( renderer , 0 , 0 , 0 , 0 );
 
         return true;
     }

@@ -1,60 +1,17 @@
 #ifndef CONSTANTS
 #define CONSTANTS
 
-#include "vector.h"
+#include "env_variables.h"
 
 #include <iostream>
-#include <map>
-
-#if __ANDROID__
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
-
 #include <vector>
-
-#if _WIN32
-    #include <direct.h>
-#elif __unix__ || __APPLE__
-    #include <unistd.h>
-#endif
-
-#include <filesystem>
 
 typedef unsigned char uint8;
 typedef unsigned short int uint16;
 typedef unsigned int uint32;
 
-/* Window logical size */
-extern const int GAME_LOGICAL_WIDTH;
-extern const int GAME_LOGICAL_HEIGHT;
-
-/* Debug & Info window size */
-extern const int DI_WINDOW_WIDTH;
-extern const int DI_WINDOW_HEIGHT;
-extern const int DI_LOGICAL_WIDTH;
-extern const int DI_LOGICAL_HEIGHT;
-
-/* Game camera rect */
-extern const SDL_Rect CAMERA_OFFSET;
-
-/* Window title */
-extern const std::string WINDOW_TITLE;
-
 /* Directory separator */
 extern const std::string DS;
-
-/* Current working directory */
-extern const std::string CWD;
-extern const std::string SPRITES_PATH;
-
-/* Physics */
-extern const Vector GRAVITY;
-
-/* Scenario size */
-extern const int SCENARIO_WIDTH;
-extern const int SCENARIO_HEIGHT;
 
 /* Entity configuration */
 extern const uint8 ACTIVE;
@@ -72,9 +29,6 @@ extern const uint8 TOP_SENSOR , RIGHT_SENSOR , BOT_SENSOR , LEFT_SENSOR,
 /* HUD colors and other shit */
 extern const SDL_Color white , black;
 extern const SDL_Rect LT , T , RT;
-
-/* MAX GRAVITY */
-extern const float MAX_GRAVITY;
 
 /* ENEMY MOVES */
 const uint8 ENEMY_NONE = 0;
@@ -98,7 +52,7 @@ extern std::string MAPPER_FILE_PATH;
 extern std::string SANS_FONT_FILE_PATH;
 /* Path relative to binary */
 extern std::string BIN_PATH, BIN_SPRITES_PATH;
-
+/* Config filepath */
 extern std::string CONFIG_PATH;
 
 void initCWD (std::string);

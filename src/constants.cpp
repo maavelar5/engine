@@ -1,26 +1,5 @@
 #include "constants.h"
 
-/* Window logical size */
-const int GAME_LOGICAL_WIDTH = 1280;
-const int GAME_LOGICAL_HEIGHT = 720;
-
-/* Debug & Info window size */
-const int DI_WINDOW_WIDTH = 512;
-const int DI_WINDOW_HEIGHT = 128;
-const int DI_LOGICAL_WIDTH = 512;
-const int DI_LOGICAL_HEIGHT = 128;
-
-/* Game camera rect */
-const SDL_Rect CAMERA_OFFSET =
-{
-    ( GAME_LOGICAL_WIDTH / 2 ) - 25,
-    ( GAME_LOGICAL_HEIGHT / 2 ) - 25,
-    ( GAME_LOGICAL_WIDTH / 2 ) + 25,
-    ( GAME_LOGICAL_HEIGHT / 2 ) + 25
-};
-
-const std::string WINDOW_TITLE = "Qntra!";
-
 /* Directory separator */
 const std::string DS = 
 #if _WIN32
@@ -28,32 +7,6 @@ const std::string DS =
 #elif __unix__ || __APPLE__
     "/";
 #endif
-
-/* Current working directory */
-const std::string CWD = 
-#if _WIN32
-    _getcwd( NULL, 0 ) + DS;
-#elif __unix__ || __APPLE__
-    #if 1
-        getcwd( NULL, 0 ) + DS;
-    #elif 0
-        std::experimental::filesystem::current_path().string() + DS;
-    #endif
-#endif
-
-const std::string SPRITES_PATH = 
-#if _WIN32 || __unix__ || __APPLE__
-    CWD + "sprites" + DS;
-#elif __ANDROID__
-    "";
-#endif
-
-/* Physics */
-const Vector GRAVITY( 0 , 1000 );
-
-/* Scenario size */
-const int SCENARIO_WIDTH = 7168;
-const int SCENARIO_HEIGHT = 720;
 
 /* Entity configuration */
 const uint8 ACTIVE = 1;
@@ -70,14 +23,12 @@ const uint8 TOP_SENSOR = 1, RIGHT_SENSOR = 2, BOT_SENSOR = 4, LEFT_SENSOR = 8,
     A_BOT_SENSOR = 64 , A_LEFT_SENSOR = 128;
 
 /* HUD colors and other shit */
-const SDL_Color white = { 255 , 255 , 255 },
-    black = { 0 , 0 , 0 };
+const SDL_Color white = { 255 , 255 , 255 , 255 },
+    black = { 0 , 0 , 0 , 0 };
 
 const SDL_Rect LT = {  10 , 10 , 50 , 50 } , T = { 100 , 10 , 50 , 50 },
     RT = { 200 , 10 , 50 , 50 };
 
-/* MAX GRAVITY */
-const float MAX_GRAVITY = 500.0;
 /* Player */
 std::string MEGAMAN_SPRITE_SHEET;
 /* Player */
@@ -98,7 +49,7 @@ std::string SANS_FONT_FILE_PATH;
 /* Relative to BIN instead of CWD */
 std::string BIN_PATH;
 std::string BIN_SPRITES_PATH;
-
+/* Config filepath */
 std::string CONFIG_PATH;
 
 void initCWD ( std::string argv )

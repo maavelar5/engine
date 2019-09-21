@@ -93,6 +93,9 @@ entities.o : entities.cpp
 entity.o : entity.cpp
 	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
 
+env_variables.o : env_variables.cpp
+	$(CC) -c -w $(CPPFLAGS) src/env_variables.cpp -o obj/env_variables.o
+
 floating_enemy.o : floating_enemy.cpp
 	$(CC) -c -w $(CPPFLAGS) src/floating_enemy.cpp -o obj/floating_enemy.o
 
@@ -128,6 +131,9 @@ player.o : player.cpp
 
 projectile.o : projectile.cpp
 	$(CC) -c -w $(CPPFLAGS) src/projectile.cpp -o obj/projectile.o
+
+sdl_inclusion.o : sdl_inclusion.cpp
+	$(CC) -c -w $(CPPFLAGS) src/sdl_inclusion.cpp -o obj/sdl_inclusion.o
 
 text.o : text.cpp
 	$(CC) -c -w $(CPPFLAGS) src/text.cpp -o obj/text.o

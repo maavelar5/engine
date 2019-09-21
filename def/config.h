@@ -4,25 +4,12 @@
 #include "constants.h"
 #include "utils.h"
 
-#include <fstream>
+#include <iostream>
+#include <map>
 #include <regex>
 
-#include <any>
+extern std::map < std::string , std::string > config;
 
-#if __ANDROID__
-#include <SDL_image.h>
-#else
-#include <SDL2/SDL_image.h>
-#endif
-
-#include <string>
-#include <map>
-
-namespace config
-{
-    extern std::map < std::string , std::string > values;
-
-    void init ();
-}
+void init_config ();
 
 #endif

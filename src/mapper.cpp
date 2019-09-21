@@ -124,9 +124,7 @@ namespace mapper
 
         void init ()
         {
-            loaded = std::stoi ( config::values["editor"] );
-
-            if ( !loaded ) { return; }
+            if ( !EDITOR_WINDOW ) { return; }
 
             window = SDL_CreateWindow( "editor",
                                        SDL_WINDOWPOS_CENTERED,
@@ -137,19 +135,17 @@ namespace mapper
                                        SDL_WINDOW_RESIZABLE |
                                        SDL_WINDOW_TOOLTIP );
 
-            if ( window )
-            {
-                renderer = SDL_CreateRenderer( window,
-                                               -1,
-                                               SDL_RENDERER_ACCELERATED |
-                                               SDL_RENDERER_PRESENTVSYNC );
+            if ( !window ) { return; }
 
-                if ( renderer )
-                {
-                    SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
-                    SDL_RenderClear( renderer );
-                }
-            }
+            renderer = SDL_CreateRenderer( window,
+                                           -1,
+                                           SDL_RENDERER_ACCELERATED |
+                                           SDL_RENDERER_PRESENTVSYNC );
+
+            if ( !renderer ) { return; }
+
+            SDL_SetRenderDrawColor( renderer , 0 , 0 , 0 , 0 );
+            SDL_RenderClear( renderer );
 
             for ( auto & entity : entities )
             {
@@ -160,7 +156,7 @@ namespace mapper
 
         void render ()
         {
-            if ( !loaded ) { return; }
+            if ( !EDITOR_WINDOW ) { return; }
 
             SDL_Rect position = { 0 , 0 , 32 , 32 };
 
