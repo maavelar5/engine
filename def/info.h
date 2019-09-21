@@ -4,17 +4,9 @@
 #include "font.h"
 #include "game.h"
 #include "texture.h"
+#include "sdl_inclusion.h"
 
-#include <iostream>
 #include <memory>
-
-#if __ANDROID__
-#include <SDL.h>
-#include <SDL_ttf.h>
-#else
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#endif
 
 namespace info
 {

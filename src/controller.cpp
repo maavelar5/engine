@@ -13,8 +13,6 @@ namespace controller
             if ( SDL_IsGameController( i ) )
             {
                 controller = SDL_GameControllerOpen( i );
-
-                //if ( !controller ) { debug::draw ( SDL_GetError () ); }
             }
         }
     }

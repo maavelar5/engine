@@ -1,7 +1,6 @@
 #ifndef DIRECTED_PROJECTILE
 #define DIRECTED_PROJECTILE
 
-#include "constants.h"
 #include "entity.h"
 #include "projectile.h"
 

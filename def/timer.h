@@ -1,11 +1,7 @@
 #ifndef TIMER
 #define TIMER
 
-#if __ANDROID__
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
+#include "sdl_inclusion.h"
 
 namespace timer
 {

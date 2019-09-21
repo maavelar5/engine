@@ -2,10 +2,7 @@
 #define FLOATING_ENEMY
 
 #include "automated_movement.h"
-#include "constants.h"
-#include "entity.h"
 #include "directed_projectile.h"
-#include "vector.h"
 
 struct FloatingEnemy : public Entity , AutomatedMovement
 {

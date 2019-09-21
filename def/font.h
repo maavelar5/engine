@@ -1,17 +1,7 @@
 #ifndef FONT
 #define FONT
 
-#include "constants.h"
 #include "game.h"
-
-#include <iostream>
-#include <map>
-
-#if __ANDROID__
-#include <SDL_ttf.h>
-#else
-#include <SDL2/SDL_ttf.h>
-#endif
 
 namespace font
 {

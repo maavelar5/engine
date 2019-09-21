@@ -2,11 +2,8 @@
 #define ENEMY
 
 #include "automated_movement.h"
-#include "constants.h"
 #include "info.h"
-#include "entity.h"
 #include "directed_projectile.h"
-#include "vector.h"
 
 struct Enemy : public Entity , AutomatedMovement
 {

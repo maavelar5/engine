@@ -1,15 +1,10 @@
 #ifndef AUTOMATED_MOVEMENT
 #define AUTOMATED_MOVEMENT
 
+#include "sdl_inclusion.h"
+
 #include <map>
 #include <memory>
-
-#if __ANDROID__
-#include <SDL_image.h>
-#else
-#include <SDL2/SDL_image.h>
-#endif
-
 
 struct Timer
 {

@@ -5,20 +5,9 @@
 #include "camera.h"
 #include "game.h"
 #include "texture.h"
-#include "vector.h"
-
-#if __ANDROID__
-#include <SDL.h>
-#include <SDL_image.h>
-#else
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#endif
 
 #include <algorithm>
 #include <memory>
-#include <vector>
-#include <map>
 
 struct Entity
 {

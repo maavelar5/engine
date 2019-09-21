@@ -2,15 +2,7 @@
 #define CAMERA_
 
 #include "config.h"
-#include "constants.h"
 #include "timer.h"
-#include "vector.h"
-
-#if __ANDROID__
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
 
 namespace camera
 {

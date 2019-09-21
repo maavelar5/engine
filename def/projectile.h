@@ -1,13 +1,8 @@
 #ifndef PROJECTILE
 #define PROJECTILE
 
-#include "constants.h"
-#include "entity.h"
 #include "entities.h"
-#include "texture.h"
 #include "automated_movement.h"
-
-#include <memory>
 
 struct Projectile : public Entity
 {
