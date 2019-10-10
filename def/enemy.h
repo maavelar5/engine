@@ -3,28 +3,14 @@
 
 #include "automated_movement.h"
 #include "info.h"
-#include "directed_projectile.h"
+#include "kinematic.h"
 
-struct Enemy : public Entity , AutomatedMovement
+struct Enemy : public Kinematic , AutomatedMovement
 {
-    Enemy ( float , float , int , int );
+    Enemy ();
     ~Enemy ();
 
-    void update () , leftSensorCallback ( Entity & ),
-        rightSensorCallback ( Entity & );
-};
-
-struct Enemies : public Entities
-{
-    int speed;
-
-    std::vector < std::shared_ptr < Enemy > > entities;
-
-    Enemies ();
-    ~Enemies ();
-
-    void move () , update () , render () , clear (),
-        add ( float , float , int , int );
+    void update () , left () , right ();
 };
 
 #endif

@@ -1,30 +1,51 @@
 #include "floating_enemy.h"
 
-FloatingEnemy::FloatingEnemy ( float x , float y , int w , int h ) :
-    Entity ( x , y , w , h , ACTIVE | KINEMATIC | DIRECTIONAL ),
-    projectiles ( 200 , this )
+FloatingEnemy::FloatingEnemy () : projectiles ( this )
 {
-
     moves [ ENEMY_MOVE ] = Timer ( 3000 );
     moves [ ENEMY_SEARCH ] = Timer ( 1000 );
     moves [ ENEMY_ATTACK ] = Timer ( 2000 );
 
     current = ENEMY_MOVE;
 
-    moves[ current ].start();
-
     projectiles.delay = 200;
 
+    texture = createTexture ( ARROW_FILE_PATH , game::renderer );
+
+    moves[ current ].start();
+    speed = 0;
 }
 
 FloatingEnemy::~FloatingEnemy () { }
 
-void FloatingEnemy::search ( Vector a )
+void FloatingEnemy::search ()
 {
-    position.getAngle ( a );
+    position.getAngle ( destination->position );
 }
 
-void FloatingEnemy::update ( Vector a , uint16 speed )
+void FloatingEnemy::move ()
+{
+    previousPosition = position;
+    direction = position - destination->position;
+
+    if ( direction.length() > distance )
+    {
+        direction.normalize();
+        position += direction * ( speed * timer::timeStep );
+        positionLimits ();
+    }
+
+    position.getAngle ( destination->position );
+
+    sensor = NONE_SENSOR;
+
+    positionLimits ();
+    setCollisionBox ();
+    setLocator ();
+    pushToGrid ();
+}
+
+void FloatingEnemy::update ()
 {
     if ( moves [ current ].check() == 2 )
     {
@@ -37,67 +58,39 @@ void FloatingEnemy::update ( Vector a , uint16 speed )
     switch ( current )
     {
         case ENEMY_MOVE:
-            projectiles.isActive = true;
-            move ( a , 0 , 50 );
-            search ( a );
+            //projectiles.active = true;
+            move ();
+            search ();
             break;
         case ENEMY_SEARCH:
-            projectiles.isActive = true;
-            search ( a );
+            //projectiles.active = true;
+            search ();
             break;
         case ENEMY_ATTACK:
-            projectiles.isActive = true;
-            search ( a );
+            //projectiles.active = true;
+            search ();
             break;
         default:
             break;
     }
+
+    projectiles.update ();
 }
 
-FloatingEnemies::FloatingEnemies ( Entity * entity ) :
-    Entities ( ARROW_FILE_PATH )
+FloatingEnemies::FloatingEnemies ( Platform * destination )
 {
-    speed = 100;
-    this->entity = entity;
-    minDistance = 50;
+    this->destination = destination;
 }
 
 FloatingEnemies::~FloatingEnemies () { }
 
-void FloatingEnemies::update ()
+void FloatingEnemies::set ( float x , float y , int w , int h )
 {
-    for ( auto &entity : entities )
-    {
-        entity->update ( this->entity->position , speed );
-        //entity->projectiles.update ();
-        //entity->projectiles.move ( this->entity->position );
-    }
-}
+    std::shared_ptr < FloatingEnemy > object =
+        std::make_shared < FloatingEnemy > ();
 
-void FloatingEnemies::render ()
-{
-    for ( auto &entity : entities )
-    {
-        entity->render ( texture );
-        entity->projectiles.render ();
-    }
-}
-
-void FloatingEnemies::move ()
-{
-    for ( auto &entity : entities )
-    {
-        entity->move ();
-    }
-}
-
-void FloatingEnemies::add ( float x , float y , int w , int h )
-{
-    entities.push_back ( std::shared_ptr < FloatingEnemy >
-                         ( new FloatingEnemy ( x , y , w , h ) ) );
-}
-
-void FloatingEnemies::clear ()
-{
-    entities.clear();
+    object->set ( x , y , w , h );
+    object->destination = destination;
+    object->distance = 50;
+    objects.push_back ( std::move ( object ) );
 }

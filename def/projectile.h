@@ -4,27 +4,17 @@
 #include "entities.h"
 #include "automated_movement.h"
 
-struct Projectile : public Entity
+#include "bullet.h"
+
+struct Projectiles : public List < Bullet >, Timer
 {
-    Projectile ( float , float , int , int );
-    ~Projectile ();
+    Platform * source;
+    bool active;
 
-    void positionLimits ();
-};
-
-struct Projectiles : public Entities , Timer
-{
-    Entity * entity;
-    bool isActive;
-    int speed;
-
-    std::vector < std::shared_ptr < Projectile > > entities;
-
-    Projectiles ( int speed , Entity * entity );
+    Projectiles ( Platform * source );
     ~Projectiles ();
 
-    virtual void update () ,  move () , render (),
-        add ( float , float , int w = 4 , int h = 4 );
+    void set ( float x , float y , int w , int h ) , update ();
 };
 
 #endif

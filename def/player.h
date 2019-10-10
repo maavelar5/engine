@@ -1,38 +1,22 @@
 #ifndef PLAYER
 #define PLAYER
 
-#include "entities.h"
-#include "entity.h"
-#include "game.h"
-#include "projectile.h"
-#include "texture.h"
 #include "debug.h"
 #include "info.h"
+#include "projectile.h"
 
-struct Player : public Entity
+struct Player : public Kinematic
 {
-    uint16 speed;
+    bool doubleJump;
     Projectiles projectiles;
-    bool canDoubleJump;
 
     Player ();
     ~Player ();
 
-    void botSensorCallback ( Entity & ) , move () , render ( SDL_Texture * ),
-        event ( SDL_Event );
-};
+    void event ( SDL_Event ) , update () , render () , top () , bot (),
+        left () , right ();
 
-struct Players : public Entities
-{
-    Player player;
-
-    Players ();
-    ~Players ();
-
-    void move () , update () , render () , event ( SDL_Event ),
-        add ( float , float , int , int );
-
-    Entity * single ();
+    bool clear ();
 };
 
 #endif

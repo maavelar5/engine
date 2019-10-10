@@ -1,15 +1,18 @@
 #ifndef DIRECTED_PROJECTILE
 #define DIRECTED_PROJECTILE
 
-#include "entity.h"
-#include "projectile.h"
+#include "directed_bullet.h"
+#include "automated_movement.h"
 
-struct DirectedProjectiles : public Projectiles
+struct DirectedProjectiles : public List < DirectedBullet > , Timer
 {
-    DirectedProjectiles ( uint16 speed , Entity * entity );
+    Platform * source;
+    bool active;
+
+    DirectedProjectiles ( Platform * source );
     ~DirectedProjectiles ();
 
-    void update () , move ( Vector );
+    void update () , set ( float , float , int , int );
 };
 
 #endif

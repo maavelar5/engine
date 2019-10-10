@@ -1,17 +1,18 @@
 #include "player.h"
 
-Player::Player ()
-    : Entity ( 32 , 32 , 32, 64 , ACTIVE | KINEMATIC | CAMERA )
-    , projectiles ( 800 , this )
+Player::Player () : projectiles ( this )
 {
+    texture = createTexture ( PLAYER_SPRITE_SHEET , game::renderer );
     speed = 400;
-    projectiles.delay = 100;
-    canDoubleJump = false;
+    config = CAMERA;
 }
 
-Player::~Player () { }
+Player::~Player ()
+{
 
-void Player::event( SDL_Event event )
+}
+
+void Player::event ( SDL_Event event )
 {
     previousVelocity = velocity;
 
@@ -33,15 +34,15 @@ void Player::event( SDL_Event event )
                 }
                 else
                 {
-                    if ( canDoubleJump )
+                    if ( doubleJump )
                     {
-                        canDoubleJump = false;
+                        doubleJump = false;
                         velocity.y = -600;
                     }
                 }
                 break;
             case SDLK_q:
-                projectiles.isActive = true;
+                projectiles.active = true;
                 break;
             case SDLK_x:
                 break;
@@ -66,7 +67,7 @@ void Player::event( SDL_Event event )
                     ? 0
                     : velocity.y;
                 break;
-            case SDLK_q: projectiles.isActive = false; break;
+            case SDLK_q: projectiles.active = false; break;
         }
     }
     #if __ANDROID__
@@ -112,66 +113,43 @@ void Player::event( SDL_Event event )
                 : velocity.y;
     }
     #endif
+
 }
 
-void Player::render ( SDL_Texture * texture )
+void Player::update ()
 {
-    Entity::render ( texture );
-    projectiles.render();
-}
-
-void Player::move ()
-{
-    Entity::move();
     projectiles.update();
-    projectiles.move();
+    move ();
 }
 
-void Player::botSensorCallback ( Entity & entity )
+void Player::render ()
 {
-    Entity::botSensorCallback ( entity );
-    canDoubleJump = true;
+    projectiles.render();
+    Kinematic::render();
 }
 
-Players::Players () : Entities ( PLAYER_SPRITE_SHEET )
+void Player::top ()
 {
 
 }
 
-Players::~Players () { }
-
-void Players::render ()
+void Player::bot ()
 {
-    player.render( texture );
-    info::draw ( "X: " + std::to_string( player.position.x ).substr( 0, 4 ) );
-    info::draw ( "Y: " + std::to_string( player.position.y ).substr( 0, 4 ) );
+    doubleJump = true;
 }
 
-void Players::update ()
+void Player::left ()
 {
-    player.move();
+
 }
 
-void Players::move ()
+void Player::right ()
 {
-    player.move();
+
 }
 
-void Players::add ( float x , float y , int w , int h )
+bool Player::clear ()
 {
-    int _x = static_cast<int>(x),
-        _y = static_cast<int>(y);
-
-    player.position = { x , y };
-    player.screen = { _x , _y , w , h };
-}
-
-void Players::event ( SDL_Event event )
-{
-    player.event( event );
-}
-
-Entity * Players::single ()
-{
-    return &player;
+    projectiles.clear();
+    return Kinematic::clear ();
 }

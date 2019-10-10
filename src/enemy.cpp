@@ -1,8 +1,9 @@
 #include "enemy.h"
 
-Enemy::Enemy ( float x , float y , int w , int h ) :
-    Entity ( x , y , w , h , ACTIVE | KINEMATIC )
+Enemy::Enemy ()
 {
+    texture = createTexture ( GENERIC_ENEMY_FILE_PATH , game::renderer );
+
     moves [ ENEMY_NONE ] = Timer ( 1000 );
     moves [ ENEMY_MOVE ] = Timer ( 3000 );
 
@@ -13,7 +14,10 @@ Enemy::Enemy ( float x , float y , int w , int h ) :
     velocity.x = -100;
 }
 
-Enemy::~Enemy () { }
+Enemy::~Enemy ()
+{
+
+}
 
 void Enemy::update ()
 {
@@ -41,64 +45,12 @@ void Enemy::update ()
     move ();
 }
 
-void Enemy::leftSensorCallback ( Entity & entity )
+void Enemy::left ()
 {
-    Entity::leftSensorCallback ( entity );
     velocity.x = 100;
 }
 
-void Enemy::rightSensorCallback ( Entity & entity )
+void Enemy::right ()
 {
-    Entity::rightSensorCallback ( entity );
     velocity.x = -100;
-}
-
-Enemies::Enemies () : Entities ( GENERIC_ENEMY_FILE_PATH )
-{
-    speed = 200;
-}
-
-Enemies::~Enemies () { }
-
-void Enemies::render ()
-{
-    for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
-    {
-        if ( (*entity)->config & ACTIVE )
-        {
-            (*entity)->render ( texture );
-        }
-        else
-        {
-            (*entity)->deleteLocator ();
-            entities.erase ( entity-- );
-        }
-    }
-}
-
-void Enemies::move ()
-{
-    for ( auto &entity : entities )
-    {
-        entity->move ();
-    }
-}
-
-void Enemies::update ()
-{
-    for ( auto &entity : entities )
-    {
-        entity->update ();
-    }
-}
-
-void Enemies::add ( float x , float y , int w , int h )
-{
-    entities.push_back ( std::shared_ptr < Enemy >
-                         ( new Enemy ( x , y , w , h ) ) );
-}
-
-void Enemies::clear ()
-{
-    entities.clear();
 }

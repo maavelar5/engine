@@ -4,29 +4,28 @@
 #include "automated_movement.h"
 #include "directed_projectile.h"
 
-struct FloatingEnemy : public Entity , AutomatedMovement
+#include "player.h"
+
+struct FloatingEnemy : public Kinematic , AutomatedMovement
 {
+    uint8 distance;
+    Platform * destination;
     DirectedProjectiles projectiles;
 
-    FloatingEnemy ( float , float , int , int );
+    FloatingEnemy ();
     ~FloatingEnemy ();
 
-    void search ( Vector ) , update ( Vector , uint16 );
+    void search () , update () , move ();
 };
 
-struct FloatingEnemies : public Entities
+struct FloatingEnemies : public List < FloatingEnemy >
 {
-    std::vector < std::shared_ptr < FloatingEnemy > > entities;
+    Platform * destination;
 
-    Entity *entity;
-    uint8 minDistance;
-    int speed;
-
-    FloatingEnemies ( Entity * entity = nullptr );
+    FloatingEnemies ( Platform * destination );
     ~FloatingEnemies ();
 
-    void update () , render () , move () , clear (),
-        add ( float , float , int , int );
+    void set ( float , float , int , int );
 };
 
 #endif

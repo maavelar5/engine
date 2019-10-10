@@ -1,34 +1,37 @@
 #include "directed_projectile.h"
 
-DirectedProjectiles::DirectedProjectiles ( uint16 speed , Entity * entity ) :
-    Projectiles ( speed , entity )
+DirectedProjectiles::DirectedProjectiles ( Platform * source )
 {
-
+    texture = createTexture ( GENERIC_PROJECTILE_FILE_PATH , game::renderer );
+    active = false;
+    this->source = source;
 }
 
 DirectedProjectiles::~DirectedProjectiles () { }
 
-void DirectedProjectiles::move ( Vector a )
+void DirectedProjectiles::set ( float x , float y , int w , int h )
 {
-    for ( auto & entity : entities )
-    {
-        entity->move ( a , speed );
-    }
+    std::shared_ptr < DirectedBullet > object =
+        std::make_shared < DirectedBullet > ();
+
+    object->set ( x , y , w , h );
+    object->texture = texture;
+    objects.push_back ( std::move ( object ) );
 }
 
 void DirectedProjectiles::update ()
 {
-    if ( isActive )
+    if ( active )
     {
-        if ( check() == 2 )
+        if ( check () == 2 )
         {
             // TODO: Research position max value based on direction vector
 
-            Vector position = entity->position;
+            Vector position = source->position;
 
-            position += ( entity->direction * ( speed * timer::timeStep ) );
+            position += ( source->direction * ( source->screen.w ) );
 
-            add ( position.x , position.y );
+            set ( position.x , position.y  , 4 , 4 );
             start();
         }
     }
