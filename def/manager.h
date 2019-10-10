@@ -1,20 +1,15 @@
 #ifndef MANAGER
 #define MANAGER
 
-#include "game.h"
-#include "timer.h"
-#include "constants.h"
 #include "controller.h"
-#include "camera.h"
-#include "collision.h"
-#include "player.h"
 #include "mapper.h"
 #include "hud.h"
-#include "info.h"
 #include "font.h"
 #include "enemy.h"
 #include "floating_enemy.h"
-#include "config.h"
+#include "sdl_inclusion.h"
+
+#include <algorithm>
 
 #if __ANDROID__
 #include <SDL.h>
@@ -28,6 +23,5 @@ namespace manager
 
     void clear () , render () , event () , init () , update ();
 }
-
 
 #endif

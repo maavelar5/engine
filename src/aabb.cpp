@@ -8,6 +8,11 @@ AABB::AABB ( float x , float y , float w , float h )
     this->h = h;
 }
 
+AABB::AABB ()
+{
+    x = y = w = h = 0;
+}
+
 AABB::~AABB () { }
 
 bool AABB::left ( AABB a )

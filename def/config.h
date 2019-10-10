@@ -10,6 +10,6 @@
 
 extern std::map < std::string , std::string > config;
 
-void init_config ();
+void initConfig ();
 
 #endif

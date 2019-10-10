@@ -2,35 +2,33 @@
 
 namespace mapper
 {
-    std::map < std::string , std::shared_ptr < Entities > > entities;
+    std::map < std::string , std::shared_ptr < Base > > entities;
     std::map < uint8 , std::vector < std::string > > scenes;
 
     uint8 scene = 1;
 
-
     void init ()
     {
-        entities [ "pl"] = std::shared_ptr < Players > ( new Players () );
-        entities [ "gp" ] = std::shared_ptr < Platforms > ( new Platforms () );
-        entities [ "se" ] = std::shared_ptr < Enemies > ( new Enemies () );
-        entities [ "fe" ] = std::shared_ptr
-            < FloatingEnemies > ( new FloatingEnemies ( entities ["pl"]->single() ) );
+        entities [ "pl" ] = std::make_shared < Player > ();
+        entities [ "gp" ] = std::make_shared < List < Platform > > ();
+        entities [ "se" ] = std::make_shared < List < Enemy > > ();
+        entities [ "fe" ] = std::make_shared < FloatingEnemies >
+            ( dynamic_cast < Platform * > ( entities [ "pl" ].get () ) );
 
         editor::init();
 
         read();
         load();
-
     }
 
     void add ( float x , float y , int w , int h , std::string type )
     {
-        entities[ type ]->add( x , y , w , h );
+        entities[ type ]->set( x , y , w , h );
     }
 
     void load ()
     {
-        const std::regex e("([0-9]+),([0-9]+),([0-9]+),([0-9]+),([\\S]+)");
+        const std::regex e("([0-9]+),([0-9]+),([0-9]+),([0-9]+),([\\S]{2})?");
         std::smatch m;
 
         for ( auto curr : scenes[ scene ] )
@@ -48,19 +46,54 @@ namespace mapper
         }
     }
 
-    void render ()
+    void update ()
     {
-        for ( auto entity : entities )
+        for ( auto & base : entities )
         {
-            entity.second->render();
+            base.second->update ();
         }
     }
 
-    void update ()
+    void render ()
     {
-        for ( auto entity : entities )
+        for ( auto & base : entities )
         {
-            entity.second->update();
+            base.second->render ();
+        }
+    }
+
+    void collide ()
+    {
+        for ( auto & [ string , vector ] : gridKinematics )
+        {
+            for ( auto & base_k : vector )
+            {
+                for ( auto & base_p : gridPlatforms [ string ] )
+                {
+                    std::shared_ptr < Platform > platform =
+                        std::dynamic_pointer_cast < Platform > ( base_p );
+
+                    base_k->collide ( platform , platform->collisionBox );
+                }
+
+                for ( auto & base_k2 : vector )
+                {
+                    if ( base_k == base_k2 ) continue;
+
+                    std::shared_ptr < Kinematic > kinematic =
+                        std::dynamic_pointer_cast < Kinematic > ( base_k2 );
+
+                    base_k->collide ( kinematic , kinematic->collisionBox );
+                }
+            }
+        }
+    }
+
+    void clear ()
+    {
+        for ( auto & base : entities )
+        {
+            base.second->clear ();
         }
     }
 
@@ -82,7 +115,7 @@ namespace mapper
 
     void read ()
     {
-        std::string s = utils::readFile ( MAPPER_FILE_PATH );
+        std::string s = readFile ( MAPPER_FILE_PATH );
 
         const std::regex e("(\\* Scene ([0-9]+))*[**\\sA-Za-z]*([0-9]+,[0-9]+,[0-9]+,[0-9]+,[\\S]+)");
         std::smatch m;
@@ -118,7 +151,7 @@ namespace mapper
     {
         SDL_Window * window = nullptr;
         SDL_Renderer * renderer = nullptr;
-        std::vector < std::shared_ptr < Texture > > textures;
+        std::vector < SDL_Texture * > textures;
         int x , y;
         bool show = false , loaded = false;
 
@@ -149,7 +182,7 @@ namespace mapper
 
             for ( auto & entity : entities )
             {
-                std::shared_ptr < Texture > texture ( new Texture ( entity.second->copy ( renderer )));
+                SDL_Texture * texture = entity.second->texture;
                 textures.push_back ( texture );
             }
         }
@@ -165,7 +198,7 @@ namespace mapper
 
             for ( auto texture : textures )
             {
-                SDL_RenderCopy( renderer , texture->texture , nullptr , &position );
+                SDL_RenderCopy( renderer , texture , nullptr , &position );
 
                 if ( position.x >= 144 )
                 {

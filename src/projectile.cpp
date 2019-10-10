@@ -1,87 +1,38 @@
 #include "projectile.h"
 
-Projectile::Projectile ( float x , float y , int w , int h ) :
-    Entity ( x , y , w , h , ACTIVE | KINEMATIC | BULLET )
+Projectiles::Projectiles ( Platform * source ) : Timer ( 100 )
 {
-
-}
-
-Projectile::~Projectile () { }
-
-void Projectile::positionLimits ()
-{
-    if ( position.y <= -100 )
-        config &= ~ACTIVE;
-    else if ( position.y >= SCENARIO_HEIGHT )
-        config &= ~ACTIVE;
-
-    if ( position.x <= -100 )
-        config &= ~ACTIVE;
-    else if ( position.x >= SCENARIO_WIDTH )
-        config &= ~ACTIVE;
-}
-
-
-Projectiles::Projectiles ( int speed , Entity * entity ) :
-    Entities ( GENERIC_PROJECTILE_FILE_PATH ),
-    Timer ( 1000 )
-{
-    this->speed = speed;
-    this->entity = entity;
-    isActive = false;
+    texture = createTexture ( GENERIC_PROJECTILE_FILE_PATH , game::renderer );
+    active = false;
+    this->source = source;
 }
 
 Projectiles::~Projectiles () { }
 
-void Projectiles::render ()
+void Projectiles::set ( float x , float y , int w , int h )
 {
-    for ( auto entity = entities.begin(); entity != entities.end(); entity++ )
-    {
-        if ( (*entity)->config & ACTIVE )
-        {
-            (*entity)->render( texture );
-        }
-        else
-        {
-            (*entity)->deleteLocator ();
-            entities.erase( entity-- );
-        }
-    }
-}
+    std::shared_ptr < Bullet > object = std::make_shared < Bullet > ();
 
-void Projectiles::move ()
-{
-    for ( auto &entity : entities )
-    {
-        entity->move ();
-    }
-}
-
-void Projectiles::add ( float x , float y , int w , int h )
-{
-    std::shared_ptr < Projectile > entity ( new Projectile ( x , y , w , h ) );
-
-    entity->velocity.x = ( this->entity->flip == SDL_FLIP_HORIZONTAL )
-        ? -speed
-        : speed;
-
-    entities.push_back ( entity );
+    object->set ( x , y , w , h );
+    object->velocity.x = 100;
+    object->texture = texture;
+    objects.push_back ( std::move ( object ) );
 }
 
 void Projectiles::update ()
 {
-    if ( isActive )
+    if ( active )
     {
-        if ( check() == 2 )
+        if ( check () == 2 )
         {
-            float x = ( entity->flip == SDL_FLIP_NONE )
-                ? entity->position.x + entity->screen.w + 4
-                : entity->position.x - 4;
+            float x = source->position.x + source->screen.w + 4;
+            float y = source->position.y + source->screen.h / 3;
 
-            float y = entity->position.y + entity->screen.h / 3;
+            set ( x , y , 4 , 4 );
 
-            add ( x , y );
             start();
         }
     }
+
+    move ();
 }

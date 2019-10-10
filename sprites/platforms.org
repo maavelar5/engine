@@ -1,4 +1,6 @@
 * Scene 1
+** Player
+   0,0,50,50,pl
 ** Platforms
    0,620,2000,100,gp
    2000,0,20,720,gp
@@ -20,8 +22,7 @@
    150,50,32,96,se
 
 ** Floating enemies
-   200,200,100,100,fe
-   
+   200,200,100,100,fe,pl
 * Scene 2
 ** Platforms
    0,620,2000,100,gp

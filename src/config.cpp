@@ -2,16 +2,16 @@
 
 std::map < std::string , std::string > config;
 
-void init_config ()
+void initConfig ()
 {
-    std::string s = utils::readFile ( CONFIG_PATH );
-    const std::regex e("(\\S+)=(\\S*)");
+    std::string s = readFile ( CONFIG_PATH );
+    const std::regex e ( "(\\S+)=(\\S*)" );
     std::smatch m;
 
     while ( std::regex_search ( s , m , e ) )
     {
-        config [ m [ 1 ] ] = std::string( m [ 2 ] );
-        s = m.suffix().str();
+        config [ m [ 1 ] ] = std::string ( m [ 2 ] );
+        s = m.suffix().str ();
     }
 
     WINDOW_WIDTH = std::stoi( config["WINDOW_WIDTH"]);
@@ -41,4 +41,6 @@ void init_config ()
     DEBUG_WINDOW = std::stoi ( config [ "DEBUG_WINDOW"]);
     INFO_WINDOW = std::stoi ( config [ "INFO_WINDOW"]);
     EDITOR_WINDOW = std::stoi ( config [ "EDITOR_WINDOW"]);
+
+    WINDOW_TITLE = config [ "WINDOW_TITLE" ];
 }
