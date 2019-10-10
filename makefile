@@ -63,6 +63,12 @@ aabb.o : aabb.cpp
 automated_movement.o : automated_movement.cpp
 	$(CC) -c -w $(CPPFLAGS) src/automated_movement.cpp -o obj/automated_movement.o
 
+base.o : base.cpp
+	$(CC) -c -w $(CPPFLAGS) src/base.cpp -o obj/base.o
+
+bullet.o : bullet.cpp
+	$(CC) -c -w $(CPPFLAGS) src/bullet.cpp -o obj/bullet.o
+
 camera.o : camera.cpp
 	$(CC) -c -w $(CPPFLAGS) src/camera.cpp -o obj/camera.o
 
@@ -75,23 +81,17 @@ constants.o : constants.cpp
 controller.o : controller.cpp
 	$(CC) -c -w $(CPPFLAGS) src/controller.cpp -o obj/controller.o
 
-collision.o : collision.cpp
-	$(CC) -c -w $(CPPFLAGS) src/collision.cpp -o obj/collision.o
-
 debug.o : debug.cpp
 	$(CC) -c -w $(CPPFLAGS) src/debug.cpp -o obj/debug.o
+
+directed_bullet.o : directed_bullet.cpp
+	$(CC) -c -w $(CPPFLAGS) src/directed_bullet.cpp -o obj/directed_bullet.o
 
 directed_projectile.o : directed_projectile.cpp
 	$(CC) -c -w $(CPPFLAGS) src/directed_projectile.cpp -o obj/directed_projectile.o
 
 enemy.o : enemy.cpp
 	$(CC) -c -w $(CPPFLAGS) src/enemy.cpp -o obj/enemy.o
-
-entities.o : entities.cpp
-	$(CC) -c -w $(CPPFLAGS) src/entities.cpp -o obj/entities.o
-
-entity.o : entity.cpp
-	$(CC) -c -w $(CPPFLAGS) src/entity.cpp -o obj/entity.o
 
 env_variables.o : env_variables.cpp
 	$(CC) -c -w $(CPPFLAGS) src/env_variables.cpp -o obj/env_variables.o
@@ -111,6 +111,9 @@ hud.o : hud.cpp
 info.o : info.cpp
 	$(CC) -c -w $(CPPFLAGS) src/info.cpp -o obj/info.o
 
+kinematic.o : kinematic.cpp
+	$(CC) -c -w $(CPPFLAGS) src/kinematic.cpp -o obj/kinematic.o
+
 main.o : main.cpp
 	$(CC) -c -w $(CPPFLAGS) src/main.cpp -o obj/main.o
 
@@ -119,6 +122,9 @@ manager.o : manager.cpp
 
 mapper.o : mapper.cpp
 	$(CC) -c -w $(CPPFLAGS) src/mapper.cpp -o obj/mapper.o
+
+list.o : list.cpp
+	$(CC) -c -w $(CPPFLAGS) src/list.cpp -o obj/list.o
 
 particle.o : particle.cpp
 	$(CC) -c -w $(CPPFLAGS) src/particle.cpp -o obj/particle.o

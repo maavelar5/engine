@@ -6,21 +6,23 @@ namespace manager
 
     void init ()
     {
-        init_config ();
-        game::init();
-        timer::init();
-        controller::init();
-        font::init();
-        debug::init();
-        info::init();
-        mapper::init();
+        initConfig ();
+        game::init ();
+        timer::init ();
+        controller::init ();
+        font::init ();
+        debug::init ();
+        info::init ();
+        mapper::init ();
     }
 
     void clear ()
     {
-        SDL_RenderClear( game::renderer );
-        SDL_RenderClear( debug::renderer );
-        SDL_RenderClear( info::renderer );
+        SDL_RenderClear ( game::renderer );
+        SDL_RenderClear ( debug::renderer );
+        SDL_RenderClear ( info::renderer );
+
+        mapper::clear ();
     }
 
     void event ()
@@ -38,8 +40,8 @@ namespace manager
     {
         while ( timer::acumulator >= timer::timeStep )
         {
-            mapper::update();
-            collision::collide();
+            mapper::update ();
+            mapper::collide ();
             timer::acumulator -= timer::timeStep;
         }
 
@@ -48,18 +50,20 @@ namespace manager
 
     void render ()
     {
-        mapper::render();
-        info::draw( "FPS: " + std::to_string( timer::FPS ).substr( 0 , 4 ) );
-        info::draw( "Scene: " + std::to_string( mapper::scene ) );
-        debug::render();
+        mapper::render ();
 
+        info::draw ( "FPS: " + std::to_string ( timer::FPS ).substr ( 0 , 4 ) );
+        info::draw ( "Scene: " + std::to_string( mapper::scene ) );
 
-        SDL_RenderPresent( game::renderer );
-        SDL_RenderPresent( info::renderer );
-        SDL_RenderPresent( debug::renderer );
-        mapper::editor::render();
+        debug::render ();
+
+        SDL_RenderPresent ( game::renderer );
+        SDL_RenderPresent ( info::renderer );
+        SDL_RenderPresent ( debug::renderer );
+
+        mapper::editor::render ();
 
         info::y = 0;
-        timer::update();
+        timer::update ();
     }
 }

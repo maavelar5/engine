@@ -1,17 +1,21 @@
 #ifndef UTILS
 #define UTILS
 
-#include <iostream>
+#include "base.h"
+#include "constants.h"
+#include "sdl_inclusion.h"
 
-#if __ANDROID__
-#include <SDL.h>
-#else
-#include <SDL2/SDL.h>
-#endif
+#include <map>
+#include <memory>
 
-namespace utils
-{
-    std::string readFile ( std::string filePath );
-}
+std::string readFile ( std::string filePath );
+SDL_Texture * createTexture ( std::string filePath , SDL_Renderer * renderer );
+
+extern std::map < std::string , SDL_Texture * > textures;
+
+extern std::map < std::string , std::vector
+                  < std::shared_ptr < Base > > > gridKinematics;
+extern std::map < std::string , std::vector
+                  < std::shared_ptr < Base > > > gridPlatforms;
 
 #endif

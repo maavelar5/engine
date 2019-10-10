@@ -6,6 +6,7 @@ struct AABB
     float x , y , w , h;
 
     AABB ( float , float , float , float );
+    AABB ();
     ~AABB ();
 
     bool top ( AABB ) , right ( AABB ) , bot ( AABB ) , left ( AABB ),
