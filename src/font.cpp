@@ -6,11 +6,11 @@ namespace font
 
     void init ( std::string path , std::vector < uint8 > sizes )
     {
-        TTF_Init();
+        TTF_Init ();
 
         for ( auto & size : sizes )
         {
-            fonts[ size ] = TTF_OpenFont( path.c_str() , size );
+            fonts [ size ] = TTF_OpenFont ( path.c_str() , size );
         }
     }
 
@@ -22,6 +22,8 @@ namespace font
         SDL_Surface * surface =
             TTF_RenderText_Solid ( fonts[ size ] , message.c_str() , color );
         SDL_Texture * texture = nullptr;
+
+        SDL_SetSurfaceBlendMode ( surface , SDL_BLENDMODE_BLEND );
 
         if ( surface )
         {

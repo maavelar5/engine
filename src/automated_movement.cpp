@@ -37,7 +37,6 @@ Uint8 Timer::check ()
     return status;
 }
 
-
 AutomatedMovement::AutomatedMovement () { }
 
 AutomatedMovement::~AutomatedMovement () { }

@@ -3,7 +3,7 @@
 Player::Player () : projectiles ( this )
 {
     texture = createTexture ( PLAYER_SPRITE_SHEET , game::renderer );
-    speed = 400;
+    speed = 100;
     config = CAMERA;
 }
 

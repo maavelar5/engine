@@ -102,6 +102,9 @@ floating_enemy.o : floating_enemy.cpp
 font.o : font.cpp
 	$(CC) -c -w $(CPPFLAGS) src/font.cpp -o obj/font.o
 
+frame.o : frame.cpp
+	$(CC) -c -w $(CPPFLAGS) src/frame.cpp -o obj/frame.o
+
 game.o : game.cpp
 	$(CC) -c -w $(CPPFLAGS) src/game.cpp -o obj/game.o
 

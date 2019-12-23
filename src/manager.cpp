@@ -3,6 +3,7 @@
 namespace manager
 {
     SDL_Event _event;
+    SDL_Rect tmp = { 0 , 0 , 50 , 50 };
 
     void init ()
     {

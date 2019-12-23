@@ -9,7 +9,7 @@ Vector::Vector ( float x , float y )
 
 Vector::Vector ()
 {
-    x = y = angle = 0; 
+    x = y = angle = 0;
 }
 
 Vector::~Vector () { }
